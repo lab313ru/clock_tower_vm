@@ -15,7 +15,7 @@ define space refs    type=ram_space      size=4  ;
 
 define space register type=register_space size=4;
 
-define register offset=0 size=4 [PC SP RA DUMMY];
+define register offset=0 size=4 [PC SP RA DUMMY RESULT pairs_read pairs_true cmp_dest ands_count];
 
 ################################################################
 
@@ -25,9 +25,258 @@ define token opword (16)
 ;
 
 define token data16 (16)
-   var4        = (12,15)
-   idx9        = (0,8)
-   imm16       = (0,15)
+   	var4_1     = (12,15)
+	var4_2     = (12,15)
+	var4_3     = (12,15)
+	var4_4     = (12,15)
+	var4_5     = (12,15)
+	var4_6     = (12,15)
+	var4_7     = (12,15)
+	var4_8     = (12,15)
+	var4_9     = (12,15)
+	var4_10     = (12,15)
+	var4_11     = (12,15)
+	var4_12     = (12,15)
+	var4_13     = (12,15)
+	var4_14     = (12,15)
+	var4_15     = (12,15)
+	var4_16     = (12,15)
+	var4_17     = (12,15)
+	var4_18     = (12,15)
+	var4_19     = (12,15)
+	var4_20     = (12,15)
+	var4_21     = (12,15)
+	var4_22     = (12,15)
+	var4_23     = (12,15)
+	var4_24     = (12,15)
+	var4_25     = (12,15)
+	var4_26     = (12,15)
+	var4_27     = (12,15)
+	var4_28     = (12,15)
+	var4_29     = (12,15)
+	var4_30     = (12,15)
+	var4_31     = (12,15)
+	var4_32     = (12,15)
+	var4_33     = (12,15)
+	var4_34     = (12,15)
+	var4_35     = (12,15)
+	var4_36     = (12,15)
+	var4_37     = (12,15)
+	var4_38     = (12,15)
+	var4_39     = (12,15)
+	var4_40     = (12,15)
+	var4_41     = (12,15)
+	var4_42     = (12,15)
+	var4_43     = (12,15)
+	var4_44     = (12,15)
+	var4_45     = (12,15)
+	var4_46     = (12,15)
+	var4_47     = (12,15)
+	var4_48     = (12,15)
+	var4_49     = (12,15)
+	var4_50     = (12,15)
+	var4_51     = (12,15)
+	var4_52     = (12,15)
+	var4_53     = (12,15)
+	var4_54     = (12,15)
+	var4_55     = (12,15)
+	var4_56     = (12,15)
+	var4_57     = (12,15)
+	var4_58     = (12,15)
+	var4_59     = (12,15)
+	var4_60     = (12,15)
+	var4_61     = (12,15)
+	var4_62     = (12,15)
+	var4_63     = (12,15)
+	var4_64     = (12,15)
+	var4_65     = (12,15)
+	var4_66     = (12,15)
+	var4_67     = (12,15)
+	var4_68     = (12,15)
+	var4_69     = (12,15)
+	var4_70     = (12,15)
+	var4_71     = (12,15)
+	var4_72     = (12,15)
+	var4_73     = (12,15)
+	var4_74     = (12,15)
+	var4_75     = (12,15)
+	var4_76     = (12,15)
+	var4_77     = (12,15)
+	var4_78     = (12,15)
+	var4_79     = (12,15)
+	var4_80     = (12,15)
+	var4_81     = (12,15)
+	var4_82     = (12,15)
+	var4_83     = (12,15)
+	var4_84     = (12,15)
+	idx9_1     = (0,8)
+	idx9_2     = (0,8)
+	idx9_3     = (0,8)
+	idx9_4     = (0,8)
+	idx9_5     = (0,8)
+	idx9_6     = (0,8)
+	idx9_7     = (0,8)
+	idx9_8     = (0,8)
+	idx9_9     = (0,8)
+	idx9_10     = (0,8)
+	idx9_11     = (0,8)
+	idx9_12     = (0,8)
+	idx9_13     = (0,8)
+	idx9_14     = (0,8)
+	idx9_15     = (0,8)
+	idx9_16     = (0,8)
+	idx9_17     = (0,8)
+	idx9_18     = (0,8)
+	idx9_19     = (0,8)
+	idx9_20     = (0,8)
+	idx9_21     = (0,8)
+	idx9_22     = (0,8)
+	idx9_23     = (0,8)
+	idx9_24     = (0,8)
+	idx9_25     = (0,8)
+	idx9_26     = (0,8)
+	idx9_27     = (0,8)
+	idx9_28     = (0,8)
+	idx9_29     = (0,8)
+	idx9_30     = (0,8)
+	idx9_31     = (0,8)
+	idx9_32     = (0,8)
+	idx9_33     = (0,8)
+	idx9_34     = (0,8)
+	idx9_35     = (0,8)
+	idx9_36     = (0,8)
+	idx9_37     = (0,8)
+	idx9_38     = (0,8)
+	idx9_39     = (0,8)
+	idx9_40     = (0,8)
+	idx9_41     = (0,8)
+	idx9_42     = (0,8)
+	idx9_43     = (0,8)
+	idx9_44     = (0,8)
+	idx9_45     = (0,8)
+	idx9_46     = (0,8)
+	idx9_47     = (0,8)
+	idx9_48     = (0,8)
+	idx9_49     = (0,8)
+	idx9_50     = (0,8)
+	idx9_51     = (0,8)
+	idx9_52     = (0,8)
+	idx9_53     = (0,8)
+	idx9_54     = (0,8)
+	idx9_55     = (0,8)
+	idx9_56     = (0,8)
+	idx9_57     = (0,8)
+	idx9_58     = (0,8)
+	idx9_59     = (0,8)
+	idx9_60     = (0,8)
+	idx9_61     = (0,8)
+	idx9_62     = (0,8)
+	idx9_63     = (0,8)
+	idx9_64     = (0,8)
+	idx9_65     = (0,8)
+	idx9_66     = (0,8)
+	idx9_67     = (0,8)
+	idx9_68     = (0,8)
+	idx9_69     = (0,8)
+	idx9_70     = (0,8)
+	idx9_71     = (0,8)
+	idx9_72     = (0,8)
+	idx9_73     = (0,8)
+	idx9_74     = (0,8)
+	idx9_75     = (0,8)
+	idx9_76     = (0,8)
+	idx9_77     = (0,8)
+	idx9_78     = (0,8)
+	idx9_79     = (0,8)
+	idx9_80     = (0,8)
+	idx9_81     = (0,8)
+	idx9_82     = (0,8)
+	idx9_83     = (0,8)
+	idx9_84     = (0,8)
+	imm16_1    = (0,15)
+	imm16_2    = (0,15)
+	imm16_3    = (0,15)
+	imm16_4    = (0,15)
+	imm16_5    = (0,15)
+	imm16_6    = (0,15)
+	imm16_7    = (0,15)
+	imm16_8    = (0,15)
+	imm16_9    = (0,15)
+	imm16_10    = (0,15)
+	imm16_11    = (0,15)
+	imm16_12    = (0,15)
+	imm16_13    = (0,15)
+	imm16_14    = (0,15)
+	imm16_15    = (0,15)
+	imm16_16    = (0,15)
+	imm16_17    = (0,15)
+	imm16_18    = (0,15)
+	imm16_19    = (0,15)
+	imm16_20    = (0,15)
+	imm16_21    = (0,15)
+	imm16_22    = (0,15)
+	imm16_23    = (0,15)
+	imm16_24    = (0,15)
+	imm16_25    = (0,15)
+	imm16_26    = (0,15)
+	imm16_27    = (0,15)
+	imm16_28    = (0,15)
+	imm16_29    = (0,15)
+	imm16_30    = (0,15)
+	imm16_31    = (0,15)
+	imm16_32    = (0,15)
+	imm16_33    = (0,15)
+	imm16_34    = (0,15)
+	imm16_35    = (0,15)
+	imm16_36    = (0,15)
+	imm16_37    = (0,15)
+	imm16_38    = (0,15)
+	imm16_39    = (0,15)
+	imm16_40    = (0,15)
+	imm16_41    = (0,15)
+	imm16_42    = (0,15)
+	imm16_43    = (0,15)
+	imm16_44    = (0,15)
+	imm16_45    = (0,15)
+	imm16_46    = (0,15)
+	imm16_47    = (0,15)
+	imm16_48    = (0,15)
+	imm16_49    = (0,15)
+	imm16_50    = (0,15)
+	imm16_51    = (0,15)
+	imm16_52    = (0,15)
+	imm16_53    = (0,15)
+	imm16_54    = (0,15)
+	imm16_55    = (0,15)
+	imm16_56    = (0,15)
+	imm16_57    = (0,15)
+	imm16_58    = (0,15)
+	imm16_59    = (0,15)
+	imm16_60    = (0,15)
+	imm16_61    = (0,15)
+	imm16_62    = (0,15)
+	imm16_63    = (0,15)
+	imm16_64    = (0,15)
+	imm16_65    = (0,15)
+	imm16_66    = (0,15)
+	imm16_67    = (0,15)
+	imm16_68    = (0,15)
+	imm16_69    = (0,15)
+	imm16_70    = (0,15)
+	imm16_71    = (0,15)
+	imm16_72    = (0,15)
+	imm16_73    = (0,15)
+	imm16_74    = (0,15)
+	imm16_75    = (0,15)
+	imm16_76    = (0,15)
+	imm16_77    = (0,15)
+	imm16_78    = (0,15)
+	imm16_79    = (0,15)
+	imm16_80    = (0,15)
+	imm16_81    = (0,15)
+	imm16_82    = (0,15)
+	imm16_83    = (0,15)
+	imm16_84    = (0,15)
 ;
 
 define token jmpidx (16)
@@ -37,33 +286,1559 @@ define token jmpidx (16)
 ;
 
 define token fulladdr (32)
-	addr       = (0, 31)
+	addr_1       = (0, 31)
+	addr_2       = (0, 31)
 ;
+
+Val1: imm16_1 is imm16_1 { c:2 = imm16_1; export c; }
+Val2: imm16_2 is imm16_2 { c:2 = imm16_2; export c; }
+Val3: imm16_3 is imm16_3 { c:2 = imm16_3; export c; }
+Val4: imm16_4 is imm16_4 { c:2 = imm16_4; export c; }
+Val5: imm16_5 is imm16_5 { c:2 = imm16_5; export c; }
+Val6: imm16_6 is imm16_6 { c:2 = imm16_6; export c; }
+Val7: imm16_7 is imm16_7 { c:2 = imm16_7; export c; }
+Val8: imm16_8 is imm16_8 { c:2 = imm16_8; export c; }
+Val9: imm16_9 is imm16_9 { c:2 = imm16_9; export c; }
+Val10: imm16_10 is imm16_10 { c:2 = imm16_10; export c; }
+Val11: imm16_11 is imm16_11 { c:2 = imm16_11; export c; }
+Val12: imm16_12 is imm16_12 { c:2 = imm16_12; export c; }
+Val13: imm16_13 is imm16_13 { c:2 = imm16_13; export c; }
+Val14: imm16_14 is imm16_14 { c:2 = imm16_14; export c; }
+Val15: imm16_15 is imm16_15 { c:2 = imm16_15; export c; }
+Val16: imm16_16 is imm16_16 { c:2 = imm16_16; export c; }
+Val17: imm16_17 is imm16_17 { c:2 = imm16_17; export c; }
+Val18: imm16_18 is imm16_18 { c:2 = imm16_18; export c; }
+Val19: imm16_19 is imm16_19 { c:2 = imm16_19; export c; }
+Val20: imm16_20 is imm16_20 { c:2 = imm16_20; export c; }
+Val21: imm16_21 is imm16_21 { c:2 = imm16_21; export c; }
+
+
+Var1: (loc) is var4_1=0xC & idx9_1 [ loc = 0x0100C000 + idx9_1*2; ] { export *:2 loc; }
+Var2: (loc) is var4_2=0xC & idx9_2 [ loc = 0x0100C000 + idx9_2*2; ] { export *:2 loc; }
+Var3: (loc) is var4_3=0xC & idx9_3 [ loc = 0x0100C000 + idx9_3*2; ] { export *:2 loc; }
+Var4: (loc) is var4_4=0xC & idx9_4 [ loc = 0x0100C000 + idx9_4*2; ] { export *:2 loc; }
+Var5: (loc) is var4_5=0xC & idx9_5 [ loc = 0x0100C000 + idx9_5*2; ] { export *:2 loc; }
+Var6: (loc) is var4_6=0xC & idx9_6 [ loc = 0x0100C000 + idx9_6*2; ] { export *:2 loc; }
+Var7: (loc) is var4_7=0xC & idx9_7 [ loc = 0x0100C000 + idx9_7*2; ] { export *:2 loc; }
+Var8: (loc) is var4_8=0xC & idx9_8 [ loc = 0x0100C000 + idx9_8*2; ] { export *:2 loc; }
+Var9: (loc) is var4_9=0xC & idx9_9 [ loc = 0x0100C000 + idx9_9*2; ] { export *:2 loc; }
+Var10: (loc) is var4_10=0xC & idx9_10 [ loc = 0x0100C000 + idx9_10*2; ] { export *:2 loc; }
+Var11: (loc) is var4_11=0xC & idx9_11 [ loc = 0x0100C000 + idx9_11*2; ] { export *:2 loc; }
+Var12: (loc) is var4_12=0xC & idx9_12 [ loc = 0x0100C000 + idx9_12*2; ] { export *:2 loc; }
+Var13: (loc) is var4_13=0xC & idx9_13 [ loc = 0x0100C000 + idx9_13*2; ] { export *:2 loc; }
+Var14: (loc) is var4_14=0xC & idx9_14 [ loc = 0x0100C000 + idx9_14*2; ] { export *:2 loc; }
+Var15: (loc) is var4_15=0xC & idx9_15 [ loc = 0x0100C000 + idx9_15*2; ] { export *:2 loc; }
+Var16: (loc) is var4_16=0xC & idx9_16 [ loc = 0x0100C000 + idx9_16*2; ] { export *:2 loc; }
+Var17: (loc) is var4_17=0xC & idx9_17 [ loc = 0x0100C000 + idx9_17*2; ] { export *:2 loc; }
+Var18: (loc) is var4_18=0xC & idx9_18 [ loc = 0x0100C000 + idx9_18*2; ] { export *:2 loc; }
+Var19: (loc) is var4_19=0xC & idx9_19 [ loc = 0x0100C000 + idx9_19*2; ] { export *:2 loc; }
+Var20: (loc) is var4_20=0xC & idx9_20 [ loc = 0x0100C000 + idx9_20*2; ] { export *:2 loc; }
+Var21: (loc) is var4_21=0xC & idx9_21 [ loc = 0x0100C000 + idx9_21*2; ] { export *:2 loc; }
+Var22: (loc) is var4_22=0xC & idx9_22 [ loc = 0x0100C000 + idx9_22*2; ] { export *:2 loc; }
+Var23: (loc) is var4_23=0xC & idx9_23 [ loc = 0x0100C000 + idx9_23*2; ] { export *:2 loc; }
+Var24: (loc) is var4_24=0xC & idx9_24 [ loc = 0x0100C000 + idx9_24*2; ] { export *:2 loc; }
+Var25: (loc) is var4_25=0xC & idx9_25 [ loc = 0x0100C000 + idx9_25*2; ] { export *:2 loc; }
+Var26: (loc) is var4_26=0xC & idx9_26 [ loc = 0x0100C000 + idx9_26*2; ] { export *:2 loc; }
+Var27: (loc) is var4_27=0xC & idx9_27 [ loc = 0x0100C000 + idx9_27*2; ] { export *:2 loc; }
+Var28: (loc) is var4_28=0xC & idx9_28 [ loc = 0x0100C000 + idx9_28*2; ] { export *:2 loc; }
+Var29: (loc) is var4_29=0xC & idx9_29 [ loc = 0x0100C000 + idx9_29*2; ] { export *:2 loc; }
+Var30: (loc) is var4_30=0xC & idx9_30 [ loc = 0x0100C000 + idx9_30*2; ] { export *:2 loc; }
+Var31: (loc) is var4_31=0xC & idx9_31 [ loc = 0x0100C000 + idx9_31*2; ] { export *:2 loc; }
+Var32: (loc) is var4_32=0xC & idx9_32 [ loc = 0x0100C000 + idx9_32*2; ] { export *:2 loc; }
+Var33: (loc) is var4_33=0xC & idx9_33 [ loc = 0x0100C000 + idx9_33*2; ] { export *:2 loc; }
+Var34: (loc) is var4_34=0xC & idx9_34 [ loc = 0x0100C000 + idx9_34*2; ] { export *:2 loc; }
+Var35: (loc) is var4_35=0xC & idx9_35 [ loc = 0x0100C000 + idx9_35*2; ] { export *:2 loc; }
+Var36: (loc) is var4_36=0xC & idx9_36 [ loc = 0x0100C000 + idx9_36*2; ] { export *:2 loc; }
+Var37: (loc) is var4_37=0xC & idx9_37 [ loc = 0x0100C000 + idx9_37*2; ] { export *:2 loc; }
+Var38: (loc) is var4_38=0xC & idx9_38 [ loc = 0x0100C000 + idx9_38*2; ] { export *:2 loc; }
+Var39: (loc) is var4_39=0xC & idx9_39 [ loc = 0x0100C000 + idx9_39*2; ] { export *:2 loc; }
+Var40: (loc) is var4_40=0xC & idx9_40 [ loc = 0x0100C000 + idx9_40*2; ] { export *:2 loc; }
+Var41: (loc) is var4_41=0xC & idx9_41 [ loc = 0x0100C000 + idx9_41*2; ] { export *:2 loc; }
+Var42: (loc) is var4_42=0xC & idx9_42 [ loc = 0x0100C000 + idx9_42*2; ] { export *:2 loc; }
+Var43: (loc) is var4_43=0xC & idx9_43 [ loc = 0x0100C000 + idx9_43*2; ] { export *:2 loc; }
+Var44: (loc) is var4_44=0xC & idx9_44 [ loc = 0x0100C000 + idx9_44*2; ] { export *:2 loc; }
+Var45: (loc) is var4_45=0xC & idx9_45 [ loc = 0x0100C000 + idx9_45*2; ] { export *:2 loc; }
+Var46: (loc) is var4_46=0xC & idx9_46 [ loc = 0x0100C000 + idx9_46*2; ] { export *:2 loc; }
+Var47: (loc) is var4_47=0xC & idx9_47 [ loc = 0x0100C000 + idx9_47*2; ] { export *:2 loc; }
+Var48: (loc) is var4_48=0xC & idx9_48 [ loc = 0x0100C000 + idx9_48*2; ] { export *:2 loc; }
+Var49: (loc) is var4_49=0xC & idx9_49 [ loc = 0x0100C000 + idx9_49*2; ] { export *:2 loc; }
+Var50: (loc) is var4_50=0xC & idx9_50 [ loc = 0x0100C000 + idx9_50*2; ] { export *:2 loc; }
+Var51: (loc) is var4_51=0xC & idx9_51 [ loc = 0x0100C000 + idx9_51*2; ] { export *:2 loc; }
+Var52: (loc) is var4_52=0xC & idx9_52 [ loc = 0x0100C000 + idx9_52*2; ] { export *:2 loc; }
+Var53: (loc) is var4_53=0xC & idx9_53 [ loc = 0x0100C000 + idx9_53*2; ] { export *:2 loc; }
+Var54: (loc) is var4_54=0xC & idx9_54 [ loc = 0x0100C000 + idx9_54*2; ] { export *:2 loc; }
+Var55: (loc) is var4_55=0xC & idx9_55 [ loc = 0x0100C000 + idx9_55*2; ] { export *:2 loc; }
+Var56: (loc) is var4_56=0xC & idx9_56 [ loc = 0x0100C000 + idx9_56*2; ] { export *:2 loc; }
+Var57: (loc) is var4_57=0xC & idx9_57 [ loc = 0x0100C000 + idx9_57*2; ] { export *:2 loc; }
+Var58: (loc) is var4_58=0xC & idx9_58 [ loc = 0x0100C000 + idx9_58*2; ] { export *:2 loc; }
+Var59: (loc) is var4_59=0xC & idx9_59 [ loc = 0x0100C000 + idx9_59*2; ] { export *:2 loc; }
+Var60: (loc) is var4_60=0xC & idx9_60 [ loc = 0x0100C000 + idx9_60*2; ] { export *:2 loc; }
+Var61: (loc) is var4_61=0xC & idx9_61 [ loc = 0x0100C000 + idx9_61*2; ] { export *:2 loc; }
+Var62: (loc) is var4_62=0xC & idx9_62 [ loc = 0x0100C000 + idx9_62*2; ] { export *:2 loc; }
+Var63: (loc) is var4_63=0xC & idx9_63 [ loc = 0x0100C000 + idx9_63*2; ] { export *:2 loc; }
+Var64: (loc) is var4_64=0xC & idx9_64 [ loc = 0x0100C000 + idx9_64*2; ] { export *:2 loc; }
+Var65: (loc) is var4_65=0xC & idx9_65 [ loc = 0x0100C000 + idx9_65*2; ] { export *:2 loc; }
+Var66: (loc) is var4_66=0xC & idx9_66 [ loc = 0x0100C000 + idx9_66*2; ] { export *:2 loc; }
+Var67: (loc) is var4_67=0xC & idx9_67 [ loc = 0x0100C000 + idx9_67*2; ] { export *:2 loc; }
+Var68: (loc) is var4_68=0xC & idx9_68 [ loc = 0x0100C000 + idx9_68*2; ] { export *:2 loc; }
+Var69: (loc) is var4_69=0xC & idx9_69 [ loc = 0x0100C000 + idx9_69*2; ] { export *:2 loc; }
+Var70: (loc) is var4_70=0xC & idx9_70 [ loc = 0x0100C000 + idx9_70*2; ] { export *:2 loc; }
+Var71: (loc) is var4_71=0xC & idx9_71 [ loc = 0x0100C000 + idx9_71*2; ] { export *:2 loc; }
+Var72: (loc) is var4_72=0xC & idx9_72 [ loc = 0x0100C000 + idx9_72*2; ] { export *:2 loc; }
+Var73: (loc) is var4_73=0xC & idx9_73 [ loc = 0x0100C000 + idx9_73*2; ] { export *:2 loc; }
+Var74: (loc) is var4_74=0xC & idx9_74 [ loc = 0x0100C000 + idx9_74*2; ] { export *:2 loc; }
+Var75: (loc) is var4_75=0xC & idx9_75 [ loc = 0x0100C000 + idx9_75*2; ] { export *:2 loc; }
+Var76: (loc) is var4_76=0xC & idx9_76 [ loc = 0x0100C000 + idx9_76*2; ] { export *:2 loc; }
+Var77: (loc) is var4_77=0xC & idx9_77 [ loc = 0x0100C000 + idx9_77*2; ] { export *:2 loc; }
+Var78: (loc) is var4_78=0xC & idx9_78 [ loc = 0x0100C000 + idx9_78*2; ] { export *:2 loc; }
+Var79: (loc) is var4_79=0xC & idx9_79 [ loc = 0x0100C000 + idx9_79*2; ] { export *:2 loc; }
+Var80: (loc) is var4_80=0xC & idx9_80 [ loc = 0x0100C000 + idx9_80*2; ] { export *:2 loc; }
+Var81: (loc) is var4_81=0xC & idx9_81 [ loc = 0x0100C000 + idx9_81*2; ] { export *:2 loc; }
+Var82: (loc) is var4_82=0xC & idx9_82 [ loc = 0x0100C000 + idx9_82*2; ] { export *:2 loc; }
+Var83: (loc) is var4_83=0xC & idx9_83 [ loc = 0x0100C000 + idx9_83*2; ] { export *:2 loc; }
+Var84: (loc) is var4_84=0xC & idx9_84 [ loc = 0x0100C000 + idx9_84*2; ] { export *:2 loc; }
+Var1: (loc) is var4_1=0xD & idx9_1 [ loc = 0x0100D000 + idx9_1*2; ] { export *:2 loc; }
+Var2: (loc) is var4_2=0xD & idx9_2 [ loc = 0x0100D000 + idx9_2*2; ] { export *:2 loc; }
+Var3: (loc) is var4_3=0xD & idx9_3 [ loc = 0x0100D000 + idx9_3*2; ] { export *:2 loc; }
+Var4: (loc) is var4_4=0xD & idx9_4 [ loc = 0x0100D000 + idx9_4*2; ] { export *:2 loc; }
+Var5: (loc) is var4_5=0xD & idx9_5 [ loc = 0x0100D000 + idx9_5*2; ] { export *:2 loc; }
+Var6: (loc) is var4_6=0xD & idx9_6 [ loc = 0x0100D000 + idx9_6*2; ] { export *:2 loc; }
+Var7: (loc) is var4_7=0xD & idx9_7 [ loc = 0x0100D000 + idx9_7*2; ] { export *:2 loc; }
+Var8: (loc) is var4_8=0xD & idx9_8 [ loc = 0x0100D000 + idx9_8*2; ] { export *:2 loc; }
+Var9: (loc) is var4_9=0xD & idx9_9 [ loc = 0x0100D000 + idx9_9*2; ] { export *:2 loc; }
+Var10: (loc) is var4_10=0xD & idx9_10 [ loc = 0x0100D000 + idx9_10*2; ] { export *:2 loc; }
+Var11: (loc) is var4_11=0xD & idx9_11 [ loc = 0x0100D000 + idx9_11*2; ] { export *:2 loc; }
+Var12: (loc) is var4_12=0xD & idx9_12 [ loc = 0x0100D000 + idx9_12*2; ] { export *:2 loc; }
+Var13: (loc) is var4_13=0xD & idx9_13 [ loc = 0x0100D000 + idx9_13*2; ] { export *:2 loc; }
+Var14: (loc) is var4_14=0xD & idx9_14 [ loc = 0x0100D000 + idx9_14*2; ] { export *:2 loc; }
+Var15: (loc) is var4_15=0xD & idx9_15 [ loc = 0x0100D000 + idx9_15*2; ] { export *:2 loc; }
+Var16: (loc) is var4_16=0xD & idx9_16 [ loc = 0x0100D000 + idx9_16*2; ] { export *:2 loc; }
+Var17: (loc) is var4_17=0xD & idx9_17 [ loc = 0x0100D000 + idx9_17*2; ] { export *:2 loc; }
+Var18: (loc) is var4_18=0xD & idx9_18 [ loc = 0x0100D000 + idx9_18*2; ] { export *:2 loc; }
+Var19: (loc) is var4_19=0xD & idx9_19 [ loc = 0x0100D000 + idx9_19*2; ] { export *:2 loc; }
+Var20: (loc) is var4_20=0xD & idx9_20 [ loc = 0x0100D000 + idx9_20*2; ] { export *:2 loc; }
+Var21: (loc) is var4_21=0xD & idx9_21 [ loc = 0x0100D000 + idx9_21*2; ] { export *:2 loc; }
+Var22: (loc) is var4_22=0xD & idx9_22 [ loc = 0x0100D000 + idx9_22*2; ] { export *:2 loc; }
+Var23: (loc) is var4_23=0xD & idx9_23 [ loc = 0x0100D000 + idx9_23*2; ] { export *:2 loc; }
+Var24: (loc) is var4_24=0xD & idx9_24 [ loc = 0x0100D000 + idx9_24*2; ] { export *:2 loc; }
+Var25: (loc) is var4_25=0xD & idx9_25 [ loc = 0x0100D000 + idx9_25*2; ] { export *:2 loc; }
+Var26: (loc) is var4_26=0xD & idx9_26 [ loc = 0x0100D000 + idx9_26*2; ] { export *:2 loc; }
+Var27: (loc) is var4_27=0xD & idx9_27 [ loc = 0x0100D000 + idx9_27*2; ] { export *:2 loc; }
+Var28: (loc) is var4_28=0xD & idx9_28 [ loc = 0x0100D000 + idx9_28*2; ] { export *:2 loc; }
+Var29: (loc) is var4_29=0xD & idx9_29 [ loc = 0x0100D000 + idx9_29*2; ] { export *:2 loc; }
+Var30: (loc) is var4_30=0xD & idx9_30 [ loc = 0x0100D000 + idx9_30*2; ] { export *:2 loc; }
+Var31: (loc) is var4_31=0xD & idx9_31 [ loc = 0x0100D000 + idx9_31*2; ] { export *:2 loc; }
+Var32: (loc) is var4_32=0xD & idx9_32 [ loc = 0x0100D000 + idx9_32*2; ] { export *:2 loc; }
+Var33: (loc) is var4_33=0xD & idx9_33 [ loc = 0x0100D000 + idx9_33*2; ] { export *:2 loc; }
+Var34: (loc) is var4_34=0xD & idx9_34 [ loc = 0x0100D000 + idx9_34*2; ] { export *:2 loc; }
+Var35: (loc) is var4_35=0xD & idx9_35 [ loc = 0x0100D000 + idx9_35*2; ] { export *:2 loc; }
+Var36: (loc) is var4_36=0xD & idx9_36 [ loc = 0x0100D000 + idx9_36*2; ] { export *:2 loc; }
+Var37: (loc) is var4_37=0xD & idx9_37 [ loc = 0x0100D000 + idx9_37*2; ] { export *:2 loc; }
+Var38: (loc) is var4_38=0xD & idx9_38 [ loc = 0x0100D000 + idx9_38*2; ] { export *:2 loc; }
+Var39: (loc) is var4_39=0xD & idx9_39 [ loc = 0x0100D000 + idx9_39*2; ] { export *:2 loc; }
+Var40: (loc) is var4_40=0xD & idx9_40 [ loc = 0x0100D000 + idx9_40*2; ] { export *:2 loc; }
+Var41: (loc) is var4_41=0xD & idx9_41 [ loc = 0x0100D000 + idx9_41*2; ] { export *:2 loc; }
+Var42: (loc) is var4_42=0xD & idx9_42 [ loc = 0x0100D000 + idx9_42*2; ] { export *:2 loc; }
+Var43: (loc) is var4_43=0xD & idx9_43 [ loc = 0x0100D000 + idx9_43*2; ] { export *:2 loc; }
+Var44: (loc) is var4_44=0xD & idx9_44 [ loc = 0x0100D000 + idx9_44*2; ] { export *:2 loc; }
+Var45: (loc) is var4_45=0xD & idx9_45 [ loc = 0x0100D000 + idx9_45*2; ] { export *:2 loc; }
+Var46: (loc) is var4_46=0xD & idx9_46 [ loc = 0x0100D000 + idx9_46*2; ] { export *:2 loc; }
+Var47: (loc) is var4_47=0xD & idx9_47 [ loc = 0x0100D000 + idx9_47*2; ] { export *:2 loc; }
+Var48: (loc) is var4_48=0xD & idx9_48 [ loc = 0x0100D000 + idx9_48*2; ] { export *:2 loc; }
+Var49: (loc) is var4_49=0xD & idx9_49 [ loc = 0x0100D000 + idx9_49*2; ] { export *:2 loc; }
+Var50: (loc) is var4_50=0xD & idx9_50 [ loc = 0x0100D000 + idx9_50*2; ] { export *:2 loc; }
+Var51: (loc) is var4_51=0xD & idx9_51 [ loc = 0x0100D000 + idx9_51*2; ] { export *:2 loc; }
+Var52: (loc) is var4_52=0xD & idx9_52 [ loc = 0x0100D000 + idx9_52*2; ] { export *:2 loc; }
+Var53: (loc) is var4_53=0xD & idx9_53 [ loc = 0x0100D000 + idx9_53*2; ] { export *:2 loc; }
+Var54: (loc) is var4_54=0xD & idx9_54 [ loc = 0x0100D000 + idx9_54*2; ] { export *:2 loc; }
+Var55: (loc) is var4_55=0xD & idx9_55 [ loc = 0x0100D000 + idx9_55*2; ] { export *:2 loc; }
+Var56: (loc) is var4_56=0xD & idx9_56 [ loc = 0x0100D000 + idx9_56*2; ] { export *:2 loc; }
+Var57: (loc) is var4_57=0xD & idx9_57 [ loc = 0x0100D000 + idx9_57*2; ] { export *:2 loc; }
+Var58: (loc) is var4_58=0xD & idx9_58 [ loc = 0x0100D000 + idx9_58*2; ] { export *:2 loc; }
+Var59: (loc) is var4_59=0xD & idx9_59 [ loc = 0x0100D000 + idx9_59*2; ] { export *:2 loc; }
+Var60: (loc) is var4_60=0xD & idx9_60 [ loc = 0x0100D000 + idx9_60*2; ] { export *:2 loc; }
+Var61: (loc) is var4_61=0xD & idx9_61 [ loc = 0x0100D000 + idx9_61*2; ] { export *:2 loc; }
+Var62: (loc) is var4_62=0xD & idx9_62 [ loc = 0x0100D000 + idx9_62*2; ] { export *:2 loc; }
+Var63: (loc) is var4_63=0xD & idx9_63 [ loc = 0x0100D000 + idx9_63*2; ] { export *:2 loc; }
+Var64: (loc) is var4_64=0xD & idx9_64 [ loc = 0x0100D000 + idx9_64*2; ] { export *:2 loc; }
+Var65: (loc) is var4_65=0xD & idx9_65 [ loc = 0x0100D000 + idx9_65*2; ] { export *:2 loc; }
+Var66: (loc) is var4_66=0xD & idx9_66 [ loc = 0x0100D000 + idx9_66*2; ] { export *:2 loc; }
+Var67: (loc) is var4_67=0xD & idx9_67 [ loc = 0x0100D000 + idx9_67*2; ] { export *:2 loc; }
+Var68: (loc) is var4_68=0xD & idx9_68 [ loc = 0x0100D000 + idx9_68*2; ] { export *:2 loc; }
+Var69: (loc) is var4_69=0xD & idx9_69 [ loc = 0x0100D000 + idx9_69*2; ] { export *:2 loc; }
+Var70: (loc) is var4_70=0xD & idx9_70 [ loc = 0x0100D000 + idx9_70*2; ] { export *:2 loc; }
+Var71: (loc) is var4_71=0xD & idx9_71 [ loc = 0x0100D000 + idx9_71*2; ] { export *:2 loc; }
+Var72: (loc) is var4_72=0xD & idx9_72 [ loc = 0x0100D000 + idx9_72*2; ] { export *:2 loc; }
+Var73: (loc) is var4_73=0xD & idx9_73 [ loc = 0x0100D000 + idx9_73*2; ] { export *:2 loc; }
+Var74: (loc) is var4_74=0xD & idx9_74 [ loc = 0x0100D000 + idx9_74*2; ] { export *:2 loc; }
+Var75: (loc) is var4_75=0xD & idx9_75 [ loc = 0x0100D000 + idx9_75*2; ] { export *:2 loc; }
+Var76: (loc) is var4_76=0xD & idx9_76 [ loc = 0x0100D000 + idx9_76*2; ] { export *:2 loc; }
+Var77: (loc) is var4_77=0xD & idx9_77 [ loc = 0x0100D000 + idx9_77*2; ] { export *:2 loc; }
+Var78: (loc) is var4_78=0xD & idx9_78 [ loc = 0x0100D000 + idx9_78*2; ] { export *:2 loc; }
+Var79: (loc) is var4_79=0xD & idx9_79 [ loc = 0x0100D000 + idx9_79*2; ] { export *:2 loc; }
+Var80: (loc) is var4_80=0xD & idx9_80 [ loc = 0x0100D000 + idx9_80*2; ] { export *:2 loc; }
+Var81: (loc) is var4_81=0xD & idx9_81 [ loc = 0x0100D000 + idx9_81*2; ] { export *:2 loc; }
+Var82: (loc) is var4_82=0xD & idx9_82 [ loc = 0x0100D000 + idx9_82*2; ] { export *:2 loc; }
+Var83: (loc) is var4_83=0xD & idx9_83 [ loc = 0x0100D000 + idx9_83*2; ] { export *:2 loc; }
+Var84: (loc) is var4_84=0xD & idx9_84 [ loc = 0x0100D000 + idx9_84*2; ] { export *:2 loc; }
+Var1: (loc) is var4_1=0xE & idx9_1 [ loc = 0x0100E000 + idx9_1*2; ] { export *:2 loc; }
+Var2: (loc) is var4_2=0xE & idx9_2 [ loc = 0x0100E000 + idx9_2*2; ] { export *:2 loc; }
+Var3: (loc) is var4_3=0xE & idx9_3 [ loc = 0x0100E000 + idx9_3*2; ] { export *:2 loc; }
+Var4: (loc) is var4_4=0xE & idx9_4 [ loc = 0x0100E000 + idx9_4*2; ] { export *:2 loc; }
+Var5: (loc) is var4_5=0xE & idx9_5 [ loc = 0x0100E000 + idx9_5*2; ] { export *:2 loc; }
+Var6: (loc) is var4_6=0xE & idx9_6 [ loc = 0x0100E000 + idx9_6*2; ] { export *:2 loc; }
+Var7: (loc) is var4_7=0xE & idx9_7 [ loc = 0x0100E000 + idx9_7*2; ] { export *:2 loc; }
+Var8: (loc) is var4_8=0xE & idx9_8 [ loc = 0x0100E000 + idx9_8*2; ] { export *:2 loc; }
+Var9: (loc) is var4_9=0xE & idx9_9 [ loc = 0x0100E000 + idx9_9*2; ] { export *:2 loc; }
+Var10: (loc) is var4_10=0xE & idx9_10 [ loc = 0x0100E000 + idx9_10*2; ] { export *:2 loc; }
+Var11: (loc) is var4_11=0xE & idx9_11 [ loc = 0x0100E000 + idx9_11*2; ] { export *:2 loc; }
+Var12: (loc) is var4_12=0xE & idx9_12 [ loc = 0x0100E000 + idx9_12*2; ] { export *:2 loc; }
+Var13: (loc) is var4_13=0xE & idx9_13 [ loc = 0x0100E000 + idx9_13*2; ] { export *:2 loc; }
+Var14: (loc) is var4_14=0xE & idx9_14 [ loc = 0x0100E000 + idx9_14*2; ] { export *:2 loc; }
+Var15: (loc) is var4_15=0xE & idx9_15 [ loc = 0x0100E000 + idx9_15*2; ] { export *:2 loc; }
+Var16: (loc) is var4_16=0xE & idx9_16 [ loc = 0x0100E000 + idx9_16*2; ] { export *:2 loc; }
+Var17: (loc) is var4_17=0xE & idx9_17 [ loc = 0x0100E000 + idx9_17*2; ] { export *:2 loc; }
+Var18: (loc) is var4_18=0xE & idx9_18 [ loc = 0x0100E000 + idx9_18*2; ] { export *:2 loc; }
+Var19: (loc) is var4_19=0xE & idx9_19 [ loc = 0x0100E000 + idx9_19*2; ] { export *:2 loc; }
+Var20: (loc) is var4_20=0xE & idx9_20 [ loc = 0x0100E000 + idx9_20*2; ] { export *:2 loc; }
+Var21: (loc) is var4_21=0xE & idx9_21 [ loc = 0x0100E000 + idx9_21*2; ] { export *:2 loc; }
+Var22: (loc) is var4_22=0xE & idx9_22 [ loc = 0x0100E000 + idx9_22*2; ] { export *:2 loc; }
+Var23: (loc) is var4_23=0xE & idx9_23 [ loc = 0x0100E000 + idx9_23*2; ] { export *:2 loc; }
+Var24: (loc) is var4_24=0xE & idx9_24 [ loc = 0x0100E000 + idx9_24*2; ] { export *:2 loc; }
+Var25: (loc) is var4_25=0xE & idx9_25 [ loc = 0x0100E000 + idx9_25*2; ] { export *:2 loc; }
+Var26: (loc) is var4_26=0xE & idx9_26 [ loc = 0x0100E000 + idx9_26*2; ] { export *:2 loc; }
+Var27: (loc) is var4_27=0xE & idx9_27 [ loc = 0x0100E000 + idx9_27*2; ] { export *:2 loc; }
+Var28: (loc) is var4_28=0xE & idx9_28 [ loc = 0x0100E000 + idx9_28*2; ] { export *:2 loc; }
+Var29: (loc) is var4_29=0xE & idx9_29 [ loc = 0x0100E000 + idx9_29*2; ] { export *:2 loc; }
+Var30: (loc) is var4_30=0xE & idx9_30 [ loc = 0x0100E000 + idx9_30*2; ] { export *:2 loc; }
+Var31: (loc) is var4_31=0xE & idx9_31 [ loc = 0x0100E000 + idx9_31*2; ] { export *:2 loc; }
+Var32: (loc) is var4_32=0xE & idx9_32 [ loc = 0x0100E000 + idx9_32*2; ] { export *:2 loc; }
+Var33: (loc) is var4_33=0xE & idx9_33 [ loc = 0x0100E000 + idx9_33*2; ] { export *:2 loc; }
+Var34: (loc) is var4_34=0xE & idx9_34 [ loc = 0x0100E000 + idx9_34*2; ] { export *:2 loc; }
+Var35: (loc) is var4_35=0xE & idx9_35 [ loc = 0x0100E000 + idx9_35*2; ] { export *:2 loc; }
+Var36: (loc) is var4_36=0xE & idx9_36 [ loc = 0x0100E000 + idx9_36*2; ] { export *:2 loc; }
+Var37: (loc) is var4_37=0xE & idx9_37 [ loc = 0x0100E000 + idx9_37*2; ] { export *:2 loc; }
+Var38: (loc) is var4_38=0xE & idx9_38 [ loc = 0x0100E000 + idx9_38*2; ] { export *:2 loc; }
+Var39: (loc) is var4_39=0xE & idx9_39 [ loc = 0x0100E000 + idx9_39*2; ] { export *:2 loc; }
+Var40: (loc) is var4_40=0xE & idx9_40 [ loc = 0x0100E000 + idx9_40*2; ] { export *:2 loc; }
+Var41: (loc) is var4_41=0xE & idx9_41 [ loc = 0x0100E000 + idx9_41*2; ] { export *:2 loc; }
+Var42: (loc) is var4_42=0xE & idx9_42 [ loc = 0x0100E000 + idx9_42*2; ] { export *:2 loc; }
+Var43: (loc) is var4_43=0xE & idx9_43 [ loc = 0x0100E000 + idx9_43*2; ] { export *:2 loc; }
+Var44: (loc) is var4_44=0xE & idx9_44 [ loc = 0x0100E000 + idx9_44*2; ] { export *:2 loc; }
+Var45: (loc) is var4_45=0xE & idx9_45 [ loc = 0x0100E000 + idx9_45*2; ] { export *:2 loc; }
+Var46: (loc) is var4_46=0xE & idx9_46 [ loc = 0x0100E000 + idx9_46*2; ] { export *:2 loc; }
+Var47: (loc) is var4_47=0xE & idx9_47 [ loc = 0x0100E000 + idx9_47*2; ] { export *:2 loc; }
+Var48: (loc) is var4_48=0xE & idx9_48 [ loc = 0x0100E000 + idx9_48*2; ] { export *:2 loc; }
+Var49: (loc) is var4_49=0xE & idx9_49 [ loc = 0x0100E000 + idx9_49*2; ] { export *:2 loc; }
+Var50: (loc) is var4_50=0xE & idx9_50 [ loc = 0x0100E000 + idx9_50*2; ] { export *:2 loc; }
+Var51: (loc) is var4_51=0xE & idx9_51 [ loc = 0x0100E000 + idx9_51*2; ] { export *:2 loc; }
+Var52: (loc) is var4_52=0xE & idx9_52 [ loc = 0x0100E000 + idx9_52*2; ] { export *:2 loc; }
+Var53: (loc) is var4_53=0xE & idx9_53 [ loc = 0x0100E000 + idx9_53*2; ] { export *:2 loc; }
+Var54: (loc) is var4_54=0xE & idx9_54 [ loc = 0x0100E000 + idx9_54*2; ] { export *:2 loc; }
+Var55: (loc) is var4_55=0xE & idx9_55 [ loc = 0x0100E000 + idx9_55*2; ] { export *:2 loc; }
+Var56: (loc) is var4_56=0xE & idx9_56 [ loc = 0x0100E000 + idx9_56*2; ] { export *:2 loc; }
+Var57: (loc) is var4_57=0xE & idx9_57 [ loc = 0x0100E000 + idx9_57*2; ] { export *:2 loc; }
+Var58: (loc) is var4_58=0xE & idx9_58 [ loc = 0x0100E000 + idx9_58*2; ] { export *:2 loc; }
+Var59: (loc) is var4_59=0xE & idx9_59 [ loc = 0x0100E000 + idx9_59*2; ] { export *:2 loc; }
+Var60: (loc) is var4_60=0xE & idx9_60 [ loc = 0x0100E000 + idx9_60*2; ] { export *:2 loc; }
+Var61: (loc) is var4_61=0xE & idx9_61 [ loc = 0x0100E000 + idx9_61*2; ] { export *:2 loc; }
+Var62: (loc) is var4_62=0xE & idx9_62 [ loc = 0x0100E000 + idx9_62*2; ] { export *:2 loc; }
+Var63: (loc) is var4_63=0xE & idx9_63 [ loc = 0x0100E000 + idx9_63*2; ] { export *:2 loc; }
+Var64: (loc) is var4_64=0xE & idx9_64 [ loc = 0x0100E000 + idx9_64*2; ] { export *:2 loc; }
+Var65: (loc) is var4_65=0xE & idx9_65 [ loc = 0x0100E000 + idx9_65*2; ] { export *:2 loc; }
+Var66: (loc) is var4_66=0xE & idx9_66 [ loc = 0x0100E000 + idx9_66*2; ] { export *:2 loc; }
+Var67: (loc) is var4_67=0xE & idx9_67 [ loc = 0x0100E000 + idx9_67*2; ] { export *:2 loc; }
+Var68: (loc) is var4_68=0xE & idx9_68 [ loc = 0x0100E000 + idx9_68*2; ] { export *:2 loc; }
+Var69: (loc) is var4_69=0xE & idx9_69 [ loc = 0x0100E000 + idx9_69*2; ] { export *:2 loc; }
+Var70: (loc) is var4_70=0xE & idx9_70 [ loc = 0x0100E000 + idx9_70*2; ] { export *:2 loc; }
+Var71: (loc) is var4_71=0xE & idx9_71 [ loc = 0x0100E000 + idx9_71*2; ] { export *:2 loc; }
+Var72: (loc) is var4_72=0xE & idx9_72 [ loc = 0x0100E000 + idx9_72*2; ] { export *:2 loc; }
+Var73: (loc) is var4_73=0xE & idx9_73 [ loc = 0x0100E000 + idx9_73*2; ] { export *:2 loc; }
+Var74: (loc) is var4_74=0xE & idx9_74 [ loc = 0x0100E000 + idx9_74*2; ] { export *:2 loc; }
+Var75: (loc) is var4_75=0xE & idx9_75 [ loc = 0x0100E000 + idx9_75*2; ] { export *:2 loc; }
+Var76: (loc) is var4_76=0xE & idx9_76 [ loc = 0x0100E000 + idx9_76*2; ] { export *:2 loc; }
+Var77: (loc) is var4_77=0xE & idx9_77 [ loc = 0x0100E000 + idx9_77*2; ] { export *:2 loc; }
+Var78: (loc) is var4_78=0xE & idx9_78 [ loc = 0x0100E000 + idx9_78*2; ] { export *:2 loc; }
+Var79: (loc) is var4_79=0xE & idx9_79 [ loc = 0x0100E000 + idx9_79*2; ] { export *:2 loc; }
+Var80: (loc) is var4_80=0xE & idx9_80 [ loc = 0x0100E000 + idx9_80*2; ] { export *:2 loc; }
+Var81: (loc) is var4_81=0xE & idx9_81 [ loc = 0x0100E000 + idx9_81*2; ] { export *:2 loc; }
+Var82: (loc) is var4_82=0xE & idx9_82 [ loc = 0x0100E000 + idx9_82*2; ] { export *:2 loc; }
+Var83: (loc) is var4_83=0xE & idx9_83 [ loc = 0x0100E000 + idx9_83*2; ] { export *:2 loc; }
+Var84: (loc) is var4_84=0xE & idx9_84 [ loc = 0x0100E000 + idx9_84*2; ] { export *:2 loc; }
+Var1: (loc) is var4_1=0xF & idx9_1 [ loc = 0x0100F000 + idx9_1*2; ] { export *:2 loc; }
+Var2: (loc) is var4_2=0xF & idx9_2 [ loc = 0x0100F000 + idx9_2*2; ] { export *:2 loc; }
+Var3: (loc) is var4_3=0xF & idx9_3 [ loc = 0x0100F000 + idx9_3*2; ] { export *:2 loc; }
+Var4: (loc) is var4_4=0xF & idx9_4 [ loc = 0x0100F000 + idx9_4*2; ] { export *:2 loc; }
+Var5: (loc) is var4_5=0xF & idx9_5 [ loc = 0x0100F000 + idx9_5*2; ] { export *:2 loc; }
+Var6: (loc) is var4_6=0xF & idx9_6 [ loc = 0x0100F000 + idx9_6*2; ] { export *:2 loc; }
+Var7: (loc) is var4_7=0xF & idx9_7 [ loc = 0x0100F000 + idx9_7*2; ] { export *:2 loc; }
+Var8: (loc) is var4_8=0xF & idx9_8 [ loc = 0x0100F000 + idx9_8*2; ] { export *:2 loc; }
+Var9: (loc) is var4_9=0xF & idx9_9 [ loc = 0x0100F000 + idx9_9*2; ] { export *:2 loc; }
+Var10: (loc) is var4_10=0xF & idx9_10 [ loc = 0x0100F000 + idx9_10*2; ] { export *:2 loc; }
+Var11: (loc) is var4_11=0xF & idx9_11 [ loc = 0x0100F000 + idx9_11*2; ] { export *:2 loc; }
+Var12: (loc) is var4_12=0xF & idx9_12 [ loc = 0x0100F000 + idx9_12*2; ] { export *:2 loc; }
+Var13: (loc) is var4_13=0xF & idx9_13 [ loc = 0x0100F000 + idx9_13*2; ] { export *:2 loc; }
+Var14: (loc) is var4_14=0xF & idx9_14 [ loc = 0x0100F000 + idx9_14*2; ] { export *:2 loc; }
+Var15: (loc) is var4_15=0xF & idx9_15 [ loc = 0x0100F000 + idx9_15*2; ] { export *:2 loc; }
+Var16: (loc) is var4_16=0xF & idx9_16 [ loc = 0x0100F000 + idx9_16*2; ] { export *:2 loc; }
+Var17: (loc) is var4_17=0xF & idx9_17 [ loc = 0x0100F000 + idx9_17*2; ] { export *:2 loc; }
+Var18: (loc) is var4_18=0xF & idx9_18 [ loc = 0x0100F000 + idx9_18*2; ] { export *:2 loc; }
+Var19: (loc) is var4_19=0xF & idx9_19 [ loc = 0x0100F000 + idx9_19*2; ] { export *:2 loc; }
+Var20: (loc) is var4_20=0xF & idx9_20 [ loc = 0x0100F000 + idx9_20*2; ] { export *:2 loc; }
+Var21: (loc) is var4_21=0xF & idx9_21 [ loc = 0x0100F000 + idx9_21*2; ] { export *:2 loc; }
+Var22: (loc) is var4_22=0xF & idx9_22 [ loc = 0x0100F000 + idx9_22*2; ] { export *:2 loc; }
+Var23: (loc) is var4_23=0xF & idx9_23 [ loc = 0x0100F000 + idx9_23*2; ] { export *:2 loc; }
+Var24: (loc) is var4_24=0xF & idx9_24 [ loc = 0x0100F000 + idx9_24*2; ] { export *:2 loc; }
+Var25: (loc) is var4_25=0xF & idx9_25 [ loc = 0x0100F000 + idx9_25*2; ] { export *:2 loc; }
+Var26: (loc) is var4_26=0xF & idx9_26 [ loc = 0x0100F000 + idx9_26*2; ] { export *:2 loc; }
+Var27: (loc) is var4_27=0xF & idx9_27 [ loc = 0x0100F000 + idx9_27*2; ] { export *:2 loc; }
+Var28: (loc) is var4_28=0xF & idx9_28 [ loc = 0x0100F000 + idx9_28*2; ] { export *:2 loc; }
+Var29: (loc) is var4_29=0xF & idx9_29 [ loc = 0x0100F000 + idx9_29*2; ] { export *:2 loc; }
+Var30: (loc) is var4_30=0xF & idx9_30 [ loc = 0x0100F000 + idx9_30*2; ] { export *:2 loc; }
+Var31: (loc) is var4_31=0xF & idx9_31 [ loc = 0x0100F000 + idx9_31*2; ] { export *:2 loc; }
+Var32: (loc) is var4_32=0xF & idx9_32 [ loc = 0x0100F000 + idx9_32*2; ] { export *:2 loc; }
+Var33: (loc) is var4_33=0xF & idx9_33 [ loc = 0x0100F000 + idx9_33*2; ] { export *:2 loc; }
+Var34: (loc) is var4_34=0xF & idx9_34 [ loc = 0x0100F000 + idx9_34*2; ] { export *:2 loc; }
+Var35: (loc) is var4_35=0xF & idx9_35 [ loc = 0x0100F000 + idx9_35*2; ] { export *:2 loc; }
+Var36: (loc) is var4_36=0xF & idx9_36 [ loc = 0x0100F000 + idx9_36*2; ] { export *:2 loc; }
+Var37: (loc) is var4_37=0xF & idx9_37 [ loc = 0x0100F000 + idx9_37*2; ] { export *:2 loc; }
+Var38: (loc) is var4_38=0xF & idx9_38 [ loc = 0x0100F000 + idx9_38*2; ] { export *:2 loc; }
+Var39: (loc) is var4_39=0xF & idx9_39 [ loc = 0x0100F000 + idx9_39*2; ] { export *:2 loc; }
+Var40: (loc) is var4_40=0xF & idx9_40 [ loc = 0x0100F000 + idx9_40*2; ] { export *:2 loc; }
+Var41: (loc) is var4_41=0xF & idx9_41 [ loc = 0x0100F000 + idx9_41*2; ] { export *:2 loc; }
+Var42: (loc) is var4_42=0xF & idx9_42 [ loc = 0x0100F000 + idx9_42*2; ] { export *:2 loc; }
+Var43: (loc) is var4_43=0xF & idx9_43 [ loc = 0x0100F000 + idx9_43*2; ] { export *:2 loc; }
+Var44: (loc) is var4_44=0xF & idx9_44 [ loc = 0x0100F000 + idx9_44*2; ] { export *:2 loc; }
+Var45: (loc) is var4_45=0xF & idx9_45 [ loc = 0x0100F000 + idx9_45*2; ] { export *:2 loc; }
+Var46: (loc) is var4_46=0xF & idx9_46 [ loc = 0x0100F000 + idx9_46*2; ] { export *:2 loc; }
+Var47: (loc) is var4_47=0xF & idx9_47 [ loc = 0x0100F000 + idx9_47*2; ] { export *:2 loc; }
+Var48: (loc) is var4_48=0xF & idx9_48 [ loc = 0x0100F000 + idx9_48*2; ] { export *:2 loc; }
+Var49: (loc) is var4_49=0xF & idx9_49 [ loc = 0x0100F000 + idx9_49*2; ] { export *:2 loc; }
+Var50: (loc) is var4_50=0xF & idx9_50 [ loc = 0x0100F000 + idx9_50*2; ] { export *:2 loc; }
+Var51: (loc) is var4_51=0xF & idx9_51 [ loc = 0x0100F000 + idx9_51*2; ] { export *:2 loc; }
+Var52: (loc) is var4_52=0xF & idx9_52 [ loc = 0x0100F000 + idx9_52*2; ] { export *:2 loc; }
+Var53: (loc) is var4_53=0xF & idx9_53 [ loc = 0x0100F000 + idx9_53*2; ] { export *:2 loc; }
+Var54: (loc) is var4_54=0xF & idx9_54 [ loc = 0x0100F000 + idx9_54*2; ] { export *:2 loc; }
+Var55: (loc) is var4_55=0xF & idx9_55 [ loc = 0x0100F000 + idx9_55*2; ] { export *:2 loc; }
+Var56: (loc) is var4_56=0xF & idx9_56 [ loc = 0x0100F000 + idx9_56*2; ] { export *:2 loc; }
+Var57: (loc) is var4_57=0xF & idx9_57 [ loc = 0x0100F000 + idx9_57*2; ] { export *:2 loc; }
+Var58: (loc) is var4_58=0xF & idx9_58 [ loc = 0x0100F000 + idx9_58*2; ] { export *:2 loc; }
+Var59: (loc) is var4_59=0xF & idx9_59 [ loc = 0x0100F000 + idx9_59*2; ] { export *:2 loc; }
+Var60: (loc) is var4_60=0xF & idx9_60 [ loc = 0x0100F000 + idx9_60*2; ] { export *:2 loc; }
+Var61: (loc) is var4_61=0xF & idx9_61 [ loc = 0x0100F000 + idx9_61*2; ] { export *:2 loc; }
+Var62: (loc) is var4_62=0xF & idx9_62 [ loc = 0x0100F000 + idx9_62*2; ] { export *:2 loc; }
+Var63: (loc) is var4_63=0xF & idx9_63 [ loc = 0x0100F000 + idx9_63*2; ] { export *:2 loc; }
+Var64: (loc) is var4_64=0xF & idx9_64 [ loc = 0x0100F000 + idx9_64*2; ] { export *:2 loc; }
+Var65: (loc) is var4_65=0xF & idx9_65 [ loc = 0x0100F000 + idx9_65*2; ] { export *:2 loc; }
+Var66: (loc) is var4_66=0xF & idx9_66 [ loc = 0x0100F000 + idx9_66*2; ] { export *:2 loc; }
+Var67: (loc) is var4_67=0xF & idx9_67 [ loc = 0x0100F000 + idx9_67*2; ] { export *:2 loc; }
+Var68: (loc) is var4_68=0xF & idx9_68 [ loc = 0x0100F000 + idx9_68*2; ] { export *:2 loc; }
+Var69: (loc) is var4_69=0xF & idx9_69 [ loc = 0x0100F000 + idx9_69*2; ] { export *:2 loc; }
+Var70: (loc) is var4_70=0xF & idx9_70 [ loc = 0x0100F000 + idx9_70*2; ] { export *:2 loc; }
+Var71: (loc) is var4_71=0xF & idx9_71 [ loc = 0x0100F000 + idx9_71*2; ] { export *:2 loc; }
+Var72: (loc) is var4_72=0xF & idx9_72 [ loc = 0x0100F000 + idx9_72*2; ] { export *:2 loc; }
+Var73: (loc) is var4_73=0xF & idx9_73 [ loc = 0x0100F000 + idx9_73*2; ] { export *:2 loc; }
+Var74: (loc) is var4_74=0xF & idx9_74 [ loc = 0x0100F000 + idx9_74*2; ] { export *:2 loc; }
+Var75: (loc) is var4_75=0xF & idx9_75 [ loc = 0x0100F000 + idx9_75*2; ] { export *:2 loc; }
+Var76: (loc) is var4_76=0xF & idx9_76 [ loc = 0x0100F000 + idx9_76*2; ] { export *:2 loc; }
+Var77: (loc) is var4_77=0xF & idx9_77 [ loc = 0x0100F000 + idx9_77*2; ] { export *:2 loc; }
+Var78: (loc) is var4_78=0xF & idx9_78 [ loc = 0x0100F000 + idx9_78*2; ] { export *:2 loc; }
+Var79: (loc) is var4_79=0xF & idx9_79 [ loc = 0x0100F000 + idx9_79*2; ] { export *:2 loc; }
+Var80: (loc) is var4_80=0xF & idx9_80 [ loc = 0x0100F000 + idx9_80*2; ] { export *:2 loc; }
+Var81: (loc) is var4_81=0xF & idx9_81 [ loc = 0x0100F000 + idx9_81*2; ] { export *:2 loc; }
+Var82: (loc) is var4_82=0xF & idx9_82 [ loc = 0x0100F000 + idx9_82*2; ] { export *:2 loc; }
+Var83: (loc) is var4_83=0xF & idx9_83 [ loc = 0x0100F000 + idx9_83*2; ] { export *:2 loc; }
+Var84: (loc) is var4_84=0xF & idx9_84 [ loc = 0x0100F000 + idx9_84*2; ] { export *:2 loc; }
+Var1: (loc) is var4_1=0x0 & idx9_1 [ loc = 0x0100D000 + idx9_1*2; ] { export *:2 loc; }
+Var2: (loc) is var4_2=0x0 & idx9_2 [ loc = 0x0100D000 + idx9_2*2; ] { export *:2 loc; }
+Var3: (loc) is var4_3=0x0 & idx9_3 [ loc = 0x0100D000 + idx9_3*2; ] { export *:2 loc; }
+Var4: (loc) is var4_4=0x0 & idx9_4 [ loc = 0x0100D000 + idx9_4*2; ] { export *:2 loc; }
+Var5: (loc) is var4_5=0x0 & idx9_5 [ loc = 0x0100D000 + idx9_5*2; ] { export *:2 loc; }
+Var6: (loc) is var4_6=0x0 & idx9_6 [ loc = 0x0100D000 + idx9_6*2; ] { export *:2 loc; }
+Var7: (loc) is var4_7=0x0 & idx9_7 [ loc = 0x0100D000 + idx9_7*2; ] { export *:2 loc; }
+Var8: (loc) is var4_8=0x0 & idx9_8 [ loc = 0x0100D000 + idx9_8*2; ] { export *:2 loc; }
+Var9: (loc) is var4_9=0x0 & idx9_9 [ loc = 0x0100D000 + idx9_9*2; ] { export *:2 loc; }
+Var10: (loc) is var4_10=0x0 & idx9_10 [ loc = 0x0100D000 + idx9_10*2; ] { export *:2 loc; }
+Var11: (loc) is var4_11=0x0 & idx9_11 [ loc = 0x0100D000 + idx9_11*2; ] { export *:2 loc; }
+Var12: (loc) is var4_12=0x0 & idx9_12 [ loc = 0x0100D000 + idx9_12*2; ] { export *:2 loc; }
+Var13: (loc) is var4_13=0x0 & idx9_13 [ loc = 0x0100D000 + idx9_13*2; ] { export *:2 loc; }
+Var14: (loc) is var4_14=0x0 & idx9_14 [ loc = 0x0100D000 + idx9_14*2; ] { export *:2 loc; }
+Var15: (loc) is var4_15=0x0 & idx9_15 [ loc = 0x0100D000 + idx9_15*2; ] { export *:2 loc; }
+Var16: (loc) is var4_16=0x0 & idx9_16 [ loc = 0x0100D000 + idx9_16*2; ] { export *:2 loc; }
+Var17: (loc) is var4_17=0x0 & idx9_17 [ loc = 0x0100D000 + idx9_17*2; ] { export *:2 loc; }
+Var18: (loc) is var4_18=0x0 & idx9_18 [ loc = 0x0100D000 + idx9_18*2; ] { export *:2 loc; }
+Var19: (loc) is var4_19=0x0 & idx9_19 [ loc = 0x0100D000 + idx9_19*2; ] { export *:2 loc; }
+Var20: (loc) is var4_20=0x0 & idx9_20 [ loc = 0x0100D000 + idx9_20*2; ] { export *:2 loc; }
+Var21: (loc) is var4_21=0x0 & idx9_21 [ loc = 0x0100D000 + idx9_21*2; ] { export *:2 loc; }
+Var22: (loc) is var4_22=0x0 & idx9_22 [ loc = 0x0100D000 + idx9_22*2; ] { export *:2 loc; }
+Var23: (loc) is var4_23=0x0 & idx9_23 [ loc = 0x0100D000 + idx9_23*2; ] { export *:2 loc; }
+Var24: (loc) is var4_24=0x0 & idx9_24 [ loc = 0x0100D000 + idx9_24*2; ] { export *:2 loc; }
+Var25: (loc) is var4_25=0x0 & idx9_25 [ loc = 0x0100D000 + idx9_25*2; ] { export *:2 loc; }
+Var26: (loc) is var4_26=0x0 & idx9_26 [ loc = 0x0100D000 + idx9_26*2; ] { export *:2 loc; }
+Var27: (loc) is var4_27=0x0 & idx9_27 [ loc = 0x0100D000 + idx9_27*2; ] { export *:2 loc; }
+Var28: (loc) is var4_28=0x0 & idx9_28 [ loc = 0x0100D000 + idx9_28*2; ] { export *:2 loc; }
+Var29: (loc) is var4_29=0x0 & idx9_29 [ loc = 0x0100D000 + idx9_29*2; ] { export *:2 loc; }
+Var30: (loc) is var4_30=0x0 & idx9_30 [ loc = 0x0100D000 + idx9_30*2; ] { export *:2 loc; }
+Var31: (loc) is var4_31=0x0 & idx9_31 [ loc = 0x0100D000 + idx9_31*2; ] { export *:2 loc; }
+Var32: (loc) is var4_32=0x0 & idx9_32 [ loc = 0x0100D000 + idx9_32*2; ] { export *:2 loc; }
+Var33: (loc) is var4_33=0x0 & idx9_33 [ loc = 0x0100D000 + idx9_33*2; ] { export *:2 loc; }
+Var34: (loc) is var4_34=0x0 & idx9_34 [ loc = 0x0100D000 + idx9_34*2; ] { export *:2 loc; }
+Var35: (loc) is var4_35=0x0 & idx9_35 [ loc = 0x0100D000 + idx9_35*2; ] { export *:2 loc; }
+Var36: (loc) is var4_36=0x0 & idx9_36 [ loc = 0x0100D000 + idx9_36*2; ] { export *:2 loc; }
+Var37: (loc) is var4_37=0x0 & idx9_37 [ loc = 0x0100D000 + idx9_37*2; ] { export *:2 loc; }
+Var38: (loc) is var4_38=0x0 & idx9_38 [ loc = 0x0100D000 + idx9_38*2; ] { export *:2 loc; }
+Var39: (loc) is var4_39=0x0 & idx9_39 [ loc = 0x0100D000 + idx9_39*2; ] { export *:2 loc; }
+Var40: (loc) is var4_40=0x0 & idx9_40 [ loc = 0x0100D000 + idx9_40*2; ] { export *:2 loc; }
+Var41: (loc) is var4_41=0x0 & idx9_41 [ loc = 0x0100D000 + idx9_41*2; ] { export *:2 loc; }
+Var42: (loc) is var4_42=0x0 & idx9_42 [ loc = 0x0100D000 + idx9_42*2; ] { export *:2 loc; }
+Var43: (loc) is var4_43=0x0 & idx9_43 [ loc = 0x0100D000 + idx9_43*2; ] { export *:2 loc; }
+Var44: (loc) is var4_44=0x0 & idx9_44 [ loc = 0x0100D000 + idx9_44*2; ] { export *:2 loc; }
+Var45: (loc) is var4_45=0x0 & idx9_45 [ loc = 0x0100D000 + idx9_45*2; ] { export *:2 loc; }
+Var46: (loc) is var4_46=0x0 & idx9_46 [ loc = 0x0100D000 + idx9_46*2; ] { export *:2 loc; }
+Var47: (loc) is var4_47=0x0 & idx9_47 [ loc = 0x0100D000 + idx9_47*2; ] { export *:2 loc; }
+Var48: (loc) is var4_48=0x0 & idx9_48 [ loc = 0x0100D000 + idx9_48*2; ] { export *:2 loc; }
+Var49: (loc) is var4_49=0x0 & idx9_49 [ loc = 0x0100D000 + idx9_49*2; ] { export *:2 loc; }
+Var50: (loc) is var4_50=0x0 & idx9_50 [ loc = 0x0100D000 + idx9_50*2; ] { export *:2 loc; }
+Var51: (loc) is var4_51=0x0 & idx9_51 [ loc = 0x0100D000 + idx9_51*2; ] { export *:2 loc; }
+Var52: (loc) is var4_52=0x0 & idx9_52 [ loc = 0x0100D000 + idx9_52*2; ] { export *:2 loc; }
+Var53: (loc) is var4_53=0x0 & idx9_53 [ loc = 0x0100D000 + idx9_53*2; ] { export *:2 loc; }
+Var54: (loc) is var4_54=0x0 & idx9_54 [ loc = 0x0100D000 + idx9_54*2; ] { export *:2 loc; }
+Var55: (loc) is var4_55=0x0 & idx9_55 [ loc = 0x0100D000 + idx9_55*2; ] { export *:2 loc; }
+Var56: (loc) is var4_56=0x0 & idx9_56 [ loc = 0x0100D000 + idx9_56*2; ] { export *:2 loc; }
+Var57: (loc) is var4_57=0x0 & idx9_57 [ loc = 0x0100D000 + idx9_57*2; ] { export *:2 loc; }
+Var58: (loc) is var4_58=0x0 & idx9_58 [ loc = 0x0100D000 + idx9_58*2; ] { export *:2 loc; }
+Var59: (loc) is var4_59=0x0 & idx9_59 [ loc = 0x0100D000 + idx9_59*2; ] { export *:2 loc; }
+Var60: (loc) is var4_60=0x0 & idx9_60 [ loc = 0x0100D000 + idx9_60*2; ] { export *:2 loc; }
+Var61: (loc) is var4_61=0x0 & idx9_61 [ loc = 0x0100D000 + idx9_61*2; ] { export *:2 loc; }
+Var62: (loc) is var4_62=0x0 & idx9_62 [ loc = 0x0100D000 + idx9_62*2; ] { export *:2 loc; }
+Var63: (loc) is var4_63=0x0 & idx9_63 [ loc = 0x0100D000 + idx9_63*2; ] { export *:2 loc; }
+Var64: (loc) is var4_64=0x0 & idx9_64 [ loc = 0x0100D000 + idx9_64*2; ] { export *:2 loc; }
+Var65: (loc) is var4_65=0x0 & idx9_65 [ loc = 0x0100D000 + idx9_65*2; ] { export *:2 loc; }
+Var66: (loc) is var4_66=0x0 & idx9_66 [ loc = 0x0100D000 + idx9_66*2; ] { export *:2 loc; }
+Var67: (loc) is var4_67=0x0 & idx9_67 [ loc = 0x0100D000 + idx9_67*2; ] { export *:2 loc; }
+Var68: (loc) is var4_68=0x0 & idx9_68 [ loc = 0x0100D000 + idx9_68*2; ] { export *:2 loc; }
+Var69: (loc) is var4_69=0x0 & idx9_69 [ loc = 0x0100D000 + idx9_69*2; ] { export *:2 loc; }
+Var70: (loc) is var4_70=0x0 & idx9_70 [ loc = 0x0100D000 + idx9_70*2; ] { export *:2 loc; }
+Var71: (loc) is var4_71=0x0 & idx9_71 [ loc = 0x0100D000 + idx9_71*2; ] { export *:2 loc; }
+Var72: (loc) is var4_72=0x0 & idx9_72 [ loc = 0x0100D000 + idx9_72*2; ] { export *:2 loc; }
+Var73: (loc) is var4_73=0x0 & idx9_73 [ loc = 0x0100D000 + idx9_73*2; ] { export *:2 loc; }
+Var74: (loc) is var4_74=0x0 & idx9_74 [ loc = 0x0100D000 + idx9_74*2; ] { export *:2 loc; }
+Var75: (loc) is var4_75=0x0 & idx9_75 [ loc = 0x0100D000 + idx9_75*2; ] { export *:2 loc; }
+Var76: (loc) is var4_76=0x0 & idx9_76 [ loc = 0x0100D000 + idx9_76*2; ] { export *:2 loc; }
+Var77: (loc) is var4_77=0x0 & idx9_77 [ loc = 0x0100D000 + idx9_77*2; ] { export *:2 loc; }
+Var78: (loc) is var4_78=0x0 & idx9_78 [ loc = 0x0100D000 + idx9_78*2; ] { export *:2 loc; }
+Var79: (loc) is var4_79=0x0 & idx9_79 [ loc = 0x0100D000 + idx9_79*2; ] { export *:2 loc; }
+Var80: (loc) is var4_80=0x0 & idx9_80 [ loc = 0x0100D000 + idx9_80*2; ] { export *:2 loc; }
+Var81: (loc) is var4_81=0x0 & idx9_81 [ loc = 0x0100D000 + idx9_81*2; ] { export *:2 loc; }
+Var82: (loc) is var4_82=0x0 & idx9_82 [ loc = 0x0100D000 + idx9_82*2; ] { export *:2 loc; }
+Var83: (loc) is var4_83=0x0 & idx9_83 [ loc = 0x0100D000 + idx9_83*2; ] { export *:2 loc; }
+Var84: (loc) is var4_84=0x0 & idx9_84 [ loc = 0x0100D000 + idx9_84*2; ] { export *:2 loc; }
+
+VarOrVal1: Var1 is Var1 { export Var1; }
+VarOrVal2: Var2 is Var2 { export Var2; }
+VarOrVal3: Var3 is Var3 { export Var3; }
+VarOrVal4: Var4 is Var4 { export Var4; }
+VarOrVal5: Var5 is Var5 { export Var5; }
+VarOrVal6: Var6 is Var6 { export Var6; }
+VarOrVal7: Var7 is Var7 { export Var7; }
+VarOrVal8: Var8 is Var8 { export Var8; }
+VarOrVal9: Var9 is Var9 { export Var9; }
+VarOrVal10: Var10 is Var10 { export Var10; }
+VarOrVal11: Var11 is Var11 { export Var11; }
+VarOrVal12: Var12 is Var12 { export Var12; }
+VarOrVal13: Var13 is Var13 { export Var13; }
+VarOrVal14: Var14 is Var14 { export Var14; }
+VarOrVal15: Var15 is Var15 { export Var15; }
+VarOrVal16: Var16 is Var16 { export Var16; }
+VarOrVal17: Var17 is Var17 { export Var17; }
+VarOrVal18: Var18 is Var18 { export Var18; }
+VarOrVal19: Var19 is Var19 { export Var19; }
+VarOrVal20: Var20 is Var20 { export Var20; }
+VarOrVal21: Var21 is Var21 { export Var21; }
+VarOrVal22: Var22 is Var22 { export Var22; }
+VarOrVal23: Var23 is Var23 { export Var23; }
+VarOrVal24: Var24 is Var24 { export Var24; }
+VarOrVal25: Var25 is Var25 { export Var25; }
+VarOrVal26: Var26 is Var26 { export Var26; }
+VarOrVal27: Var27 is Var27 { export Var27; }
+VarOrVal28: Var28 is Var28 { export Var28; }
+VarOrVal29: Var29 is Var29 { export Var29; }
+VarOrVal30: Var30 is Var30 { export Var30; }
+VarOrVal31: Var31 is Var31 { export Var31; }
+VarOrVal32: Var32 is Var32 { export Var32; }
+VarOrVal33: Var33 is Var33 { export Var33; }
+VarOrVal34: Var34 is Var34 { export Var34; }
+VarOrVal35: Var35 is Var35 { export Var35; }
+VarOrVal36: Var36 is Var36 { export Var36; }
+VarOrVal37: Var37 is Var37 { export Var37; }
+VarOrVal38: Var38 is Var38 { export Var38; }
+VarOrVal39: Var39 is Var39 { export Var39; }
+VarOrVal40: Var40 is Var40 { export Var40; }
+VarOrVal41: Var41 is Var41 { export Var41; }
+VarOrVal42: Var42 is Var42 { export Var42; }
+VarOrVal43: Var43 is Var43 { export Var43; }
+VarOrVal44: Var44 is Var44 { export Var44; }
+VarOrVal45: Var45 is Var45 { export Var45; }
+VarOrVal46: Var46 is Var46 { export Var46; }
+VarOrVal47: Var47 is Var47 { export Var47; }
+VarOrVal48: Var48 is Var48 { export Var48; }
+VarOrVal49: Var49 is Var49 { export Var49; }
+VarOrVal50: Var50 is Var50 { export Var50; }
+VarOrVal51: Var51 is Var51 { export Var51; }
+VarOrVal52: Var52 is Var52 { export Var52; }
+VarOrVal53: Var53 is Var53 { export Var53; }
+VarOrVal54: Var54 is Var54 { export Var54; }
+VarOrVal55: Var55 is Var55 { export Var55; }
+VarOrVal56: Var56 is Var56 { export Var56; }
+VarOrVal57: Var57 is Var57 { export Var57; }
+VarOrVal58: Var58 is Var58 { export Var58; }
+VarOrVal59: Var59 is Var59 { export Var59; }
+VarOrVal60: Var60 is Var60 { export Var60; }
+VarOrVal61: Var61 is Var61 { export Var61; }
+VarOrVal62: Var62 is Var62 { export Var62; }
+VarOrVal63: Var63 is Var63 { export Var63; }
+VarOrVal64: Var64 is Var64 { export Var64; }
+VarOrVal65: Var65 is Var65 { export Var65; }
+VarOrVal66: Var66 is Var66 { export Var66; }
+VarOrVal67: Var67 is Var67 { export Var67; }
+VarOrVal68: Var68 is Var68 { export Var68; }
+VarOrVal69: Var69 is Var69 { export Var69; }
+VarOrVal70: Var70 is Var70 { export Var70; }
+VarOrVal71: Var71 is Var71 { export Var71; }
+VarOrVal72: Var72 is Var72 { export Var72; }
+VarOrVal73: Var73 is Var73 { export Var73; }
+VarOrVal74: Var74 is Var74 { export Var74; }
+VarOrVal75: Var75 is Var75 { export Var75; }
+VarOrVal76: Var76 is Var76 { export Var76; }
+VarOrVal77: Var77 is Var77 { export Var77; }
+VarOrVal78: Var78 is Var78 { export Var78; }
+VarOrVal79: Var79 is Var79 { export Var79; }
+VarOrVal80: Var80 is Var80 { export Var80; }
+VarOrVal81: Var81 is Var81 { export Var81; }
+VarOrVal82: Var82 is Var82 { export Var82; }
+VarOrVal83: Var83 is Var83 { export Var83; }
+VarOrVal84: Var84 is Var84 { export Var84; }
+VarOrVal1: imm16_1 is var4_1=0x0 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x0 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x0 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x0 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x0 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x0 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x0 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x0 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x0 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x0 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x0 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x0 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x0 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x0 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x0 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x0 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x0 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x0 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x0 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x0 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x0 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x0 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x0 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x0 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x0 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x0 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x0 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x0 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x0 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x0 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x0 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x0 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x0 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x0 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x0 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x0 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x0 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x0 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x0 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x0 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x0 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x0 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x0 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x0 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x0 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x0 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x0 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x0 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x0 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x0 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x0 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x0 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x0 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x0 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x0 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x0 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x0 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x0 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x0 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x0 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x0 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x0 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x0 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x0 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x0 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x0 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x0 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x0 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x0 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x0 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x0 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x0 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x0 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x0 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x0 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x0 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x0 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x0 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x0 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x0 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x0 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x0 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x0 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x0 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x1 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x1 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x1 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x1 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x1 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x1 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x1 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x1 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x1 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x1 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x1 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x1 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x1 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x1 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x1 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x1 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x1 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x1 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x1 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x1 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x1 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x1 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x1 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x1 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x1 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x1 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x1 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x1 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x1 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x1 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x1 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x1 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x1 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x1 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x1 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x1 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x1 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x1 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x1 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x1 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x1 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x1 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x1 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x1 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x1 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x1 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x1 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x1 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x1 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x1 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x1 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x1 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x1 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x1 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x1 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x1 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x1 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x1 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x1 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x1 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x1 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x1 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x1 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x1 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x1 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x1 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x1 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x1 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x1 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x1 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x1 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x1 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x1 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x1 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x1 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x1 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x1 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x1 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x1 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x1 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x1 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x1 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x1 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x1 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x2 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x2 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x2 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x2 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x2 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x2 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x2 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x2 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x2 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x2 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x2 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x2 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x2 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x2 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x2 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x2 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x2 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x2 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x2 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x2 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x2 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x2 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x2 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x2 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x2 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x2 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x2 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x2 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x2 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x2 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x2 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x2 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x2 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x2 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x2 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x2 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x2 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x2 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x2 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x2 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x2 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x2 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x2 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x2 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x2 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x2 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x2 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x2 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x2 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x2 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x2 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x2 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x2 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x2 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x2 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x2 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x2 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x2 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x2 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x2 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x2 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x2 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x2 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x2 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x2 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x2 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x2 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x2 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x2 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x2 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x2 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x2 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x2 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x2 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x2 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x2 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x2 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x2 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x2 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x2 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x2 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x2 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x2 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x2 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x3 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x3 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x3 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x3 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x3 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x3 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x3 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x3 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x3 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x3 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x3 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x3 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x3 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x3 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x3 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x3 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x3 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x3 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x3 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x3 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x3 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x3 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x3 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x3 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x3 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x3 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x3 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x3 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x3 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x3 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x3 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x3 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x3 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x3 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x3 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x3 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x3 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x3 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x3 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x3 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x3 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x3 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x3 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x3 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x3 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x3 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x3 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x3 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x3 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x3 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x3 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x3 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x3 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x3 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x3 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x3 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x3 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x3 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x3 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x3 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x3 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x3 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x3 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x3 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x3 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x3 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x3 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x3 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x3 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x3 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x3 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x3 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x3 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x3 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x3 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x3 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x3 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x3 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x3 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x3 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x3 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x3 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x3 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x3 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x4 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x4 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x4 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x4 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x4 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x4 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x4 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x4 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x4 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x4 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x4 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x4 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x4 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x4 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x4 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x4 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x4 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x4 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x4 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x4 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x4 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x4 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x4 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x4 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x4 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x4 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x4 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x4 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x4 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x4 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x4 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x4 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x4 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x4 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x4 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x4 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x4 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x4 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x4 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x4 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x4 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x4 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x4 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x4 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x4 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x4 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x4 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x4 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x4 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x4 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x4 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x4 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x4 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x4 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x4 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x4 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x4 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x4 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x4 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x4 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x4 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x4 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x4 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x4 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x4 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x4 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x4 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x4 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x4 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x4 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x4 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x4 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x4 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x4 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x4 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x4 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x4 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x4 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x4 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x4 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x4 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x4 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x4 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x4 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x5 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x5 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x5 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x5 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x5 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x5 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x5 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x5 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x5 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x5 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x5 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x5 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x5 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x5 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x5 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x5 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x5 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x5 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x5 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x5 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x5 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x5 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x5 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x5 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x5 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x5 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x5 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x5 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x5 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x5 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x5 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x5 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x5 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x5 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x5 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x5 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x5 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x5 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x5 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x5 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x5 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x5 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x5 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x5 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x5 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x5 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x5 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x5 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x5 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x5 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x5 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x5 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x5 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x5 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x5 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x5 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x5 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x5 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x5 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x5 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x5 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x5 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x5 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x5 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x5 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x5 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x5 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x5 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x5 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x5 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x5 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x5 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x5 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x5 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x5 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x5 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x5 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x5 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x5 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x5 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x5 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x5 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x5 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x5 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x6 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x6 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x6 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x6 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x6 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x6 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x6 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x6 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x6 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x6 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x6 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x6 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x6 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x6 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x6 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x6 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x6 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x6 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x6 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x6 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x6 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x6 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x6 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x6 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x6 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x6 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x6 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x6 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x6 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x6 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x6 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x6 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x6 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x6 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x6 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x6 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x6 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x6 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x6 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x6 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x6 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x6 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x6 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x6 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x6 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x6 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x6 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x6 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x6 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x6 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x6 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x6 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x6 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x6 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x6 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x6 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x6 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x6 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x6 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x6 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x6 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x6 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x6 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x6 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x6 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x6 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x6 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x6 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x6 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x6 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x6 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x6 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x6 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x6 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x6 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x6 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x6 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x6 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x6 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x6 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x6 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x6 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x6 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x6 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x7 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x7 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x7 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x7 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x7 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x7 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x7 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x7 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x7 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x7 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x7 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x7 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x7 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x7 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x7 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x7 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x7 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x7 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x7 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x7 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x7 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x7 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x7 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x7 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x7 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x7 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x7 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x7 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x7 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x7 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x7 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x7 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x7 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x7 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x7 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x7 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x7 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x7 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x7 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x7 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x7 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x7 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x7 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x7 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x7 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x7 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x7 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x7 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x7 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x7 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x7 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x7 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x7 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x7 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x7 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x7 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x7 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x7 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x7 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x7 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x7 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x7 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x7 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x7 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x7 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x7 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x7 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x7 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x7 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x7 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x7 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x7 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x7 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x7 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x7 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x7 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x7 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x7 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x7 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x7 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x7 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x7 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x7 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x7 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x8 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x8 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x8 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x8 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x8 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x8 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x8 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x8 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x8 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x8 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x8 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x8 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x8 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x8 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x8 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x8 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x8 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x8 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x8 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x8 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x8 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x8 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x8 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x8 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x8 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x8 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x8 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x8 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x8 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x8 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x8 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x8 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x8 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x8 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x8 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x8 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x8 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x8 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x8 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x8 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x8 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x8 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x8 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x8 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x8 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x8 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x8 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x8 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x8 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x8 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x8 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x8 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x8 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x8 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x8 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x8 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x8 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x8 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x8 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x8 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x8 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x8 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x8 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x8 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x8 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x8 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x8 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x8 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x8 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x8 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x8 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x8 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x8 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x8 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x8 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x8 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x8 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x8 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x8 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x8 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x8 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x8 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x8 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x8 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0x9 & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0x9 & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0x9 & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0x9 & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0x9 & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0x9 & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0x9 & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0x9 & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0x9 & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0x9 & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0x9 & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0x9 & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0x9 & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0x9 & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0x9 & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0x9 & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0x9 & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0x9 & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0x9 & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0x9 & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0x9 & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0x9 & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0x9 & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0x9 & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0x9 & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0x9 & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0x9 & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0x9 & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0x9 & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0x9 & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0x9 & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0x9 & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0x9 & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0x9 & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0x9 & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0x9 & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0x9 & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0x9 & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0x9 & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0x9 & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0x9 & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0x9 & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0x9 & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0x9 & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0x9 & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0x9 & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0x9 & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0x9 & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0x9 & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0x9 & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0x9 & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0x9 & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0x9 & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0x9 & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0x9 & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0x9 & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0x9 & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0x9 & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0x9 & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0x9 & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0x9 & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0x9 & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0x9 & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0x9 & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0x9 & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0x9 & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0x9 & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0x9 & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0x9 & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0x9 & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0x9 & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0x9 & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0x9 & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0x9 & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0x9 & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0x9 & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0x9 & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0x9 & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0x9 & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0x9 & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0x9 & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0x9 & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0x9 & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0x9 & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0xA & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0xA & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0xA & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0xA & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0xA & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0xA & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0xA & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0xA & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0xA & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0xA & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0xA & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0xA & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0xA & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0xA & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0xA & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0xA & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0xA & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0xA & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0xA & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0xA & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0xA & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0xA & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0xA & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0xA & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0xA & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0xA & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0xA & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0xA & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0xA & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0xA & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0xA & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0xA & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0xA & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0xA & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0xA & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0xA & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0xA & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0xA & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0xA & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0xA & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0xA & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0xA & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0xA & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0xA & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0xA & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0xA & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0xA & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0xA & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0xA & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0xA & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0xA & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0xA & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0xA & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0xA & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0xA & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0xA & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0xA & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0xA & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0xA & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0xA & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0xA & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0xA & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0xA & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0xA & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0xA & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0xA & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0xA & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0xA & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0xA & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0xA & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0xA & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0xA & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0xA & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0xA & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0xA & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0xA & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0xA & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0xA & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0xA & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0xA & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0xA & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0xA & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0xA & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0xA & imm16_84 { c:2 = imm16_84; export c; }
+VarOrVal1: imm16_1 is var4_1=0xB & imm16_1 { c:2 = imm16_1; export c; }
+VarOrVal2: imm16_2 is var4_2=0xB & imm16_2 { c:2 = imm16_2; export c; }
+VarOrVal3: imm16_3 is var4_3=0xB & imm16_3 { c:2 = imm16_3; export c; }
+VarOrVal4: imm16_4 is var4_4=0xB & imm16_4 { c:2 = imm16_4; export c; }
+VarOrVal5: imm16_5 is var4_5=0xB & imm16_5 { c:2 = imm16_5; export c; }
+VarOrVal6: imm16_6 is var4_6=0xB & imm16_6 { c:2 = imm16_6; export c; }
+VarOrVal7: imm16_7 is var4_7=0xB & imm16_7 { c:2 = imm16_7; export c; }
+VarOrVal8: imm16_8 is var4_8=0xB & imm16_8 { c:2 = imm16_8; export c; }
+VarOrVal9: imm16_9 is var4_9=0xB & imm16_9 { c:2 = imm16_9; export c; }
+VarOrVal10: imm16_10 is var4_10=0xB & imm16_10 { c:2 = imm16_10; export c; }
+VarOrVal11: imm16_11 is var4_11=0xB & imm16_11 { c:2 = imm16_11; export c; }
+VarOrVal12: imm16_12 is var4_12=0xB & imm16_12 { c:2 = imm16_12; export c; }
+VarOrVal13: imm16_13 is var4_13=0xB & imm16_13 { c:2 = imm16_13; export c; }
+VarOrVal14: imm16_14 is var4_14=0xB & imm16_14 { c:2 = imm16_14; export c; }
+VarOrVal15: imm16_15 is var4_15=0xB & imm16_15 { c:2 = imm16_15; export c; }
+VarOrVal16: imm16_16 is var4_16=0xB & imm16_16 { c:2 = imm16_16; export c; }
+VarOrVal17: imm16_17 is var4_17=0xB & imm16_17 { c:2 = imm16_17; export c; }
+VarOrVal18: imm16_18 is var4_18=0xB & imm16_18 { c:2 = imm16_18; export c; }
+VarOrVal19: imm16_19 is var4_19=0xB & imm16_19 { c:2 = imm16_19; export c; }
+VarOrVal20: imm16_20 is var4_20=0xB & imm16_20 { c:2 = imm16_20; export c; }
+VarOrVal21: imm16_21 is var4_21=0xB & imm16_21 { c:2 = imm16_21; export c; }
+VarOrVal22: imm16_22 is var4_22=0xB & imm16_22 { c:2 = imm16_22; export c; }
+VarOrVal23: imm16_23 is var4_23=0xB & imm16_23 { c:2 = imm16_23; export c; }
+VarOrVal24: imm16_24 is var4_24=0xB & imm16_24 { c:2 = imm16_24; export c; }
+VarOrVal25: imm16_25 is var4_25=0xB & imm16_25 { c:2 = imm16_25; export c; }
+VarOrVal26: imm16_26 is var4_26=0xB & imm16_26 { c:2 = imm16_26; export c; }
+VarOrVal27: imm16_27 is var4_27=0xB & imm16_27 { c:2 = imm16_27; export c; }
+VarOrVal28: imm16_28 is var4_28=0xB & imm16_28 { c:2 = imm16_28; export c; }
+VarOrVal29: imm16_29 is var4_29=0xB & imm16_29 { c:2 = imm16_29; export c; }
+VarOrVal30: imm16_30 is var4_30=0xB & imm16_30 { c:2 = imm16_30; export c; }
+VarOrVal31: imm16_31 is var4_31=0xB & imm16_31 { c:2 = imm16_31; export c; }
+VarOrVal32: imm16_32 is var4_32=0xB & imm16_32 { c:2 = imm16_32; export c; }
+VarOrVal33: imm16_33 is var4_33=0xB & imm16_33 { c:2 = imm16_33; export c; }
+VarOrVal34: imm16_34 is var4_34=0xB & imm16_34 { c:2 = imm16_34; export c; }
+VarOrVal35: imm16_35 is var4_35=0xB & imm16_35 { c:2 = imm16_35; export c; }
+VarOrVal36: imm16_36 is var4_36=0xB & imm16_36 { c:2 = imm16_36; export c; }
+VarOrVal37: imm16_37 is var4_37=0xB & imm16_37 { c:2 = imm16_37; export c; }
+VarOrVal38: imm16_38 is var4_38=0xB & imm16_38 { c:2 = imm16_38; export c; }
+VarOrVal39: imm16_39 is var4_39=0xB & imm16_39 { c:2 = imm16_39; export c; }
+VarOrVal40: imm16_40 is var4_40=0xB & imm16_40 { c:2 = imm16_40; export c; }
+VarOrVal41: imm16_41 is var4_41=0xB & imm16_41 { c:2 = imm16_41; export c; }
+VarOrVal42: imm16_42 is var4_42=0xB & imm16_42 { c:2 = imm16_42; export c; }
+VarOrVal43: imm16_43 is var4_43=0xB & imm16_43 { c:2 = imm16_43; export c; }
+VarOrVal44: imm16_44 is var4_44=0xB & imm16_44 { c:2 = imm16_44; export c; }
+VarOrVal45: imm16_45 is var4_45=0xB & imm16_45 { c:2 = imm16_45; export c; }
+VarOrVal46: imm16_46 is var4_46=0xB & imm16_46 { c:2 = imm16_46; export c; }
+VarOrVal47: imm16_47 is var4_47=0xB & imm16_47 { c:2 = imm16_47; export c; }
+VarOrVal48: imm16_48 is var4_48=0xB & imm16_48 { c:2 = imm16_48; export c; }
+VarOrVal49: imm16_49 is var4_49=0xB & imm16_49 { c:2 = imm16_49; export c; }
+VarOrVal50: imm16_50 is var4_50=0xB & imm16_50 { c:2 = imm16_50; export c; }
+VarOrVal51: imm16_51 is var4_51=0xB & imm16_51 { c:2 = imm16_51; export c; }
+VarOrVal52: imm16_52 is var4_52=0xB & imm16_52 { c:2 = imm16_52; export c; }
+VarOrVal53: imm16_53 is var4_53=0xB & imm16_53 { c:2 = imm16_53; export c; }
+VarOrVal54: imm16_54 is var4_54=0xB & imm16_54 { c:2 = imm16_54; export c; }
+VarOrVal55: imm16_55 is var4_55=0xB & imm16_55 { c:2 = imm16_55; export c; }
+VarOrVal56: imm16_56 is var4_56=0xB & imm16_56 { c:2 = imm16_56; export c; }
+VarOrVal57: imm16_57 is var4_57=0xB & imm16_57 { c:2 = imm16_57; export c; }
+VarOrVal58: imm16_58 is var4_58=0xB & imm16_58 { c:2 = imm16_58; export c; }
+VarOrVal59: imm16_59 is var4_59=0xB & imm16_59 { c:2 = imm16_59; export c; }
+VarOrVal60: imm16_60 is var4_60=0xB & imm16_60 { c:2 = imm16_60; export c; }
+VarOrVal61: imm16_61 is var4_61=0xB & imm16_61 { c:2 = imm16_61; export c; }
+VarOrVal62: imm16_62 is var4_62=0xB & imm16_62 { c:2 = imm16_62; export c; }
+VarOrVal63: imm16_63 is var4_63=0xB & imm16_63 { c:2 = imm16_63; export c; }
+VarOrVal64: imm16_64 is var4_64=0xB & imm16_64 { c:2 = imm16_64; export c; }
+VarOrVal65: imm16_65 is var4_65=0xB & imm16_65 { c:2 = imm16_65; export c; }
+VarOrVal66: imm16_66 is var4_66=0xB & imm16_66 { c:2 = imm16_66; export c; }
+VarOrVal67: imm16_67 is var4_67=0xB & imm16_67 { c:2 = imm16_67; export c; }
+VarOrVal68: imm16_68 is var4_68=0xB & imm16_68 { c:2 = imm16_68; export c; }
+VarOrVal69: imm16_69 is var4_69=0xB & imm16_69 { c:2 = imm16_69; export c; }
+VarOrVal70: imm16_70 is var4_70=0xB & imm16_70 { c:2 = imm16_70; export c; }
+VarOrVal71: imm16_71 is var4_71=0xB & imm16_71 { c:2 = imm16_71; export c; }
+VarOrVal72: imm16_72 is var4_72=0xB & imm16_72 { c:2 = imm16_72; export c; }
+VarOrVal73: imm16_73 is var4_73=0xB & imm16_73 { c:2 = imm16_73; export c; }
+VarOrVal74: imm16_74 is var4_74=0xB & imm16_74 { c:2 = imm16_74; export c; }
+VarOrVal75: imm16_75 is var4_75=0xB & imm16_75 { c:2 = imm16_75; export c; }
+VarOrVal76: imm16_76 is var4_76=0xB & imm16_76 { c:2 = imm16_76; export c; }
+VarOrVal77: imm16_77 is var4_77=0xB & imm16_77 { c:2 = imm16_77; export c; }
+VarOrVal78: imm16_78 is var4_78=0xB & imm16_78 { c:2 = imm16_78; export c; }
+VarOrVal79: imm16_79 is var4_79=0xB & imm16_79 { c:2 = imm16_79; export c; }
+VarOrVal80: imm16_80 is var4_80=0xB & imm16_80 { c:2 = imm16_80; export c; }
+VarOrVal81: imm16_81 is var4_81=0xB & imm16_81 { c:2 = imm16_81; export c; }
+VarOrVal82: imm16_82 is var4_82=0xB & imm16_82 { c:2 = imm16_82; export c; }
+VarOrVal83: imm16_83 is var4_83=0xB & imm16_83 { c:2 = imm16_83; export c; }
+VarOrVal84: imm16_84 is var4_84=0xB & imm16_84 { c:2 = imm16_84; export c; }
+
 
 
 AdcOp: is op_msb=0xFF {}
 
-@include "var.inc"
 
-@include "var_or_val.inc"
-@include "val.inc"
-
-Imm16: imm16 is imm16 { c:2 = imm16; export c; }
-
-
-JmpCallDst: (imm16) is imm16 {
-	c:4 = 0x02000000 + imm16 * 4;
+JmpCallDst: (imm16_1) is imm16_1 {
+	c:4 = 0x02000000 + imm16_1 * 4;
 	export *:4 c;
 }
 
 VmEnd: is AdcOp & op_lsb=0x28 {}
 
-Addr1: addr is addr { c:4 = addr; export c; } 
-Addr2: addr is addr { c:4 = addr; export c; }
-
-@include "mark.inc"
-
-@include "ascii.inc"
 @include "str_sjis.inc"
 
 define pcodeop absbgsprent;
@@ -168,65 +1943,98 @@ define pcodeop workclr;
 	return [PC];
 }
 
-:DIV Var,VarOrVal is AdcOp & op_lsb=0x0A; Var; VarOrVal {
-	Var = Var / VarOrVal;
+:DIV Var1,VarOrVal1 is AdcOp & op_lsb=0x0A; Var1; VarOrVal1 {
+	Var1 = Var1 / VarOrVal1;
 }
 
-:MUL Var,VarOrVal is AdcOp & op_lsb=0x0B; Var; VarOrVal {
-	Var = Var * VarOrVal;
+:MUL Var1,VarOrVal1 is AdcOp & op_lsb=0x0B; Var1; VarOrVal1 {
+	Var1 = Var1 * VarOrVal1;
 }
 
-:SUB Var,VarOrVal is AdcOp & op_lsb=0x0C; Var; VarOrVal {
-	Var = Var - VarOrVal;
+:SUB Var1,VarOrVal1 is AdcOp & op_lsb=0x0C; Var1; VarOrVal1 {
+	Var1 = Var1 - VarOrVal1;
 }
 
-:ADD Var,VarOrVal is AdcOp & op_lsb=0x0D; Var; VarOrVal {
-	Var = Var + VarOrVal;
+:ADD Var1,VarOrVal1 is AdcOp & op_lsb=0x0D; Var1; VarOrVal1 {
+	Var1 = Var1 + VarOrVal1;
 }
 
-:DEC Var is AdcOp & op_lsb=0x0E; Var {
-	Var = Var - 1;
+:DEC Var1 is AdcOp & op_lsb=0x0E; Var1 {
+	Var1 = Var1 - 1;
 }
 
-:INC Var is AdcOp & op_lsb=0x0F; Var {
-	Var = Var + 1;
+:INC Var1 is AdcOp & op_lsb=0x0F; Var1 {
+	Var1 = Var1 + 1;
 }
 
-:MOV Var,VarOrVal is AdcOp & op_lsb=0x10; Var; VarOrVal {
-	Var = VarOrVal;
+:MOV Var1,VarOrVal1 is AdcOp & op_lsb=0x10; Var1; VarOrVal1 {
+	Var1 = VarOrVal1;
 }
 
 # EQUAL
-:EQU Var,VarOrVal is AdcOp & op_lsb=0x11; Var; VarOrVal {
-
+:EQU Var1,VarOrVal1 is AdcOp & op_lsb=0x11; Var1; VarOrVal1 {
+	pairs_read = pairs_read + 1;
+	
+	if (!(Var1==VarOrVal1)) goto inst_next;
+	pairs_true = pairs_true + 1; 
 }
 
 # NOT EQUAL
-:NEQ Var,VarOrVal is AdcOp & op_lsb=0x12; Var; VarOrVal {
+:NEQ Var1,VarOrVal1 is AdcOp & op_lsb=0x12; Var1; VarOrVal1 {
+	pairs_read = pairs_read + 1;
+	
+	if (!(Var1!=VarOrVal1)) goto inst_next;
+	pairs_true = pairs_true + 1; 
 } 
 
 # GRETER
-:GRE Var,VarOrVal is AdcOp & op_lsb=0x13; Var; VarOrVal {
-
-}
+:GRE Var1,VarOrVal1 is AdcOp & op_lsb=0x13; Var1; VarOrVal1 {
+	pairs_read = pairs_read + 1;
+	
+	if (!(Var1>VarOrVal1)) goto inst_next;
+	pairs_true = pairs_true + 1; 
+} 
 
 # LOWER
-:LWR Var,VarOrVal is AdcOp & op_lsb=0x14; Var; VarOrVal {
-
-}
+:LWR Var1,VarOrVal1 is AdcOp & op_lsb=0x14; Var1; VarOrVal1 {
+	pairs_read = pairs_read + 1;
+	
+	if (!(Var1<VarOrVal1)) goto inst_next;
+	pairs_true = pairs_true + 1; 
+} 
 
 # GREATER EQUAL
-:GEQ Var,VarOrVal is AdcOp & op_lsb=0x15; Var; VarOrVal {
+:GEQ Var1,VarOrVal1 is AdcOp & op_lsb=0x15; Var1; VarOrVal1 {
+	pairs_read = pairs_read + 1;
 	
-}
+	if (!(Var1>=VarOrVal1)) goto inst_next;
+	pairs_true = pairs_true + 1; 
+} 
 
 # LESS EQUAL
-:LEQ Var,VarOrVal is AdcOp & op_lsb=0x16; Var; VarOrVal {
-
-}
+:LEQ Var1,VarOrVal1 is AdcOp & op_lsb=0x16; Var1; VarOrVal1 {
+	pairs_read = pairs_read + 1;
+	
+	if (!(Var1<=VarOrVal1)) goto inst_next;
+	pairs_true = pairs_true + 1; 
+} 
 
 :CMP_END is AdcOp & op_lsb=0x1F {
-
+	if (ands_count==1 && pairs_true!=0) goto <next>;
+	if (pairs_true==pairs_read) goto <next>;
+	
+	goto <exit>;
+	
+	<next>
+	pairs_true = 0;
+	pairs_read = 0;
+	goto inst_next;
+	
+	<exit>
+	pairs_true = 0;
+	pairs_read = 0;
+	PC = cmp_dest;
+	goto [PC];
 }
 
 :ALLEND is AdcOp & op_lsb=0x20 {
@@ -242,27 +2050,58 @@ define pcodeop workclr;
 	call [JmpCallDst];
 }
 
-:EVDEF Var,VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x23; Var; VarOrVal1; VarOrVal2 {
-	evdef(Var,VarOrVal1,VarOrVal2);
+:EVDEF Var1,VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x23; Var1; VarOrVal1; VarOrVal2 {
+	evdef(Var1,VarOrVal1,VarOrVal2);
 }
 
 :END is AdcOp & op_lsb=0x28 {
 	halt();
 }
 
-:IF (loc),Val2 is AdcOp & op_lsb=0x29; imm16; Val2 [ loc = inst_next + imm16; ] {}
+:IF (loc),imm16_2 is AdcOp & op_lsb=0x29; imm16_1; imm16_2 [
+	loc = inst_next + imm16_1;
+] {
+	pairs_true = 0;
+	pairs_read = 0;
+	cmp_dest = loc;
+	ands_count = imm16_2;
+}
 
-:WHILE (loc),Val2 is AdcOp & op_lsb=0x2A; imm16; Val2 [ loc = inst_next + imm16; ] {}
+:WHILE (loc),imm16_2 is AdcOp & op_lsb=0x2A; imm16_1; imm16_2 [
+	loc = inst_next + imm16_1;
+] {
+	pairs_true = 0;
+	pairs_read = 0;
+	cmp_dest = loc;
+	ands_count = imm16_2;
+}
 
 :NOP is AdcOp & op_lsb=0x2B {
 	nop();
 }
 
-:ENDIF Val is AdcOp & op_lsb=0x2D; Val {}
+:ENDIF imm16_1 is AdcOp & op_lsb=0x2D; imm16_1 {
+	pairs_true = 0;
+	pairs_read = 0;
+}
 
-:ENDWHILE Val is AdcOp & op_lsb=0x2E; Val {}
+:ENDWHILE (loc) is AdcOp & op_lsb=0x2E; imm16_1 [
+	loc = inst_next - imm16_1;
+] {
+	pairs_true = 0;
+	pairs_read = 0;
+	
+	goto [loc:4];
+}
 
-:ELSE Val is AdcOp & op_lsb=0x2F; Val {}
+:ELSE (loc) is AdcOp & op_lsb=0x2F; imm16_1 [
+	loc = inst_next + imm16_1;
+] {
+	pairs_true = 0;
+	pairs_read = 0;
+	
+	goto [loc:4];
+}
 
 :MSGINIT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x30; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
 	msginit(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
@@ -286,16 +2125,16 @@ define pcodeop workclr;
 	evstart(VarOrVal1,VarOrVal2);
 }
 
-:BGLOAD Val1,addr is AdcOp & op_lsb=0x39; Val1; addr {
-	bgload(Val1,addr:4);
+:BGLOAD imm16_1,addr_1 is AdcOp & op_lsb=0x39; imm16_1; addr_1 {
+	bgload(imm16_1:2,addr_1:4);
 }
 
-:PALLOAD Val1,addr is AdcOp & op_lsb=0x3A; Val1; addr {
-	palload(Val1,addr:4);
+:PALLOAD imm16_1,addr_1 is AdcOp & op_lsb=0x3A; imm16_1; addr_1 {
+	palload(imm16_1:2,addr_1:4);
 }
 
-:BGMREQ Val1,addr is AdcOp & op_lsb=0x3B; Val1; addr {
-	bgmreq(Val1,addr:4);
+:BGMREQ imm16_1,addr_1 is AdcOp & op_lsb=0x3B; imm16_1; addr_1 {
+	bgmreq(imm16_1:2,addr_1:4);
 }
 
 :SPRCLR VarOrVal1 is AdcOp & op_lsb=0x3C; VarOrVal1 {
@@ -390,8 +2229,8 @@ define pcodeop workclr;
 	mapinit(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
 }
 
-:MAPLOAD VarOrVal1,Addr1,Addr2 is AdcOp & op_lsb=0x53; VarOrVal1; Addr1;Addr2 {
-	mapload(VarOrVal1,Addr1,Addr2);
+:MAPLOAD VarOrVal1,addr_1,addr_2 is AdcOp & op_lsb=0x53; VarOrVal1; addr_1;addr_2 {
+	mapload(VarOrVal1,addr_1:4,addr_2:4);
 }
 
 :MAPDISP VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x54; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
@@ -462,24 +2301,24 @@ define pcodeop workclr;
 	allsprdisp();
 }
 
-:MAPWRT VarOrVal1,VarOrVal2,addr is AdcOp & op_lsb=0x65; VarOrVal1;VarOrVal2;addr {
-	mapwrt(VarOrVal1,VarOrVal2,addr:4);
+:MAPWRT VarOrVal1,VarOrVal2,addr_1 is AdcOp & op_lsb=0x65; VarOrVal1;VarOrVal2;addr_1 {
+	mapwrt(VarOrVal1,VarOrVal2,addr_1:4);
 }
 
 :SPRWAIT VarOrVal1 is AdcOp & op_lsb=0x66; VarOrVal1 {
 	sprwait(VarOrVal1);
 }
 
-:SEREQ VarOrVal1,addr is AdcOp & op_lsb=0x67; VarOrVal1;addr {
-	sereq(VarOrVal1,addr:4);
+:SEREQ VarOrVal1,addr_1 is AdcOp & op_lsb=0x67; VarOrVal1;addr_1 {
+	sereq(VarOrVal1,addr_1:4);
 }
 
 :SNDSTOP is AdcOp & op_lsb=0x68 {
 	sndstop();
 }
 
-:SESTOP addr is AdcOp & op_lsb=0x69; addr {
-	sestop(addr:4);
+:SESTOP addr_1 is AdcOp & op_lsb=0x69; addr_1 {
+	sestop(addr_1:4);
 }
 
 :BGMSTOP is AdcOp & op_lsb=0x6A {
@@ -490,8 +2329,8 @@ define pcodeop workclr;
 	doornoset();
 }
 
-:RAND Val1,Val2,VarOrVal1 is AdcOp & op_lsb=0x6C; Val1;Val2;VarOrVal1 {
-	rand(Val1,Val2,VarOrVal1);
+:RAND imm16_1,imm16_2,VarOrVal1 is AdcOp & op_lsb=0x6C; imm16_1;imm16_2;VarOrVal1 {
+	rand(imm16_1:2,imm16_2:2,VarOrVal1);
 }
 
 :BTWAIT VarOrVal1 is AdcOp & op_lsb=0x6D; VarOrVal1 {
@@ -508,12 +2347,12 @@ define pcodeop workclr;
 	evstop();
 }
 
-:SEREQPV VarOrVal1,VarOrVal2,VarOrVal3,addr is AdcOp & op_lsb=0x71; VarOrVal1;VarOrVal2;VarOrVal3;addr {
-	sereqpv(VarOrVal1,VarOrVal2,VarOrVal3,addr:4);
+:SEREQPV VarOrVal1,VarOrVal2,VarOrVal3,addr_1 is AdcOp & op_lsb=0x71; VarOrVal1;VarOrVal2;VarOrVal3;addr_1 {
+	sereqpv(VarOrVal1,VarOrVal2,VarOrVal3,addr_1:4);
 }
 
-:SEREQSPR VarOrVal1,VarOrVal2,VarOrVal3,addr is AdcOp & op_lsb=0x72; VarOrVal1;VarOrVal2;VarOrVal3;addr {
-	sereqspr(VarOrVal1,VarOrVal2,VarOrVal3,addr:4);
+:SEREQSPR VarOrVal1,VarOrVal2,VarOrVal3,addr_1 is AdcOp & op_lsb=0x72; VarOrVal1;VarOrVal2;VarOrVal3;addr_1 {
+	sereqspr(VarOrVal1,VarOrVal2,VarOrVal3,addr_1:4);
 }
 
 :SCERESET is AdcOp & op_lsb=0x73 {
@@ -544,14 +2383,43 @@ define pcodeop workclr;
 	dummy();
 }
 
-@include "spcfunc.inc"
-
-:SEPAN VarOrVal1,addr is AdcOp & op_lsb=0x7B; VarOrVal1;addr {
-	sepan(VarOrVal1,addr:4);
+:SPCFUNC VarOrVal1 is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=0 {
+	spcfunc(VarOrVal1);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=1;VarOrVal3 {
+	spcfunc(VarOrVal1,VarOrVal3);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=2;VarOrVal3;VarOrVal4 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=3;VarOrVal3;VarOrVal4;VarOrVal5 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=4;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=5;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=6;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=7;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=8;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9;VarOrVal10 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10);
+}
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10,VarOrVal11) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=9;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9;VarOrVal10;VarOrVal11 {
+	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10,VarOrVal11);
 }
 
-:SEVOL VarOrVal1,addr is AdcOp & op_lsb=0x7C; VarOrVal1;addr {
-	sevol(VarOrVal1,addr:4);
+:SEPAN VarOrVal1,addr_1 is AdcOp & op_lsb=0x7B; VarOrVal1;addr_1 {
+	sepan(VarOrVal1,addr_1:4);
+}
+
+:SEVOL VarOrVal1,addr_1 is AdcOp & op_lsb=0x7C; VarOrVal1;addr_1 {
+	sevol(VarOrVal1,addr_1:4);
 }
 
 :BGDISPTRN VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7 is AdcOp & op_lsb=0x7D; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
@@ -578,8 +2446,8 @@ define pcodeop workclr;
 	abssprent(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
 }
 
-:NEXTCOM Val is AdcOp & op_lsb=0x83; Val {
-	nextcom(Val);
+:NEXTCOM imm16_1 is AdcOp & op_lsb=0x83; imm16_1 {
+	nextcom(imm16_1:2);
 }
 
 :WORKCLR is AdcOp & op_lsb=0x84 {
@@ -594,8 +2462,8 @@ define pcodeop workclr;
 	absbgsprent(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
 }
 
-:AVIPLAY VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr is AdcOp & op_lsb=0x87; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;addr {
-	aviplay(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr:4);
+:AVIPLAY VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr_1 is AdcOp & op_lsb=0x87; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;addr_1 {
+	aviplay(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr_1:4);
 }
 
 :AVISTOP is AdcOp & op_lsb=0x88 {

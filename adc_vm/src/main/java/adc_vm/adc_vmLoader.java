@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import generic.stl.Pair;
 import ghidra.app.cmd.disassemble.DisassembleCommand;
 import ghidra.app.plugin.core.equate.CreateEnumEquateCommand;
 import ghidra.app.util.Option;
@@ -31,6 +32,7 @@ import ghidra.app.util.bin.ByteProvider;
 import ghidra.app.util.importer.MessageLog;
 import ghidra.app.util.opinion.AbstractLibrarySupportLoader;
 import ghidra.app.util.opinion.LoadSpec;
+import ghidra.framework.options.Options;
 import ghidra.framework.store.LockException;
 import ghidra.program.model.address.Address;
 import ghidra.program.model.address.AddressOutOfBoundsException;
@@ -74,7 +76,6 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 	@Override
 	public Collection<LoadSpec> findSupportedLoadSpecs(ByteProvider provider) throws IOException {
 		List<LoadSpec> loadSpecs = new ArrayList<>();
-		
 		BinaryReader reader = new BinaryReader(provider, true);
 		reader.setPointerIndex(0L);
 		
@@ -91,6 +92,16 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 	protected void load(ByteProvider provider, LoadSpec loadSpec, List<Option> options,
 			Program program, TaskMonitor monitor, MessageLog log)
 			throws CancelledException, IOException {
+		
+		Options aOpts = program.getOptions(Program.ANALYSIS_PROPERTIES);
+		aOpts.setBoolean("Decompiler Switch Analysis", false);
+		aOpts.setBoolean("ASCII Strings", false);
+		aOpts.setBoolean("Create Address Tables", false);
+		aOpts.setBoolean("Data Reference", false);
+		aOpts.setBoolean("Apply Data Archives", false);
+		aOpts.setBoolean("Embedded Media", false);
+		aOpts.setBoolean("Non-Returning Functions - Discovered", false);
+		aOpts.setBoolean("Scalar Operand References", false);
 		
 		String adtPath = program.getExecutablePath();
 		adtPath = adtPath.substring(0, adtPath.length()-1) + "T";
@@ -217,7 +228,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		final var stringsBase = ram.getAddress(STRINGS_BASE);
 		var stringsCurr = stringsBase;
 		
-		var patchOffsets = new HashMap<Address, String>();
+		var patchOffsets = new HashMap<Address, Pair<String, Integer>>();
 		var instrOffsets = new ArrayList<Address>();
 		
 		while (vmReader.getPointerIndex() < size) {
@@ -238,7 +249,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str1);
+				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -253,16 +264,16 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str1);
+				patchOffsets.put(patchAddr, new Pair<>(str1, 0));
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
 					stringsCurr = stringsCurr.add(str1.length() + 1);
 				}
 				
-				patchAddr = vmBase.add(vmReader.getPointerIndex());
+				patchAddr = patchAddr.add(4);
 				var str2 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str2);
+				patchOffsets.put(patchAddr, new Pair<>(str2, str1.length() + str2.length() - 4));
 				
 				if (!stringsAddrs.containsKey(str2)) {
 					stringsAddrs.put(str2, stringsCurr);
@@ -278,7 +289,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str1);
+				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -291,7 +302,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str1);
+				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -309,7 +320,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str1);
+				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -328,7 +339,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, str1);
+				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -350,13 +361,12 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		}
 		
 		for (final var patchAddr : patchOffsets.keySet()) {
-			final var str = patchOffsets.get(patchAddr);
-			final var strAddr = stringsAddrs.get(str);
+			final var strAndLen = patchOffsets.get(patchAddr);
+			final var strAddr = stringsAddrs.get(strAndLen.first);
 			
 			mem.setInt(patchAddr, (int)strAddr.getOffset());
 			
-			var strLen = str.length() + 2;
-			strLen -= 4;
+			var strLen = strAndLen.second;
 			int delta = 0;
 			
 			while (strLen > 0) {
@@ -373,10 +383,17 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			cmd.applyTo(mem.getProgram(), monitor);
 		}
 		
+		applyAsciiStrings(vmData, vmBase, stringsAddrs, mem, monitor);
+	}
+	
+	private static void applyAsciiStrings(final byte[] vmData, final Address vmBase, final Map<String, Address> stringsAddrs, Memory mem, TaskMonitor monitor) {
 		EnumDataType dt = new EnumDataType("strings", 4);
 		
-		for (final var str : stringsAddrs.keySet()) {
+		for (var str : stringsAddrs.keySet()) {
 			final var strAddr = stringsAddrs.get(str);
+			
+			str = str.replaceAll("\u0000", "");
+			
 			dt.add(str, strAddr.getOffset());
 		}
 		
@@ -396,13 +413,8 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				break;
 			}
 			
-			if (word[0] != 0x00) {
-				result += (char)word[0];
-			}
-			
-			if (word[1] != 0x00) {
-				result += (char)word[1];
-			}
+			result += (char)word[0];
+			result += (char)word[1];
 		}
 		
 		return result;
@@ -413,6 +425,8 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 
 		var vmReader = new BinaryReader(new ByteArrayProvider(vmData), true);
 		
+		Map<Integer, Address> whileStarts = new HashMap<>();
+		
 		while (vmReader.getPointerIndex() < size) {
 			int opcode = vmReader.readNextUnsignedShort();
 			Address patchAddr = vmBase.add(vmReader.getPointerIndex());
@@ -422,12 +436,25 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			case 0xFF29: // IF
 			{
 				int id = vmReader.readNextUnsignedShort();
-				delta = findIfWhileEndDelta(vmReader, id, vmBase, patchAddr, 0xFF2D);
+				delta = findIfWhileEndDelta(vmReader, id, vmBase, patchAddr, List.of(0xFF2D, 0xFF2F)); // ENDIF, ELSE
 			} break;
 			case 0xFF2A: // WHILE
 			{
 				int id = vmReader.readNextUnsignedShort();
-				delta = findIfWhileEndDelta(vmReader, id, vmBase, patchAddr, 0xFF2E);
+				delta = findIfWhileEndDelta(vmReader, id, vmBase, patchAddr, List.of(0xFF2E)); // ENDWHILE
+				
+				whileStarts.put(id, patchAddr.subtract(4));
+			} break;
+			case 0xFF2F: // ELSE
+			{
+				int id = vmReader.readNextUnsignedShort();
+				delta = findIfWhileEndDelta(vmReader, id, vmBase, patchAddr, List.of(0xFF2D)); // ENDIF
+				delta -= 2;
+			} break;
+			case 0xFF2E: // ENDWHILE
+			{
+				int id = vmReader.readNextUnsignedShort();
+				delta = patchAddr.subtract(whileStarts.get(id));
 			} break;
 			}
 			
@@ -441,13 +468,14 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		}
 	}
 	
-	private static long findIfWhileEndDelta(BinaryReader vmReader, int id, final Address base, final Address patchAddr, int endOpcode) throws IOException {
+	private static long findIfWhileEndDelta(BinaryReader vmReader, int id, final Address base, final Address patchAddr, final List<Integer> endOpcodes) throws IOException {
 		Address while_end = null;
+		long pos = vmReader.getPointerIndex();
 		
 		while (true) {
 			int word = vmReader.readNextUnsignedShort();
 			
-			if (word == endOpcode) {
+			if (endOpcodes.contains(word)) {
 				int end_id = vmReader.readNextUnsignedShort();
 				
 				if (id != end_id) {
@@ -459,6 +487,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			}
 		}
 		
+		vmReader.setPointerIndex(pos);
 		return while_end.subtract(patchAddr);
 	}
 }
