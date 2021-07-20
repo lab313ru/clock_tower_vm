@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See Relax specification: Ghidra/Framework/SoftwareModeling/data/languages/compiler_spec.rxg -->
+
+<compiler_spec>
+  <data_organization>
+	<pointer_size value="4" />
+  </data_organization>
+  <global>
+    <range space="ram"/>
+  </global>
+  <stackpointer register="SP" space="ram"/>
+  <default_proto>
+  <prototype name="__stdcall" extrapop="0" stackshift="0">
+      <input>
+        <pentry minsize="1" maxsize="500" align="4" extension="inttype">
+        <addr offset="0x100" space="register"/>
+        </pentry>
+      </input>
+      <output>
+        <pentry minsize="1" maxsize="1">
+          <register name="DUMMY"/>
+        </pentry>
+      </output>
+    </prototype>
+   </default_proto>
+</compiler_spec>

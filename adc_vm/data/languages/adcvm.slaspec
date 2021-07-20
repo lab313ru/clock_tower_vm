@@ -1,0 +1,613 @@
+# sleigh specification file for Skeleton Processor
+#   >> see docs/languages/sleigh.htm or sleigh.pdf for Sleigh syntax
+# Other language modules (see Ghidra/Processors) may provide better examples
+# when creating a new language module.
+
+define endian=little;
+define alignment=1;
+
+define space ram     type=ram_space      size=4  default;
+define space varsc   type=ram_space      size=2  ;
+define space varsd   type=ram_space      size=2  ;
+define space varse   type=ram_space      size=2  ;
+define space varsf   type=ram_space      size=2  ;
+define space refs    type=ram_space      size=4  ;
+
+define space register type=register_space size=4;
+
+define register offset=0 size=4 [PC SP RA DUMMY];
+
+################################################################
+
+define token opword (16)
+   op_msb     = (8,15)
+   op_lsb     = (0,7)
+;
+
+define token data16 (16)
+   var4        = (12,15)
+   idx9        = (0,8)
+   imm16       = (0,15)
+;
+
+define token jmpidx (16)
+	jmp_idx    = (8,15)
+	jmp_off    = (0,7)
+	jmp_full   = (0,15)
+;
+
+define token fulladdr (32)
+	addr       = (0, 31)
+;
+
+
+AdcOp: is op_msb=0xFF {}
+
+@include "var.inc"
+
+@include "var_or_val.inc"
+@include "val.inc"
+
+Imm16: imm16 is imm16 { c:2 = imm16; export c; }
+
+
+JmpCallDst: (imm16) is imm16 {
+	c:4 = 0x02000000 + imm16 * 4;
+	export *:4 c;
+}
+
+VmEnd: is AdcOp & op_lsb=0x28 {}
+
+Addr1: addr is addr { c:4 = addr; export c; } 
+Addr2: addr is addr { c:4 = addr; export c; }
+
+@include "mark.inc"
+
+@include "ascii.inc"
+@include "str_sjis.inc"
+
+define pcodeop absbgsprent;
+define pcodeop absobjanim;
+define pcodeop abssprent;
+define pcodeop allend;
+define pcodeop allsprclr;
+define pcodeop allsprdisp;
+define pcodeop aviplay;
+define pcodeop avistop;
+define pcodeop bganim;
+define pcodeop bgbufclr;
+define pcodeop bgclr;
+define pcodeop bgdisp;
+define pcodeop bgdisptrn;
+define pcodeop bgload;
+define pcodeop bgmattr;
+define pcodeop bgmreq;
+define pcodeop bgmstop;
+define pcodeop bgscroll;
+define pcodeop bgspranim;
+define pcodeop bgsprent;
+define pcodeop bgsprpos;
+define pcodeop bgsprset;
+define pcodeop bgwait;
+define pcodeop boxfill;
+define pcodeop btwait;
+define pcodeop bwait;
+define pcodeop calc_call;
+define pcodeop continit;
+define pcodeop debug;
+define pcodeop doornoset;
+define pcodeop dummy;
+define pcodeop evdef;
+define pcodeop evstart;
+define pcodeop evstop;
+define pcodeop fawait;
+define pcodeop gameinit;
+define pcodeop halt;
+define pcodeop mapattr;
+define pcodeop mapdisp;
+define pcodeop mapinit;
+define pcodeop mapload;
+define pcodeop mappos;
+define pcodeop mapscroll;
+define pcodeop mapwrt;
+define pcodeop msgattr;
+define pcodeop msgclr;
+define pcodeop msgcol;
+define pcodeop msginit;
+define pcodeop msgout;
+define pcodeop msgspd;
+define pcodeop msgwait;
+define pcodeop nextcom;
+define pcodeop nop;
+define pcodeop objanim;
+define pcodeop palload;
+define pcodeop palset;
+define pcodeop rand;
+define pcodeop sceend;
+define pcodeop sceinit;
+define pcodeop scereset;
+define pcodeop sclblock;
+define pcodeop screenclr;
+define pcodeop screenin;
+define pcodeop screenoff;
+define pcodeop screenon;
+define pcodeop screenout;
+define pcodeop sepan;
+define pcodeop sereq;
+define pcodeop sereqpv;
+define pcodeop sereqspr;
+define pcodeop sestop;
+define pcodeop setbkcol;
+define pcodeop setmark;
+define pcodeop setproc;
+define pcodeop sevol;
+define pcodeop slantclr;
+define pcodeop slantset;
+define pcodeop sndstop;
+define pcodeop spcfunc;
+define pcodeop spranim;
+define pcodeop sprclr;
+define pcodeop sprdir;
+define pcodeop sprent;
+define pcodeop sprlmt;
+define pcodeop sprmark;
+define pcodeop sprpos;
+define pcodeop sprwait;
+define pcodeop sprwalkx;
+define pcodeop tmwait;
+define pcodeop trace;
+define pcodeop userctl;
+define pcodeop wait;
+define pcodeop workclr;
+
+
+################################################################
+
+:RET is AdcOp & op_lsb=0x00 {
+	PC = RA;
+	return [PC];
+}
+
+:DIV Var,VarOrVal is AdcOp & op_lsb=0x0A; Var; VarOrVal {
+	Var = Var / VarOrVal;
+}
+
+:MUL Var,VarOrVal is AdcOp & op_lsb=0x0B; Var; VarOrVal {
+	Var = Var * VarOrVal;
+}
+
+:SUB Var,VarOrVal is AdcOp & op_lsb=0x0C; Var; VarOrVal {
+	Var = Var - VarOrVal;
+}
+
+:ADD Var,VarOrVal is AdcOp & op_lsb=0x0D; Var; VarOrVal {
+	Var = Var + VarOrVal;
+}
+
+:DEC Var is AdcOp & op_lsb=0x0E; Var {
+	Var = Var - 1;
+}
+
+:INC Var is AdcOp & op_lsb=0x0F; Var {
+	Var = Var + 1;
+}
+
+:MOV Var,VarOrVal is AdcOp & op_lsb=0x10; Var; VarOrVal {
+	Var = VarOrVal;
+}
+
+# EQUAL
+:EQU Var,VarOrVal is AdcOp & op_lsb=0x11; Var; VarOrVal {
+
+}
+
+# NOT EQUAL
+:NEQ Var,VarOrVal is AdcOp & op_lsb=0x12; Var; VarOrVal {
+} 
+
+# GRETER
+:GRE Var,VarOrVal is AdcOp & op_lsb=0x13; Var; VarOrVal {
+
+}
+
+# LOWER
+:LWR Var,VarOrVal is AdcOp & op_lsb=0x14; Var; VarOrVal {
+
+}
+
+# GREATER EQUAL
+:GEQ Var,VarOrVal is AdcOp & op_lsb=0x15; Var; VarOrVal {
+	
+}
+
+# LESS EQUAL
+:LEQ Var,VarOrVal is AdcOp & op_lsb=0x16; Var; VarOrVal {
+
+}
+
+:CMP_END is AdcOp & op_lsb=0x1F {
+
+}
+
+:ALLEND is AdcOp & op_lsb=0x20 {
+	allend();
+}
+
+:JMP JmpCallDst is AdcOp & op_lsb=0x21; JmpCallDst {
+	goto [JmpCallDst];
+}
+
+:CALL JmpCallDst is AdcOp & op_lsb=0x22; JmpCallDst {
+	RA = inst_next;
+	call [JmpCallDst];
+}
+
+:EVDEF Var,VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x23; Var; VarOrVal1; VarOrVal2 {
+	evdef(Var,VarOrVal1,VarOrVal2);
+}
+
+:END is AdcOp & op_lsb=0x28 {
+	halt();
+}
+
+:IF (loc),Val2 is AdcOp & op_lsb=0x29; imm16; Val2 [ loc = inst_next + imm16; ] {}
+
+:WHILE (loc),Val2 is AdcOp & op_lsb=0x2A; imm16; Val2 [ loc = inst_next + imm16; ] {}
+
+:NOP is AdcOp & op_lsb=0x2B {
+	nop();
+}
+
+:ENDIF Val is AdcOp & op_lsb=0x2D; Val {}
+
+:ENDWHILE Val is AdcOp & op_lsb=0x2E; Val {}
+
+:ELSE Val is AdcOp & op_lsb=0x2F; Val {}
+
+:MSGINIT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x30; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
+	msginit(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+
+:MSGATTR VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8 is AdcOp & op_lsb=0x32; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+	msgattr(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
+}
+
+:MSGOUT VarOrVal1,VarOrVal2,Sjis is AdcOp & op_lsb=0x33; VarOrVal1; VarOrVal2; Sjis {
+	msgout(VarOrVal1,VarOrVal2,Sjis);
+}
+
+@include "setmark.inc"
+
+:MSGWAIT is AdcOp & op_lsb=0x36 {
+	msgwait();
+}
+
+:EVSTART VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x37; VarOrVal1; VarOrVal2 {
+	evstart(VarOrVal1,VarOrVal2);
+}
+
+:BGLOAD Val1,addr is AdcOp & op_lsb=0x39; Val1; addr {
+	bgload(Val1,addr:4);
+}
+
+:PALLOAD Val1,addr is AdcOp & op_lsb=0x3A; Val1; addr {
+	palload(Val1,addr:4);
+}
+
+:BGMREQ Val1,addr is AdcOp & op_lsb=0x3B; Val1; addr {
+	bgmreq(Val1,addr:4);
+}
+
+:SPRCLR VarOrVal1 is AdcOp & op_lsb=0x3C; VarOrVal1 {
+	sprclr(VarOrVal1);
+}
+
+:ABSOBJANIM VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8 is AdcOp & op_lsb=0x3D; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+	absobjanim(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
+}
+
+:OBJANIM VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8 is AdcOp & op_lsb=0x3E; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+	objanim(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
+}
+
+:ALLSPRCLR is AdcOp & op_lsb=0x3F {
+	allsprclr();
+}
+
+:MSGCLR is AdcOp & op_lsb=0x40 {
+	msgclr();
+}
+
+:SCREENCLR is AdcOp & op_lsb=0x41 {
+	screenclr();
+}
+
+:SCREENON is AdcOp & op_lsb=0x42 {
+	screenon();
+}
+
+:SCREENOFF is AdcOp & op_lsb=0x43 {
+	screenoff();
+}
+
+:SCREENIN is AdcOp & op_lsb=0x44 {
+	screenin();
+}
+
+:SCREENOUT is AdcOp & op_lsb=0x45 {
+	screenout();
+}
+
+:BGDISP VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x46; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	bgdisp(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+
+:BGANIM VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7 is AdcOp & op_lsb=0x47; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
+	bganim(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7);
+}
+
+:BGSCROLL VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x48; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
+	bgscroll(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+
+:PALSET VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x49; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
+	palset(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+
+:BGWAIT is AdcOp & op_lsb=0x4A {
+	bgwait();
+}
+
+:WAIT VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x4B; VarOrVal1;VarOrVal2 {
+	wait(VarOrVal1,VarOrVal2);
+}
+
+:BWAIT is AdcOp & op_lsb=0x4C {
+	bwait();
+}
+
+:BOXFILL VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7 is AdcOp & op_lsb=0x4D; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
+	boxfill(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7);
+}
+
+:BGCLR VarOrVal1 is AdcOp & op_lsb=0x4E; VarOrVal1 {
+	bgclr(VarOrVal1);
+}
+
+:SETBKCOL VarOrVal1,VarOrVal2,VarOrVal3 is AdcOp & op_lsb=0x4F; VarOrVal1;VarOrVal2;VarOrVal3 {
+	setbkcol(VarOrVal1,VarOrVal2,VarOrVal3);
+}
+
+:MSGCOL VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x50; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	msgcol(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+
+:MSGSPD VarOrVal1 is AdcOp & op_lsb=0x51; VarOrVal1 {
+	msgspd(VarOrVal1);
+}
+
+:MAPINIT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x52; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	mapinit(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+
+:MAPLOAD VarOrVal1,Addr1,Addr2 is AdcOp & op_lsb=0x53; VarOrVal1; Addr1;Addr2 {
+	mapload(VarOrVal1,Addr1,Addr2);
+}
+
+:MAPDISP VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x54; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	mapdisp(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+
+:SPRENT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8 is AdcOp & op_lsb=0x55; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+	sprent(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
+}
+
+:SETPROC VarOrVal1 is AdcOp & op_lsb=0x56; VarOrVal1 {
+	setproc(VarOrVal1);
+}
+
+:SCEINIT is AdcOp & op_lsb=0x57 {
+	sceinit();
+}
+
+:USERCTL VarOrVal1 is AdcOp & op_lsb=0x58; VarOrVal1 {
+	userctl(VarOrVal1);
+}
+
+:MAPATTR VarOrVal1 is AdcOp & op_lsb=0x59; VarOrVal1 {
+	mapattr(VarOrVal1);
+}
+
+:MAPPOS VarOrVal1,VarOrVal2,VarOrVal3 is AdcOp & op_lsb=0x5A; VarOrVal1;VarOrVal2;VarOrVal3 {
+	mappos(VarOrVal1,VarOrVal2,VarOrVal3);
+}
+
+:SPRPOS VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4 is AdcOp & op_lsb=0x5B; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4 {
+	sprpos(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4);
+}
+
+:SPRANIM VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4 is AdcOp & op_lsb=0x5C; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4 {
+	spranim(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4);
+}
+
+:SPRDIR VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x5D; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
+	sprdir(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+
+:GAMEINIT is AdcOp & op_lsb=0x5E {
+	gameinit();
+}
+
+:CONTINIT is AdcOp & op_lsb=0x5F {
+	continit();
+}
+
+:SCEEND is AdcOp & op_lsb=0x60 {
+	sceend();
+}
+
+:MAPSCROLL VarOrVal1,VarOrVal2,VarOrVal3 is AdcOp & op_lsb=0x61; VarOrVal1;VarOrVal2;VarOrVal3 {
+	mapscroll(VarOrVal1,VarOrVal2,VarOrVal3);
+}
+
+:SPRLMT VarOrVal1,VarOrVal2,VarOrVal3 is AdcOp & op_lsb=0x62; VarOrVal1;VarOrVal2;VarOrVal3 {
+	sprlmt(VarOrVal1,VarOrVal2,VarOrVal3);
+}
+
+:SPRWALKX VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x63; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
+	sprwalkx(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+
+:ALLSPRDISP is AdcOp & op_lsb=0x64 {
+	allsprdisp();
+}
+
+:MAPWRT VarOrVal1,VarOrVal2,addr is AdcOp & op_lsb=0x65; VarOrVal1;VarOrVal2;addr {
+	mapwrt(VarOrVal1,VarOrVal2,addr:4);
+}
+
+:SPRWAIT VarOrVal1 is AdcOp & op_lsb=0x66; VarOrVal1 {
+	sprwait(VarOrVal1);
+}
+
+:SEREQ VarOrVal1,addr is AdcOp & op_lsb=0x67; VarOrVal1;addr {
+	sereq(VarOrVal1,addr:4);
+}
+
+:SNDSTOP is AdcOp & op_lsb=0x68 {
+	sndstop();
+}
+
+:SESTOP addr is AdcOp & op_lsb=0x69; addr {
+	sestop(addr:4);
+}
+
+:BGMSTOP is AdcOp & op_lsb=0x6A {
+	bgmstop();
+}
+
+:DOORNOSET is AdcOp & op_lsb=0x6B {
+	doornoset();
+}
+
+:RAND Val1,Val2,VarOrVal1 is AdcOp & op_lsb=0x6C; Val1;Val2;VarOrVal1 {
+	rand(Val1,Val2,VarOrVal1);
+}
+
+:BTWAIT VarOrVal1 is AdcOp & op_lsb=0x6D; VarOrVal1 {
+	btwait(VarOrVal1);
+}
+
+:FAWAIT is AdcOp & op_lsb=0x6E {
+	fawait();
+}
+
+@include "sclblock.inc"
+
+:EVSTOP is AdcOp & op_lsb=0x70 {
+	evstop();
+}
+
+:SEREQPV VarOrVal1,VarOrVal2,VarOrVal3,addr is AdcOp & op_lsb=0x71; VarOrVal1;VarOrVal2;VarOrVal3;addr {
+	sereqpv(VarOrVal1,VarOrVal2,VarOrVal3,addr:4);
+}
+
+:SEREQSPR VarOrVal1,VarOrVal2,VarOrVal3,addr is AdcOp & op_lsb=0x72; VarOrVal1;VarOrVal2;VarOrVal3;addr {
+	sereqspr(VarOrVal1,VarOrVal2,VarOrVal3,addr:4);
+}
+
+:SCERESET is AdcOp & op_lsb=0x73 {
+	scereset();
+}
+
+:BGSPRENT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x74; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	bgsprent(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+
+:BGSPRPOS VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4 is AdcOp & op_lsb=0x75; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4 {
+	bgsprpos(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4);
+}
+
+:BGSPRSET VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x76; VarOrVal1;VarOrVal2 {
+	bgsprset(VarOrVal1,VarOrVal2);
+}
+
+:SLANTSET VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4 is AdcOp & op_lsb=0x77; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4 {
+	slantset(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4);
+}
+
+:SLANTCLR is AdcOp & op_lsb=0x78 {
+	slantclr();
+}
+
+:DUMMY is AdcOp & op_lsb=0x79 {
+	dummy();
+}
+
+@include "spcfunc.inc"
+
+:SEPAN VarOrVal1,addr is AdcOp & op_lsb=0x7B; VarOrVal1;addr {
+	sepan(VarOrVal1,addr:4);
+}
+
+:SEVOL VarOrVal1,addr is AdcOp & op_lsb=0x7C; VarOrVal1;addr {
+	sevol(VarOrVal1,addr:4);
+}
+
+:BGDISPTRN VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7 is AdcOp & op_lsb=0x7D; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
+	bgdisptrn(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7);
+}
+
+:DEBUG VarOrVal1 is AdcOp & op_lsb=0x7E; VarOrVal1 {
+	debug(VarOrVal1);
+}
+
+:TRACE VarOrVal1 is AdcOp & op_lsb=0x7F; VarOrVal1 {
+	trace(VarOrVal1);
+}
+
+:TMWAIT VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x80; VarOrVal1;VarOrVal2 {
+	tmwait(VarOrVal1,VarOrVal2);
+}
+
+:BGSPRANIM VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9 is AdcOp & op_lsb=0x81; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9 {
+	bgspranim(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9);
+}
+
+:ABSSPRENT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8 is AdcOp & op_lsb=0x82; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+	abssprent(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
+}
+
+:NEXTCOM Val is AdcOp & op_lsb=0x83; Val {
+	nextcom(Val);
+}
+
+:WORKCLR is AdcOp & op_lsb=0x84 {
+	workclr();
+}
+
+:BGBUFCLR VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x85; VarOrVal1;VarOrVal2 {
+	bgbufclr();
+}
+
+:ABSBGSPRENT VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x86; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+	absbgsprent(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
+}
+
+:AVIPLAY VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr is AdcOp & op_lsb=0x87; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;addr {
+	aviplay(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr:4);
+}
+
+:AVISTOP is AdcOp & op_lsb=0x88 {
+	avistop();
+}
+
+:SPRMARK VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5 is AdcOp & op_lsb=0x89; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5 {
+	sprmark(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5);
+}
+
+:BGMATTR VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x8A; VarOrVal1;VarOrVal2 {
+	bgmattr(VarOrVal1,VarOrVal2);
+}
+
+:STR00 is AdcOp & op_lsb=0x90 {} # just a strings filler
