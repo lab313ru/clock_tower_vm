@@ -16,15 +16,18 @@
 package adc_vm;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import generic.stl.Pair;
 import ghidra.app.cmd.disassemble.DisassembleCommand;
 import ghidra.app.plugin.core.equate.CreateEnumEquateCommand;
+import ghidra.app.plugin.core.reloc.InstructionStasher;
 import ghidra.app.util.Option;
 import ghidra.app.util.bin.BinaryReader;
 import ghidra.app.util.bin.ByteArrayProvider;
@@ -67,6 +70,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 	public static final long VARSF_BASE    = 0x0100F000L;
 	public static final long REFS_BASE     = 0x02000000L;
 	public static final long STRINGS_BASE  = 0x03000000L;
+	public static final long SJIS_BASE     = 0x04000000L;
 	
 	@Override
 	public String getName() {
@@ -100,7 +104,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		aOpts.setBoolean("Data Reference", false);
 		aOpts.setBoolean("Apply Data Archives", false);
 		aOpts.setBoolean("Embedded Media", false);
-		aOpts.setBoolean("Non-Returning Functions - Discovered", false);
+		//aOpts.setBoolean("Non-Returning Functions - Discovered", false);
 		aOpts.setBoolean("Scalar Operand References", false);
 		
 		String adtPath = program.getExecutablePath();
@@ -149,19 +153,19 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			return;
 		}
 		
-		if (!createVarsSegment(program, mem, "varsc", varsc, monitor, log)) {
+		if (!createVarsSegment(program, mem, "varsc", varsc, log)) {
 			return;
 		}
 		
-		if (!createVarsSegment(program, mem, "varsd", varsd, monitor, log)) {
+		if (!createVarsSegment(program, mem, "varsd", varsd, log)) {
 			return;
 		}
 		
-		if (!createVarsSegment(program, mem, "varse", varse, monitor, log)) {
+		if (!createVarsSegment(program, mem, "varse", varse, log)) {
 			return;
 		}
 		
-		if (!createVarsSegment(program, mem, "varsf", varsf, monitor, log)) {
+		if (!createVarsSegment(program, mem, "varsf", varsf, log)) {
 			return;
 		}
 		
@@ -192,6 +196,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		try {
 			preprocessIfWhile(vmData, vmBase, mem); // this call must be the first
 			preprocessStrings(vmData, vmBase, mem, ram, monitor);
+			preprocessSjisStrings(vmData, vmBase, mem, ram, monitor);
 		} catch (LockException | IllegalArgumentException | MemoryConflictException | AddressOverflowException
 				| CancelledException | AddressOutOfBoundsException | MemoryAccessException | CodeUnitInsertionException
 				| IOException e) {
@@ -200,9 +205,9 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		}
 	}
 	
-	private static boolean createVarsSegment(Program program, Memory mem, final String name, final Address start, TaskMonitor monitor, MessageLog log) {
+	private static boolean createVarsSegment(Program program, Memory mem, final String name, final Address start, MessageLog log) {
 		try {
-			MemoryBlock block = mem.createInitializedBlock(name, start, 0x800, (byte) 0x00, monitor, false);
+			MemoryBlock block = mem.createUninitializedBlock(name, start, 0x800, false);
 			block.setRead(true);
 			block.setWrite(true);
 			block.setExecute(false);
@@ -210,7 +215,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			for (var i = 0; i < block.getSize(); i += 2) {
 				DataUtilities.createData(program, start.add(i), WordDataType.dataType, WordDataType.dataType.getLength(), false, ClearDataMode.CLEAR_ALL_CONFLICT_DATA);
 			}
-		} catch (LockException | MemoryConflictException | AddressOverflowException | CancelledException | IllegalArgumentException | CodeUnitInsertionException e) {
+		} catch (LockException | MemoryConflictException | AddressOverflowException | IllegalArgumentException | CodeUnitInsertionException e) {
 			e.printStackTrace();
 			log.appendException(e);
 			return false;
@@ -228,7 +233,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		final var stringsBase = ram.getAddress(STRINGS_BASE);
 		var stringsCurr = stringsBase;
 		
-		var patchOffsets = new HashMap<Address, Pair<String, Integer>>();
+		var patchOffsets = new HashMap<Address, String>();
 		var instrOffsets = new ArrayList<Address>();
 		
 		while (vmReader.getPointerIndex() < size) {
@@ -249,7 +254,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
+				patchOffsets.put(patchAddr, str1);
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -264,20 +269,13 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str1, 0));
+				var str2 = readVmString(vmReader, size);
+				str1 = String.format("%s,%s", str1, str2);
+				patchOffsets.put(patchAddr, str1);
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
 					stringsCurr = stringsCurr.add(str1.length() + 1);
-				}
-				
-				patchAddr = patchAddr.add(4);
-				var str2 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str2, str1.length() + str2.length() - 4));
-				
-				if (!stringsAddrs.containsKey(str2)) {
-					stringsAddrs.put(str2, stringsCurr);
-					stringsCurr = stringsCurr.add(str2.length() + 1);
 				}
 			} break;
 			case 0xFF65: // MAPWRT
@@ -289,7 +287,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
+				patchOffsets.put(patchAddr, str1);
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -302,7 +300,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
+				patchOffsets.put(patchAddr, str1);
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -320,7 +318,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
+				patchOffsets.put(patchAddr, str1);
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -339,7 +337,7 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 				
 				var patchAddr = vmBase.add(vmReader.getPointerIndex());
 				var str1 = readVmString(vmReader, size);
-				patchOffsets.put(patchAddr, new Pair<>(str1, str1.length() - 2));
+				patchOffsets.put(patchAddr, str1);
 				
 				if (!stringsAddrs.containsKey(str1)) {
 					stringsAddrs.put(str1, stringsCurr);
@@ -348,34 +346,53 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			} break;
 			}
 		}
+		
+		var asciiLen = stringsCurr.subtract(stringsBase);
+		
+		if (asciiLen == 0) {
+			return;
+		}
 
-		MemoryBlock block = mem.createInitializedBlock("strings", stringsBase, stringsCurr.subtract(stringsBase), (byte) 0x00, monitor, false);
+		MemoryBlock block = mem.createInitializedBlock("strings", stringsBase, asciiLen, (byte) 0x00, monitor, false);
 		block.setRead(true);
 		block.setWrite(false);
 		block.setExecute(false);
 		
 		for (final var str : stringsAddrs.keySet()) {
 			final var strAddr = stringsAddrs.get(str);
-			mem.setBytes(strAddr, str.getBytes());
+			
+			InstructionStasher stasher = new InstructionStasher(mem.getProgram(), strAddr);
+			
+			mem.setBytes(strAddr, str.replaceAll("\u0000", "").getBytes());
 			DataUtilities.createData(mem.getProgram(), strAddr, TerminatedStringDataType.dataType, -1, false, ClearDataMode.CLEAR_ALL_CONFLICT_DATA);
+			
+			stasher.restore();
 		}
 		
 		for (final var patchAddr : patchOffsets.keySet()) {
-			final var strAndLen = patchOffsets.get(patchAddr);
-			final var strAddr = stringsAddrs.get(strAndLen.first);
+			final var str = patchOffsets.get(patchAddr);
+			final var strAddr = stringsAddrs.get(str);
+			
+			InstructionStasher stasher = new InstructionStasher(mem.getProgram(), patchAddr);
 			
 			mem.setInt(patchAddr, (int)strAddr.getOffset());
 			
-			var strLen = strAndLen.second;
+			var strLen = str.length() - 2;
 			int delta = 0;
 			
 			while (strLen > 0) {
+				InstructionStasher stasher2 = new InstructionStasher(mem.getProgram(), patchAddr.add(4).add(delta));
+				
 				final var fill = new byte[] {(byte) 0x90, (byte) 0xFF}; // custom STR00 opcode
 				mem.setBytes(patchAddr.add(4).add(delta), fill);
+				
+				stasher2.restore();
 				
 				delta += 2;
 				strLen -= 2;
 			}
+			
+			stasher.restore();
 		}
 		
 		for (final var instrOff : instrOffsets)  {
@@ -386,6 +403,123 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		applyAsciiStrings(vmData, vmBase, stringsAddrs, mem, monitor);
 	}
 	
+	private static void preprocessSjisStrings(final byte[] vmData, final Address vmBase, Memory mem, AddressSpace ram, TaskMonitor monitor) throws IOException, LockException, IllegalArgumentException, MemoryConflictException, AddressOverflowException, CancelledException, AddressOutOfBoundsException, MemoryAccessException, CodeUnitInsertionException {
+		final long size = vmData.length;
+
+		var vmReader = new BinaryReader(new ByteArrayProvider(vmData), true);
+		
+		var stringsAddrs = new HashMap<String, Address>();
+		final var stringsBase = ram.getAddress(SJIS_BASE);
+		var stringsCurr = stringsBase;
+		
+		var patchOffsets = new HashMap<Address, Pair<String, Integer>>();
+		var instrOffsets = new ArrayList<Address>();
+		
+		while (vmReader.getPointerIndex() < size) {
+			Address currAddr = vmBase.add(vmReader.getPointerIndex());
+			int opcode = vmReader.readNextUnsignedShort();
+			
+			switch (opcode) {
+			case 0xFF33: // MSGOUT
+			{
+				instrOffsets.add(currAddr);
+				
+				vmReader.readNextUnsignedShort();
+				vmReader.readNextUnsignedShort();
+				
+				var patchAddr = vmBase.add(vmReader.getPointerIndex());
+				var str1 = readVmSjisString(vmReader, size);
+				var zeroed = removeZeros(str1);
+				var putStr = prepareForEnum(zeroed);
+				
+				patchOffsets.put(patchAddr, new Pair<>(putStr, str1.length - 2));
+				
+				if (!stringsAddrs.containsKey(putStr)) {
+					stringsAddrs.put(putStr, stringsCurr);
+					stringsCurr = stringsCurr.add(zeroed.length + 1);
+				}
+			} break;
+			}
+		}
+		
+		var sjisLen = stringsCurr.subtract(stringsBase);
+		
+		if (sjisLen == 0) {
+			return;
+		}
+
+		MemoryBlock block = mem.createInitializedBlock("sjis", stringsBase, sjisLen, (byte) 0x00, monitor, false);
+		block.setRead(true);
+		block.setWrite(false);
+		block.setExecute(false);
+		
+		for (var str : stringsAddrs.keySet()) {
+			final var strAddr = stringsAddrs.get(str);
+			
+			InstructionStasher stasher = new InstructionStasher(mem.getProgram(), strAddr);
+			
+			try {
+				mem.setBytes(strAddr, str.getBytes("shift-jis"));
+				DataUtilities.createData(mem.getProgram(), strAddr, TerminatedStringDataType.dataType, -1, false, ClearDataMode.CLEAR_ALL_CONFLICT_DATA);
+			} catch (MemoryAccessException ex) {
+				System.out.println(ex.getMessage());
+			}
+			
+			stasher.restore();
+		}
+		
+		for (final var patchAddr : patchOffsets.keySet()) {
+			final var strAndLen = patchOffsets.get(patchAddr);
+			final var strAddr = stringsAddrs.get(strAndLen.first);
+			
+			InstructionStasher stasher = new InstructionStasher(mem.getProgram(), patchAddr);
+			
+			mem.setInt(patchAddr, (int)strAddr.getOffset());
+			
+			var strLen = strAndLen.second;
+			int delta = 0;
+			
+			while (strLen > 0) {
+				InstructionStasher stasher2 = new InstructionStasher(mem.getProgram(), patchAddr.add(4).add(delta));
+				
+				final var fill = new byte[] {(byte) 0x90, (byte) 0xFF}; // custom STR00 opcode
+				mem.setBytes(patchAddr.add(4).add(delta), fill);
+				
+				stasher2.restore();
+				
+				delta += 2;
+				strLen -= 2;
+			}
+			
+			stasher.restore();
+		}
+		
+		for (final var instrOff : instrOffsets)  {
+			DisassembleCommand cmd = new DisassembleCommand(instrOff, null, false);
+			cmd.applyTo(mem.getProgram(), monitor);
+		}
+		
+		applySjisStrings(vmData, vmBase, stringsAddrs, mem, monitor);
+	}
+	
+	private static String prepareForEnum(final byte[] bytes) throws UnsupportedEncodingException {
+		return new String(bytes, "shift-jis");
+	}
+	
+	private static byte[] removeZeros(final byte[] array) {
+		byte[] dest = array.clone();
+		int targetIndex = 0;
+		for( int sourceIndex = 0;  sourceIndex < array.length;  sourceIndex++ )
+		{
+		    if( dest[sourceIndex] != 0 )
+		    	dest[targetIndex++] = dest[sourceIndex];
+		}
+		byte[] newArray = new byte[targetIndex];
+		System.arraycopy( dest, 0, newArray, 0, targetIndex );
+		
+		return newArray;
+	}
+	
 	private static void applyAsciiStrings(final byte[] vmData, final Address vmBase, final Map<String, Address> stringsAddrs, Memory mem, TaskMonitor monitor) {
 		EnumDataType dt = new EnumDataType("strings", 4);
 		
@@ -393,6 +527,21 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 			final var strAddr = stringsAddrs.get(str);
 			
 			str = str.replaceAll("\u0000", "");
+			
+			dt.add(str, strAddr.getOffset());
+		}
+		
+		var set = new AddressSet(vmBase, vmBase.add(vmData.length));
+		
+		CreateEnumEquateCommand cmd = new CreateEnumEquateCommand(mem.getProgram(), set, dt, true);
+		cmd.applyTo(mem.getProgram(), monitor);
+	}
+	
+	private static void applySjisStrings(final byte[] vmData, final Address vmBase, final Map<String, Address> stringsAddrs, Memory mem, TaskMonitor monitor) {
+		EnumDataType dt = new EnumDataType("sjis", 4);
+		
+		for (final var str : stringsAddrs.keySet()) {
+			final var strAddr = stringsAddrs.get(str);
 			
 			dt.add(str, strAddr.getOffset());
 		}
@@ -418,6 +567,22 @@ public class adc_vmLoader extends AbstractLibrarySupportLoader {
 		}
 		
 		return result;
+	}
+	
+	private static byte[] readVmSjisString(BinaryReader reader, long size) throws IOException {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		
+		while (reader.getPointerIndex() < size) {
+			var word = reader.readNextByteArray(2);
+			
+			if (word[1] == (byte)0xFF && (word[0] == 0x20 || word[0] == 0x28 || word[0] == 0x36)) { // ALLEND, END, MSGWAIT
+				break;
+			}
+			
+			result.write(word);
+		}
+		
+		return result.toByteArray();
 	}
 	
 	private static void preprocessIfWhile(final byte[] vmData, final Address vmBase, Memory mem) throws IOException, MemoryAccessException {
