@@ -5,11 +5,6 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="ghidra_scripts"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/vk/.ghidra/.ghidra_10.0_PUBLIC/Extensions/adc_vm/lib/adc_vm.jar" sourcepath="C:/Users/vk/.ghidra/.ghidra_10.0_PUBLIC/Extensions/adc_vm/lib/adc_vm-src.zip">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/D:\ghidra_10.0_PUBLIC\docs\GhidraAPI_javadoc.zip!/api/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-11.0.11.9-hotspot"/>
 	<classpathentry kind="lib" path="D:/ghidra_10.0_PUBLIC/Ghidra/Processors/68000/lib/68000.jar" sourcepath="D:/ghidra_10.0_PUBLIC/Ghidra/Processors/68000/lib/68000-src.zip">
 		<attributes>

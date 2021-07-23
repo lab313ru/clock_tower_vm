@@ -2,4 +2,7 @@
 
 <processor_spec>
   <programcounter register="PC"/>
+  <properties>
+  	<property key="pcodeInjectLibraryClass" value="adc_vm.adc_vmPcodeInjectLibrary"/>
+  </properties>
 </processor_spec>

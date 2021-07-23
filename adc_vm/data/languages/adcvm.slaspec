@@ -371,6 +371,7 @@ define token jmpidx (16)
 
 define token fulladdr (32)
 	addr_1       = (0, 31)
+	addr_2       = (0, 31)
 ;
 
 Val1: imm16_1 is imm16_1 { c:2 = imm16_1; export c; }
@@ -894,10 +895,25 @@ VarOrVal84: Val84 is Val84 { export Val84; }
 AdcOp: is op_msb=0xFF {}
 
 
-JmpCallDst: (imm16_1) is imm16_1 {
-	c:4 = 0x02000000 + imm16_1 * 4;
-	export *:4 c;
-}
+JmpCallDst: (loc) is var4_1=0x0 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x1 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x2 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x3 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x4 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x5 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x6 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x7 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x8 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0x9 & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0xA & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0xB & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+
+JmpCallDst: (loc) is var4_1=0xC & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0xD & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0xE & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+JmpCallDst: (loc) is var4_1=0xF & imm16_1 [ loc = imm16_1 & 0xFFF; ] { c:4 = 0x02000000 + loc * 4;	export *:4 c; }
+
+JmpCallDst: imm16_1 is imm16_1 & imm16_2=0xFF1F { c:4 = imm16_1; export c; }
 
 VmEnd: is AdcOp & op_lsb=0x28 {}
 
@@ -1101,17 +1117,19 @@ define pcodeop workclr;
 	allend();
 }
 
-:JMP JmpCallDst is AdcOp & op_lsb=0x21; JmpCallDst {
-	goto [JmpCallDst];
+:JMP (imm16_1) is AdcOp & op_lsb=0x21; imm16_1 {
+	c:4 = cpool(0, imm16_1:4, 2:4);
+	goto [c];
 }
 
-:CALL JmpCallDst is AdcOp & op_lsb=0x22; JmpCallDst {
+:CALL (imm16_1) is AdcOp & op_lsb=0x22; imm16_1 {
 	RA = inst_next;
-	call [JmpCallDst];
+	c:4 = cpool(0, imm16_1:4, 2:4);
+	call [c];
 }
 
-:EVDEF Val1,VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x23; Val1; VarOrVal1; VarOrVal2 {
-	evdef(Val1,VarOrVal1,VarOrVal2);
+:EVDEF (JmpCallDst),VarOrVal1,VarOrVal2 is AdcOp & op_lsb=0x23; JmpCallDst; VarOrVal1; VarOrVal2 {
+	evdef(JmpCallDst,VarOrVal1,VarOrVal2);
 }
 
 :END is AdcOp & op_lsb=0x28 {
@@ -1172,7 +1190,8 @@ define pcodeop workclr;
 }
 
 :MSGOUT VarOrVal1,VarOrVal2,addr_1 is AdcOp & op_lsb=0x33; VarOrVal1; VarOrVal2; addr_1 {
-	msgout(VarOrVal1,VarOrVal2,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 0:4);
+	msgout(VarOrVal1,VarOrVal2,c);
 }
 
 @include "setmark.inc"
@@ -1186,15 +1205,18 @@ define pcodeop workclr;
 }
 
 :BGLOAD VarOrVal1,addr_1 is AdcOp & op_lsb=0x39; VarOrVal1; addr_1 {
-	bgload(VarOrVal1,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	bgload(VarOrVal1,c);
 }
 
 :PALLOAD VarOrVal1,addr_1 is AdcOp & op_lsb=0x3A; VarOrVal1; addr_1 {
-	palload(VarOrVal1,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	palload(VarOrVal1,c);
 }
 
 :BGMREQ VarOrVal1,addr_1 is AdcOp & op_lsb=0x3B; VarOrVal1; addr_1 {
-	bgmreq(VarOrVal1,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	bgmreq(VarOrVal1,c);
 }
 
 :SPRCLR VarOrVal1 is AdcOp & op_lsb=0x3C; VarOrVal1 {
@@ -1289,8 +1311,10 @@ define pcodeop workclr;
 	mapinit(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
 }
 
-:MAPLOAD VarOrVal1,addr_1 is AdcOp & op_lsb=0x53; VarOrVal1; addr_1 {
-	mapload(VarOrVal1,addr_1:4);
+:MAPLOAD VarOrVal1,addr_1,addr_2 is AdcOp & op_lsb=0x53; VarOrVal1; addr_1; addr_2 {
+	c1:4 = cpool(0, addr_1:4, 1:4);
+	c2:4 = cpool(0, addr_2:4, 1:4);
+	mapload(VarOrVal1,c1, c2);
 }
 
 :MAPDISP VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6 is AdcOp & op_lsb=0x54; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
@@ -1362,7 +1386,8 @@ define pcodeop workclr;
 }
 
 :MAPWRT VarOrVal1,VarOrVal2,addr_1 is AdcOp & op_lsb=0x65; VarOrVal1;VarOrVal2;addr_1 {
-	mapwrt(VarOrVal1,VarOrVal2,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	mapwrt(VarOrVal1,VarOrVal2,c);
 }
 
 :SPRWAIT VarOrVal1 is AdcOp & op_lsb=0x66; VarOrVal1 {
@@ -1370,7 +1395,8 @@ define pcodeop workclr;
 }
 
 :SEREQ VarOrVal1,addr_1 is AdcOp & op_lsb=0x67; VarOrVal1;addr_1 {
-	sereq(VarOrVal1,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	sereq(VarOrVal1,c);
 }
 
 :SNDSTOP is AdcOp & op_lsb=0x68 {
@@ -1378,7 +1404,8 @@ define pcodeop workclr;
 }
 
 :SESTOP addr_1 is AdcOp & op_lsb=0x69; addr_1 {
-	sestop(addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	sestop(c);
 }
 
 :BGMSTOP is AdcOp & op_lsb=0x6A {
@@ -1408,11 +1435,13 @@ define pcodeop workclr;
 }
 
 :SEREQPV VarOrVal1,VarOrVal2,VarOrVal3,addr_1 is AdcOp & op_lsb=0x71; VarOrVal1;VarOrVal2;VarOrVal3;addr_1 {
-	sereqpv(VarOrVal1,VarOrVal2,VarOrVal3,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	sereqpv(VarOrVal1,VarOrVal2,VarOrVal3,c);
 }
 
 :SEREQSPR VarOrVal1,VarOrVal2,VarOrVal3,addr_1 is AdcOp & op_lsb=0x72; VarOrVal1;VarOrVal2;VarOrVal3;addr_1 {
-	sereqspr(VarOrVal1,VarOrVal2,VarOrVal3,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	sereqspr(VarOrVal1,VarOrVal2,VarOrVal3,c);
 }
 
 :SCERESET is AdcOp & op_lsb=0x73 {
@@ -1443,43 +1472,45 @@ define pcodeop workclr;
 	dummy();
 }
 
-:SPCFUNC VarOrVal1 is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=0 {
+:SPCFUNC VarOrVal1 is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=0 {
 	spcfunc(VarOrVal1);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=1;VarOrVal3 {
+:SPCFUNC VarOrVal1,(VarOrVal3) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=1;VarOrVal3 {
 	spcfunc(VarOrVal1,VarOrVal3);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=2;VarOrVal3;VarOrVal4 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=2;VarOrVal3;VarOrVal4 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=3;VarOrVal3;VarOrVal4;VarOrVal5 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=3;VarOrVal3;VarOrVal4;VarOrVal5 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=4;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=4;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=5;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=5;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=6;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=6;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=7;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=7;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=8;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9;VarOrVal10 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=8;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9;VarOrVal10 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10);
 }
-:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10,VarOrVal11) is AdcOp & op_lsb=0x7A; VarOrVal1;VarOrVal2 & idx9_1=9;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9;VarOrVal10;VarOrVal11 {
+:SPCFUNC VarOrVal1,(VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10,VarOrVal11) is AdcOp & op_lsb=0x7A; VarOrVal1; idx9_1=9;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7;VarOrVal8;VarOrVal9;VarOrVal10;VarOrVal11 {
 	spcfunc(VarOrVal1,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7,VarOrVal8,VarOrVal9,VarOrVal10,VarOrVal11);
 }
 
 :SEPAN VarOrVal1,addr_1 is AdcOp & op_lsb=0x7B; VarOrVal1;addr_1 {
-	sepan(VarOrVal1,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	sepan(VarOrVal1,c);
 }
 
 :SEVOL VarOrVal1,addr_1 is AdcOp & op_lsb=0x7C; VarOrVal1;addr_1 {
-	sevol(VarOrVal1,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	sevol(VarOrVal1,c);
 }
 
 :BGDISPTRN VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,VarOrVal6,VarOrVal7 is AdcOp & op_lsb=0x7D; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;VarOrVal6;VarOrVal7 {
@@ -1523,7 +1554,8 @@ define pcodeop workclr;
 }
 
 :AVIPLAY VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr_1 is AdcOp & op_lsb=0x87; VarOrVal1;VarOrVal2;VarOrVal3;VarOrVal4;VarOrVal5;addr_1 {
-	aviplay(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,addr_1:4);
+	c:4 = cpool(0, addr_1:4, 1:4);
+	aviplay(VarOrVal1,VarOrVal2,VarOrVal3,VarOrVal4,VarOrVal5,c);
 }
 
 :AVISTOP is AdcOp & op_lsb=0x88 {
