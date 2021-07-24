@@ -250,7 +250,7 @@ public class adc_vmAnalyzer extends AbstractAnalyzer {
 			case "SEREQPV":
 			case "SEREQSPR":
 			{
-				var scalar = inst.getScalar(1);
+				var scalar = inst.getScalar(3);
 				
 				if (scalar == null) {
 					continue;
