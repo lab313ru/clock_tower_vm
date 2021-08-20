@@ -7,3 +7,15 @@
 *.db-wal
 *.opendb
 *.suo
+*.ipch
+*.lastbuildstate
+*.tlog
+*.log
+*.txt
+*.recipe
+*.ilk
+*.obj
+*.idb
+*.pdb
+*.iobj
+*.ipdb
