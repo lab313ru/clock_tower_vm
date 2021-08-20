@@ -78,7 +78,7 @@ void adcvm_t::handle_if_while_cond(const insn_t& insn, const op_t& op) const {
   }
 
   for (auto i = 0; i < (uint8)op.reg; ++i) {
-    uint16 cond = insn.ops[op.n + i].value;
+    uint16 cond = (uint16)insn.ops[op.n + i].value;
     uint16 var = insn.ops[op.n + i].addr_shorts.high;
     uint16 var_or_val = insn.ops[op.n + i].addr_shorts.low;
 

@@ -5,7 +5,7 @@ static const char* const regnames[] = {
   "cs", "ds"
 };
 
-static enum adcvm_regs {
+enum adcvm_regs {
   rVcs, rVds
 };
 

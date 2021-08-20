@@ -13,11 +13,11 @@ static void op_var(insn_t& insn, op_t& x) {
 static void op_var_or_val(insn_t& insn, op_t& x) {
   x.offb = (char)insn.size;
 
-  uint16 ref = x.value = insn.get_next_word();
-  bool isvar = is_var(ref);
+  x.value = insn.get_next_word();
+  bool isvar = is_var((uint16)x.value);
 
   if (isvar) {
-    x.addr = x.value = get_var_addr(ref);
+    x.addr = x.value = get_var_addr((uint16)x.value);
   }
   
   x.dtype = dt_word;
@@ -35,18 +35,18 @@ static void op_val16(insn_t& insn, op_t& x) {
 static void op_jump_call(insn_t& insn, op_t& x) {
   x.offb = (char)insn.size;
 
-  uint16 ref = x.value = insn.get_next_word();
+  x.value = insn.get_next_word();
   x.dtype = dt_code;
   x.type = o_near;
-  x.addr = get_jump_call_addr(ref);
+  x.addr = get_jump_call_addr((uint16)x.value);
 }
 
 static void op_evdef(insn_t& insn, op_t& x) {
   x.offb = (char)insn.size;
 
-  uint16 ref = x.value = insn.get_next_word();
+  x.value = insn.get_next_word();
 
-  if (ref == 0xFF1F) {
+  if ((uint16)x.value == 0xFF1F) {
     x.dtype = dt_word;
     x.type = o_imm;
   }
@@ -54,7 +54,7 @@ static void op_evdef(insn_t& insn, op_t& x) {
     x.value &= 0xFFF;
     x.dtype = dt_code;
     x.type = o_near;
-    x.addr = get_jump_call_addr(x.value);
+    x.addr = get_jump_call_addr((uint16)x.value);
   }
 }
 
@@ -172,12 +172,12 @@ static uint16 find_setmark_end(insn_t& insn) {
 static void op_if(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
   x.offb = (char)insn.size;
 
-  uint16 idx = x.value = insn.get_next_word();
-  x.addr = find_if_end(idx, insn.ea + insn.size);
+  x.value = insn.get_next_word();
+  x.addr = find_if_end((uint16)x.value, insn.ea + insn.size);
   x.dtype = dt_code;
   x.type = o_near;
 
-  ifs[idx] = x.addr;
+  ifs[(uint16)x.value] = x.addr;
 }
 
 static uint8 find_if_while_end(insn_t& insn) {
@@ -219,8 +219,8 @@ static void op_if_while_cond(insn_t& insn, op_t& x) {
 static void op_endif(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
   x.offb = (char)insn.size;
 
-  uint16 idx = x.value = insn.get_next_word();
-  x.addr = ifs[idx];
+  x.value = insn.get_next_word();
+  x.addr = ifs[(uint16)x.value];
   x.dtype = dt_word; // dt_code;
   x.type = o_imm; // o_near;
 }
@@ -228,19 +228,19 @@ static void op_endif(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
 static void op_while(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
   x.offb = (char)insn.size;
 
-  uint16 idx = x.value = insn.get_next_word();
-  x.addr = find_while_end(idx, insn.ea + insn.size);
+  x.value = insn.get_next_word();
+  x.addr = find_while_end((uint16)x.value, insn.ea + insn.size);
   x.dtype = dt_code;
   x.type = o_near;
 
-  whiles[idx] = insn.ea;
+  whiles[(uint16)x.value] = insn.ea;
 }
 
 static void op_endwhile(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
   x.offb = (char)insn.size;
 
-  uint16 idx = x.value = insn.get_next_word();
-  x.addr = whiles[idx];
+  x.value = insn.get_next_word();
+  x.addr = whiles[(uint16)x.value];
   x.dtype = dt_code;
   x.type = o_near;
 }
@@ -248,8 +248,8 @@ static void op_endwhile(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
 static void op_else(insn_t& insn, op_t& x) {
   x.offb = (char)insn.size;
 
-  uint16 idx = x.value = insn.get_next_word();
-  x.addr = find_else_end(idx, insn.ea + insn.size);
+  x.value = insn.get_next_word();
+  x.addr = find_else_end((uint16)x.value, insn.ea + insn.size);
   x.dtype = dt_code;
   x.type = o_near;
 }

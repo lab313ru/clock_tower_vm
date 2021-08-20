@@ -172,10 +172,10 @@ void out_adcvm_t::out_var_or_val_array(const op_t& x) {
 
 void out_adcvm_t::out_condition(const op_t& op) {
   out_symbol('(');
-  uint16 ands_count = op.value;
+  uint16 ands_count = (uint16)op.value;
 
   for (auto i = 0; i < (uint16)op.reg; ++i) {
-    uint16 cond = insn.ops[op.n + i].value;
+    uint16 cond = (uint16)insn.ops[op.n + i].value;
     uint16 var = insn.ops[op.n + i].addr_shorts.high;
     uint16 var_or_val = insn.ops[op.n + i].addr_shorts.low;
 

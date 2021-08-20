@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../idaidp.hpp"
+#include "idaidp.hpp"
 #include "ins.hpp"
 
 struct adcvm_t : public procmod_t {
