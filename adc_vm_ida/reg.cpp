@@ -5,6 +5,10 @@ static const char* const regnames[] = {
   "cs", "ds"
 };
 
+static enum adcvm_regs {
+  rVcs, rVds
+};
+
 static const asm_t adcasm = {
   AS_COLON | ASH_HEXF3,
   0,
@@ -55,10 +59,11 @@ static const asm_t adcasm = {
   AS2_BYTE1CHAR,// One symbol per processor byte
 };
 
-int data_id;
+static int data_id;
 
 ssize_t idaapi notify(void* user_data, int notification_code, va_list va) {
   if (notification_code == processor_t::ev_get_procmod) {
+    data_id = 0;
     return size_t(SET_MODULE_DATA(adcvm_t));
   }
 
@@ -133,12 +138,6 @@ ssize_t idaapi adcvm_t::on_event(ssize_t msgid, va_list va) {
   case processor_t::ev_is_call_insn: {
     const auto* insn = va_arg(va, const insn_t*);
     return (insn->itype == ADCVM_call) ? 1 : -1;
-  } break;
-  case processor_t::ev_creating_segm: {
-    auto* seg = va_arg(va, segment_t*);
-    seg->type = SEG_CODE;
-    seg->perm = SEGPERM_EXEC | SEGPERM_READ;
-    seg->defsr[rVds - ph.reg_first_sreg] = seg->sel;
   } break;
   case processor_t::ev_ana_insn: {
     auto* out = va_arg(va, insn_t*);

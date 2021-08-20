@@ -2,7 +2,7 @@
 
 const instruc_t Instructions[] = {
   { "", 0 },
-  { "ret", CF_STOP }, // RA -> PC
+  { "return", CF_STOP }, // RA -> PC
   { "div", CF_USE1 | CF_USE2 | CF_CHG1 }, // V = V / VAR_OR_VAL
   { "mul", CF_USE1 | CF_USE2 | CF_CHG1 }, // V = V * VAR_OR_VAL
   { "sub", CF_USE1 | CF_USE2 | CF_CHG1 }, // V = V - VAR_OR_VAL

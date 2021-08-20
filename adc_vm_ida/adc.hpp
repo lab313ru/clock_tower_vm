@@ -22,10 +22,6 @@ struct adcvm_t : public procmod_t {
   void op_cond(insn_t& insn, op_t& x) const;
 };
 
-enum adcvm_regs {
-  rVcs, rVds,
-};
-
 const ea_t VAR_BASE = 0x01000000;
 const uint16 VAR_C_BASE = 0xC000;
 const uint16 VAR_D_BASE = 0xD000;
