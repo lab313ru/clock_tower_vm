@@ -166,6 +166,7 @@ ssize_t idaapi adcvm_t::on_event(ssize_t msgid, va_list va) {
 adcvm_t::adcvm_t() {
   ifs.clear();
   whiles.clear();
+  cmp_dest = 0;
 }
 
 static const asm_t* const asms[] = { &adcasm, NULL };
