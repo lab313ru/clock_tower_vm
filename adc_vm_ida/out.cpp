@@ -219,11 +219,20 @@ void out_adcvm_t::out_condition(const op_t& op) {
 }
 
 void out_adcvm_t::out_insn(void) {
-  if (is_skippable_insn(insn.itype)) {
+  if (insn.itype == ADCVM_endif || insn.itype == ADCVM_else) {
+    out_tagon(COLOR_AUTOCMT);
+    out_line("// ");
+    out_line(insn.get_canon_mnem(ph));
+    out_line("(");
+    out_btoa(insn.Op1.value, 16);
+    out_line(")");
+    out_tagoff(COLOR_AUTOCMT);
+    flush_outbuf();
     return;
   }
 
   out_line(insn.get_canon_mnem(ph));
+
   out_symbol('(');
 
   int n = 0;

@@ -32,13 +32,37 @@ static void op_val16(insn_t& insn, op_t& x) {
   x.type = o_imm;
 }
 
-static void op_jump_call(insn_t& insn, op_t& x) {
+static bool spec_jump_is_next(ea_t next_off) {
+  uint16 next = get_word(next_off);
+  bool res = false;
+
+  if (next == 0xFF21) { // jmp
+    uint16 ref = get_word(next_off + 2);
+    ea_t ref_addr = get_jump_call_addr(ref);
+
+    res = ref_addr == (next_off + 6);
+  }
+
+  return res;
+}
+
+static bool ret_is_next(const insn_t& insn) {
+  uint16 next = get_word(insn.ea + insn.size);
+
+  return next == 0xFF00; // ret
+}
+
+static void op_jump_call(insn_t& insn, op_t& x, bool is_jump) {
   x.offb = (char)insn.size;
 
   x.value = insn.get_next_word();
   x.dtype = dt_code;
   x.type = o_near;
   x.addr = get_jump_call_addr((uint16)x.value);
+
+  if (is_jump && ret_is_next(insn)) {
+    insn.size += 2; // + ret
+  }
 }
 
 static void op_evdef(insn_t& insn, op_t& x) {
@@ -169,11 +193,16 @@ static uint16 find_setmark_end(insn_t& insn) {
   return len;
 }
 
+static uint16 get_if_while_delta(ea_t dest) {
+  return spec_jump_is_next(dest) ? 6 : 0;
+}
+
 static void op_if(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
   x.offb = (char)insn.size;
 
   x.value = insn.get_next_word();
   x.addr = find_if_end((uint16)x.value, insn.ea + insn.size);
+  x.addr += get_if_while_delta(x.addr);
   x.dtype = dt_code;
   x.type = o_near;
 
@@ -221,8 +250,8 @@ static void op_endif(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
 
   x.value = insn.get_next_word();
   x.addr = ifs[(uint16)x.value];
-  x.dtype = dt_word; // dt_code;
-  x.type = o_imm; // o_near;
+  x.dtype = dt_code;
+  x.type = o_near;
 }
 
 static void op_while(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
@@ -230,6 +259,7 @@ static void op_while(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
 
   x.value = insn.get_next_word();
   x.addr = find_while_end((uint16)x.value, insn.ea + insn.size);
+  x.addr += get_if_while_delta(x.addr);
   x.dtype = dt_code;
   x.type = o_near;
 
@@ -394,11 +424,11 @@ int idaapi adcvm_t::ana(insn_t* _insn) {
   } break;
   case 0xFF21: {
     insn.itype = ADCVM_jmp;
-    op_jump_call(insn, insn.Op1);
+    op_jump_call(insn, insn.Op1, true);
   } break;
   case 0xFF22: {
     insn.itype = ADCVM_call;
-    op_jump_call(insn, insn.Op1);
+    op_jump_call(insn, insn.Op1, false);
   } break;
   case 0xFF23: {
     insn.itype = ADCVM_evdef;
@@ -933,6 +963,13 @@ int idaapi adcvm_t::ana(insn_t* _insn) {
   } break;
   default:
     return 0;
+  }
+
+  if (!is_jump_call_insn(insn.itype) && spec_jump_is_next(insn.ea + insn.size)) {
+    //insn.Op1.specflag1 |= 0x100;
+    //insn.Op1.specval = insn.ea + insn.size + 6;
+    insn.size += 6;
+    //msg("%a %a\n", insn.ea, insn.ea + insn.size);
   }
 
   return insn.size;

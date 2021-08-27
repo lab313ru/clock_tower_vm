@@ -36,4 +36,3 @@ bool is_var(uint16 ref);
 bool is_jump_call_insn(uint16 itype);
 bool is_cond_insn(uint16 itype);
 bool is_cond_opcode(uint16 opcode);
-bool is_skippable_insn(uint16 itype);

@@ -23,10 +23,10 @@ static const asm_t adcasm = {
   '\'',         // char delimiter
   "\"'",        // special symbols in char and string constants
 
-  "dc",         // ascii string directive
-  "dcb",        // byte directive
-  "dc",         // word directive
-  NULL,         // double words
+  "ds",         // ascii string directive
+  "db",        // byte directive
+  "dw",         // word directive
+  "dd",         // double words
   NULL,         // qwords
   NULL,         // oword  (16 bytes)
   NULL,         // float  (4 bytes)

@@ -50,9 +50,3 @@ bool is_cond_opcode(uint16 opcode) {
     opcode == 0xFF16    // LEQ
     );
 }
-
-bool is_skippable_insn(uint16 itype) {
-  return (
-    itype == ADCVM_endif
-    );
-}
