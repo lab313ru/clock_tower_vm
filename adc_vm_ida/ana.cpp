@@ -48,8 +48,17 @@ static bool spec_jump_is_next(ea_t next_off) {
 
 static bool ret_is_next(const insn_t& insn) {
   uint16 next = get_word(insn.ea + insn.size);
-
   return next == 0xFF00; // ret
+}
+
+static bool endif_is_next(const insn_t& insn) {
+  uint16 next = get_word(insn.ea + insn.size);
+  return next == 0xFF2D; // endif
+}
+
+static bool else_is_next(const insn_t& insn) {
+  uint16 next = get_word(insn.ea + insn.size);
+  return next == 0xFF2F; // else
 }
 
 static void op_jump_call(insn_t& insn, op_t& x, bool is_jump) {
@@ -60,8 +69,13 @@ static void op_jump_call(insn_t& insn, op_t& x, bool is_jump) {
   x.type = o_near;
   x.addr = get_jump_call_addr((uint16)x.value);
 
-  if (is_jump && ret_is_next(insn)) {
-    insn.size += 2; // + ret
+  if (is_jump) {
+    if (ret_is_next(insn)) {
+      insn.size += 2; // + ret
+    }
+    else if (endif_is_next(insn) || else_is_next(insn)) {
+      insn.size += 4; // + endif | else
+    }
   }
 }
 
@@ -200,11 +214,13 @@ static uint16 get_if_while_delta(ea_t dest) {
 static void op_if(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
   x.offb = (char)insn.size;
 
-  x.value = insn.get_next_word();
+  x.value = insn.get_next_word(); // id
+  x.reg = insn.get_next_word(); // cmp_mode
   x.addr = find_if_end((uint16)x.value, insn.ea + insn.size);
   x.addr += get_if_while_delta(x.addr);
   x.dtype = dt_code;
   x.type = o_near;
+  x.clr_shown();
 
   ifs[(uint16)x.value] = x.addr;
 }
@@ -239,7 +255,6 @@ static uint8 find_if_while_end(insn_t& insn) {
 static void op_if_while_cond(insn_t& insn, op_t& x) {
   x.offb = (char)insn.size;
 
-  x.value = insn.get_next_word(); // ands_count
   x.reg = find_if_while_end(insn); // conditions count
   x.dtype = dt_word;
   x.type = o_imm;
@@ -254,23 +269,25 @@ static void op_endif(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
   x.type = o_near;
 }
 
-static void op_while(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
+static void op_while(insn_t& insn, op_t& x, std::map<uint64, ea_t>& whiles) {
   x.offb = (char)insn.size;
 
   x.value = insn.get_next_word();
+  x.reg = insn.get_next_word(); // cmp_mode
   x.addr = find_while_end((uint16)x.value, insn.ea + insn.size);
-  x.addr += get_if_while_delta(x.addr);
   x.dtype = dt_code;
   x.type = o_near;
+  x.clr_shown();
 
-  whiles[(uint16)x.value] = insn.ea;
+  whiles[((x.addr - 4) << 16) | (uint16)x.value] = insn.ea;
+  x.addr += get_if_while_delta(x.addr);
 }
 
-static void op_endwhile(insn_t& insn, op_t& x, std::map<uint16, ea_t>& whiles) {
+static void op_endwhile(insn_t& insn, op_t& x, std::map<uint64, ea_t>& whiles) {
   x.offb = (char)insn.size;
 
   x.value = insn.get_next_word();
-  x.addr = whiles[(uint16)x.value];
+  x.addr = whiles[(insn.ea << 16) | (uint16)x.value];
   x.dtype = dt_code;
   x.type = o_near;
 }
@@ -966,10 +983,7 @@ int idaapi adcvm_t::ana(insn_t* _insn) {
   }
 
   if (!is_jump_call_insn(insn.itype) && spec_jump_is_next(insn.ea + insn.size)) {
-    //insn.Op1.specflag1 |= 0x100;
-    //insn.Op1.specval = insn.ea + insn.size + 6;
     insn.size += 6;
-    //msg("%a %a\n", insn.ea, insn.ea + insn.size);
   }
 
   return insn.size;

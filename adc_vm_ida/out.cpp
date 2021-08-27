@@ -13,7 +13,7 @@ public:
   void out_var_or_val_by_ref(uint16 ref);
   void out_val16(ea_t addr);
   void out_var_or_val_array(const op_t& x);
-  void out_condition(const op_t& x);
+  void out_condition(uint16 cmp_mode, const op_t& x);
 };
 CASSERT(sizeof(out_adcvm_t) == sizeof(outctx_t));
 
@@ -170,9 +170,9 @@ void out_adcvm_t::out_var_or_val_array(const op_t& x) {
   out_symbol('}');
 }
 
-void out_adcvm_t::out_condition(const op_t& op) {
+void out_adcvm_t::out_condition(uint16 cmp_mode, const op_t& op) {
+  out_symbol('!');
   out_symbol('(');
-  uint16 ands_count = (uint16)op.value;
 
   for (auto i = 0; i < (uint16)op.reg; ++i) {
     uint16 cond = (uint16)insn.ops[op.n + i].value;
@@ -205,9 +205,8 @@ void out_adcvm_t::out_condition(const op_t& op) {
     out_var_or_val_by_ref(var_or_val);
 
     if ((i + 1 < (uint16)op.reg)) {
-      if (ands_count > 0) {
+      if (cmp_mode == 1) {
         out_line(" && ", COLOR_SYMBOL);
-        ands_count--;
       }
       else {
         out_line(" || ", COLOR_SYMBOL);
@@ -332,7 +331,7 @@ void out_adcvm_t::out_insn(void) {
     case ADCVM_if:
     case ADCVM_while: {
       if (n == 1) {
-        out_condition(insn.ops[n]);
+        out_condition((uint16)insn.ops[n-1].reg, insn.ops[n]);
         drawn = true;
       }
     } break;

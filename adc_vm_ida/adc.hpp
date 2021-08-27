@@ -4,7 +4,7 @@
 #include "ins.hpp"
 
 struct adcvm_t : public procmod_t {
-  std::map<uint16, ea_t> whiles;
+  std::map<uint64, ea_t> whiles;
   std::map<uint16, ea_t> ifs;
 
   ea_t cmp_dest;

@@ -128,15 +128,8 @@ int adcvm_t::emu(const insn_t& insn) const {
   handle_if_while_cond(insn, insn.Op2);
   handle_evdef(insn);
 
-  bool spec_jump = (insn.Op1.specflag1 & 0x100);
-
   if (flow) {
-    if (!spec_jump) {
-      add_cref(insn.ea, insn.ea + insn.size, fl_F);
-    }
-    else {
-      add_cref(insn.ea, insn.Op1.specval, fl_F);
-    }
+    add_cref(insn.ea, insn.ea + insn.size, fl_F);
   }
 
   return 1;
