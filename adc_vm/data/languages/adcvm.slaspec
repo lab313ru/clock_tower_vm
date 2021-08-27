@@ -15,7 +15,7 @@ define space refs    type=ram_space      size=4  ;
 
 define space register type=register_space size=4;
 
-define register offset=0 size=4 [PC SP RA DUMMY RESULT pairs_read pairs_true cmp_dest ands_count];
+define register offset=0 size=4 [PC SP RA DUMMY RESULT pairs_read pairs_true cmp_dest cmp_mode];
 
 ################################################################
 
@@ -1096,8 +1096,8 @@ define pcodeop workclr;
 } 
 
 :CMP_END is AdcOp & op_lsb=0x1F {
-	if (ands_count==1 && pairs_true!=0) goto <next>;
-	if (pairs_true==pairs_read) goto <next>;
+	if (cmp_mode==2 && pairs_true>0) goto <next>;
+	if (cmp_mode==1 && pairs_true==pairs_read) goto <next>;
 	
 	goto <exit>;
 	
@@ -1142,7 +1142,7 @@ define pcodeop workclr;
 	pairs_true = 0;
 	pairs_read = 0;
 	cmp_dest = loc;
-	ands_count = imm16_2;
+	cmp_mode = imm16_2;
 }
 
 :WHILE (loc),imm16_2 is AdcOp & op_lsb=0x2A; imm16_1; imm16_2 [
@@ -1151,7 +1151,7 @@ define pcodeop workclr;
 	pairs_true = 0;
 	pairs_read = 0;
 	cmp_dest = loc;
-	ands_count = imm16_2;
+	cmp_mode = imm16_2;
 }
 
 :NOP is AdcOp & op_lsb=0x2B {
