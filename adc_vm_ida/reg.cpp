@@ -9,6 +9,23 @@ enum adcvm_regs {
   rVcs, rVds
 };
 
+static void idaapi func_header(outctx_t& ctx, func_t* pfn) {
+  ctx.gen_func_header(pfn);
+
+  if (ctx.curlabel.empty()) {
+    return;
+  }
+
+  ctx.gen_printf(0, "static void %s" COLSTR("() {", SCOLOR_SYMBOL),
+    ctx.curlabel.begin()
+  );
+  ctx.ctxflags |= CTXF_LABEL_OK;
+}
+
+static void idaapi func_footer(outctx_t& ctx, func_t* pfn) {
+  ctx.gen_printf(0, COLSTR("}", SCOLOR_SYMBOL));
+}
+
 static const asm_t adcasm = {
   AS_COLON | ASH_HEXF3,
   0,
@@ -18,7 +35,7 @@ static const asm_t adcasm = {
   "org",        // org
   "end",        // end
 
-  ";",          // comment string
+  "//",          // comment string
   '"',          // string delimiter
   '\'',         // char delimiter
   "\"'",        // special symbols in char and string constants
@@ -38,8 +55,8 @@ static const asm_t adcasm = {
   "equ",        // equ
   NULL,         // 'seg' prefix (example: push seg seg001)
   "*",          // current IP (instruction pointer)
-  NULL,         // func_header
-  NULL,         // func_footer
+  func_header,  // func_header
+  func_footer,         // func_footer
   "global",     // "public" name keyword
   NULL,         // "weak"   name keyword
   "xref",       // "extrn"  name keyword
@@ -117,7 +134,7 @@ ssize_t idaapi adcvm_t::on_event(ssize_t msgid, va_list va) {
   switch (msgid) {
   case processor_t::ev_init: {
     inf_set_be(false);
-    inf_set_gen_lzero(true);
+    //inf_set_gen_lzero(true);
   } break;
   case processor_t::ev_term: {
     clr_module_data(data_id);

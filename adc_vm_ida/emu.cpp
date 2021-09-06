@@ -19,7 +19,7 @@ void adcvm_t::handle_operand(const insn_t& insn, const op_t& op, bool isload) co
       case ADCVM_jmp: {
         insn_t next;
         if (decode_insn(&next, insn.ea + insn.size)) {
-          if (next.itype == ADCVM_endif || next.itype == ADCVM_else) { // to jmp + endif/else
+          if (next.itype == ADCVM_endif || next.itype == ADCVM_else || next.itype == ADCVM_ret) { // to jmp + endif/else
             auto_make_code(next.ea);
           }
         }
@@ -30,7 +30,7 @@ void adcvm_t::handle_operand(const insn_t& insn, const op_t& op, bool isload) co
       }
     }
     else if (is_cond_insn(insn.itype)) {
-      insn.add_cref(op.addr, op.offb, fl_JN);
+      //insn.add_cref(op.addr, op.offb, fl_JN);
     }
     else {
       insn.add_dref(op.addr, op.offb, dr_O);

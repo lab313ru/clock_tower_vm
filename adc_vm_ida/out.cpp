@@ -51,6 +51,10 @@ void out_adcvm_t::out_str_ascii(const op_t& x) {
       continue;
     }
 
+    if (b == '\\') {
+      out_char('\\');
+    }
+
     out_char(b);
   }
 
@@ -129,6 +133,7 @@ void out_adcvm_t::out_val16(ea_t addr) {
 }
 
 void out_adcvm_t::out_setmark(const op_t& x) {
+  out_line("setmark_t marks[] = {");
   for (auto i = 0; i < (uint16)x.value; ++i) {
     out_symbol('{');
 
@@ -153,9 +158,17 @@ void out_adcvm_t::out_setmark(const op_t& x) {
       out_char(' ');
     }
   }
+
+  out_symbol('}');
+  out_symbol(';');
 }
 
 void out_adcvm_t::out_var_or_val_array(const op_t& x) {
+  if ((uint16)x.value == 0) {
+    out_line("NULL");
+    return;
+  }
+
   out_symbol('{');
 
   for (auto i = 0; i < (uint16)x.value; ++i) {
@@ -171,8 +184,8 @@ void out_adcvm_t::out_var_or_val_array(const op_t& x) {
 }
 
 void out_adcvm_t::out_condition(uint16 cmp_mode, const op_t& op) {
-  out_symbol('!');
-  out_symbol('(');
+  //out_symbol('!');
+  //out_symbol('(');
 
   for (auto i = 0; i < (uint16)op.reg; ++i) {
     uint16 cond = (uint16)insn.ops[op.n + i].value;
@@ -214,25 +227,118 @@ void out_adcvm_t::out_condition(uint16 cmp_mode, const op_t& op) {
     }
   }
 
-  out_symbol(')');
+  //out_symbol(')');
 }
 
 void out_adcvm_t::out_insn(void) {
-  if (insn.itype == ADCVM_endif || insn.itype == ADCVM_else) {
+  if (insn.itype == ADCVM_endif || insn.itype == ADCVM_else || insn.itype == ADCVM_endwhile) {
+    //if (insn.itype != ADCVM_else) {
+      out_symbol('}');
+      out_char(' ');
+    //}
+
+    if (insn.itype == ADCVM_else) {
+      out_line("else", COLOR_SYMBOL);
+      out_char(' ');
+      out_symbol('{');
+      out_char(' ');
+    }
+
     out_tagon(COLOR_AUTOCMT);
-    out_line("// ");
+    out_line("//");
+    out_char(' ');
     out_line(insn.get_canon_mnem(ph));
     out_line("(");
     out_btoa(insn.Op1.value, 16);
     out_line(")");
     out_tagoff(COLOR_AUTOCMT);
+
     flush_outbuf();
     return;
   }
 
-  out_line(insn.get_canon_mnem(ph));
+  if (insn.itype == ADCVM_setmark) {
+    out_setmark(insn.Op1);
+    out_char(' ');
+    out_line(insn.get_canon_mnem(ph));
+    out_symbol('(');
+    out_line("marks");
+    out_symbol(')');
+    out_symbol(';');
 
-  out_symbol('(');
+    flush_outbuf();
+    return;
+  }
+
+  if (insn.itype == ADCVM_sclblock) {
+    out_line("uint16_t scl1[] = ");
+    out_var_or_val_array(insn.ops[0]);
+    out_symbol(';');
+    out_char(' ');
+
+    out_line("uint16_t scl2[] = ");
+    out_var_or_val_array(insn.ops[1]);
+    out_symbol(';');
+    out_char(' ');
+
+    out_line(insn.get_canon_mnem(ph));
+    out_symbol('(');
+    out_line("scl1");
+    out_symbol(',');
+    out_char(' ');
+    out_line("scl2");
+    out_symbol(')');
+    out_symbol(';');
+
+    flush_outbuf();
+    return;
+  }
+
+  if (insn.itype == ADCVM_spcfunc) {
+    out_line("uint16_t spc[] = ");
+    out_var_or_val_array(insn.ops[1]);
+    out_symbol(';');
+    out_char(' ');
+
+    out_line(insn.get_canon_mnem(ph));
+    out_symbol('(');
+    out_operand(insn.Op1);
+    out_symbol(',');
+    out_char(' ');
+
+    out_line("spc");
+    out_symbol(')');
+    out_symbol(';');
+
+    flush_outbuf();
+    return;
+  }
+
+  bool is_var_chg_or_call = true;
+
+  if (
+    insn.itype != ADCVM_mov &&
+    insn.itype != ADCVM_div &&
+    insn.itype != ADCVM_mul &&
+    insn.itype != ADCVM_sub &&
+    insn.itype != ADCVM_add &&
+    insn.itype != ADCVM_dec &&
+    insn.itype != ADCVM_inc &&
+    insn.itype != ADCVM_call
+    ) {
+    out_line(insn.get_canon_mnem(ph));
+    is_var_chg_or_call = false;
+  }
+
+  if (insn.itype == ADCVM_ret) {
+    out_symbol(';');
+    flush_outbuf();
+    return;
+  }
+
+  if (!is_var_chg_or_call) {
+    out_symbol('(');
+  }
 
   int n = 0;
   while (n < UA_MAXOP) {
@@ -248,7 +354,15 @@ void out_adcvm_t::out_insn(void) {
     bool drawn = false;
 
     switch (insn.itype) {
-    case ADCVM_bgload: 
+    case ADCVM_evdef: {
+      if (n == 0) {
+        if ((uint16)insn.ops[n].value == 0xFF1F) {
+          out_line("NULL");
+          drawn = true;
+        }
+      }
+    } break;
+    case ADCVM_bgload:
     case ADCVM_palload:
     case ADCVM_bgmreq:
     case ADCVM_sereq:
@@ -296,27 +410,32 @@ void out_adcvm_t::out_insn(void) {
         drawn = true;
       }
     } break;
+    case ADCVM_rand: {
+      if (n == 2) {
+        out_symbol('&');
+      }
+    } break;
     }
 
     switch (insn.itype) {
-    case ADCVM_setmark: {
-      if (n == 0) {
-        out_setmark(insn.ops[n]);
-        drawn = true;
-      }
-    } break;
-    case ADCVM_sclblock: {
+      /*case ADCVM_setmark: {
+        if (n == 0) {
+          out_setmark(insn.ops[n]);
+          drawn = true;
+        }
+      } break;*/
+    /*case ADCVM_sclblock: {
       if (n == 0 || n == 1) {
         out_var_or_val_array(insn.ops[n]);
         drawn = true;
       }
-    } break;
-    case ADCVM_spcfunc: {
+    } break;*/
+    /*case ADCVM_spcfunc: {
       if (n == 1) {
         out_var_or_val_array(insn.ops[n]);
         drawn = true;
       }
-    } break;
+    } break;*/
     case ADCVM_bgspranim: {
       if (n == 7) {
         out_one_operand(n);
@@ -342,14 +461,82 @@ void out_adcvm_t::out_insn(void) {
     }
 
     if (n + 1 < UA_MAXOP && insn.ops[n + 1].type != o_void) {
-      out_symbol(',');
-      out_char(' ');
+      if (!is_var_chg_or_call) {
+        out_symbol(',');
+        out_char(' ');
+      }
+      else {
+        switch (insn.itype) {
+        case ADCVM_mov: {
+          out_char(' ');
+          out_symbol('=');
+          out_char(' ');
+        } break;
+        case ADCVM_div: {
+          out_char(' ');
+          out_symbol('/');
+          out_symbol('=');
+          out_char(' ');
+        } break;
+        case ADCVM_mul: {
+          out_char(' ');
+          out_symbol('*');
+          out_symbol('=');
+          out_char(' ');
+        } break;
+        case ADCVM_sub: {
+          out_char(' ');
+          out_symbol('-');
+          out_symbol('=');
+          out_char(' ');
+        } break;
+        case ADCVM_add: {
+          out_char(' ');
+          out_symbol('+');
+          out_symbol('=');
+          out_char(' ');
+        } break;
+        case ADCVM_dec: {
+          out_symbol('-');
+          out_symbol('-');
+        } break;
+        case ADCVM_inc: {
+          out_symbol('+');
+          out_symbol('+');
+        } break;
+        }
+      }
     }
 
     n++;
   }
 
-  out_symbol(')');
+  if (!is_var_chg_or_call) {
+    out_symbol(')');
+  }
+
+  if (insn.itype == ADCVM_if || insn.itype == ADCVM_while) {
+    out_symbol('{');
+    out_char(' ');
+    
+    out_tagon(COLOR_AUTOCMT);
+    out_line("//");
+    out_char(' ');
+    out_line("(");
+    out_btoa(insn.Op1.value, 16);
+    out_line(")");
+    out_tagoff(COLOR_AUTOCMT);
+
+    flush_outbuf();
+    return;
+  }
+
+  if (insn.itype == ADCVM_call) {
+    out_symbol('(');
+    out_symbol(')');
+  }
+
+  out_symbol(';');
 
   flush_outbuf();
 }

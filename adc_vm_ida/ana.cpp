@@ -70,12 +70,12 @@ static void op_jump_call(insn_t& insn, op_t& x, bool is_jump) {
   x.addr = get_jump_call_addr((uint16)x.value);
 
   if (is_jump) {
-    if (ret_is_next(insn)) {
-      insn.size += 2; // + ret
-    }
-    else if (endif_is_next(insn) || else_is_next(insn)) {
-      insn.size += 4; // + endif | else
-    }
+    //if (ret_is_next(insn)) {
+    //  insn.size += 2; // + ret
+    //}
+    //else if (endif_is_next(insn) || else_is_next(insn)) {
+    //  insn.size += 4; // + endif | else
+    //}
   }
 }
 
@@ -217,7 +217,7 @@ static void op_if(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
   x.value = insn.get_next_word(); // id
   x.reg = insn.get_next_word(); // cmp_mode
   x.addr = find_if_end((uint16)x.value, insn.ea + insn.size);
-  x.addr += get_if_while_delta(x.addr);
+  //x.addr += get_if_while_delta(x.addr);
   x.dtype = dt_code;
   x.type = o_near;
   x.clr_shown();
@@ -265,8 +265,8 @@ static void op_endif(insn_t& insn, op_t& x, std::map<uint16, ea_t>& ifs) {
 
   x.value = insn.get_next_word();
   x.addr = ifs[(uint16)x.value];
-  x.dtype = dt_code;
-  x.type = o_near;
+  x.dtype = dt_word; // dt_code;
+  x.type = o_imm; // o_near;
 }
 
 static void op_while(insn_t& insn, op_t& x, std::map<uint64, ea_t>& whiles) {
@@ -280,7 +280,7 @@ static void op_while(insn_t& insn, op_t& x, std::map<uint64, ea_t>& whiles) {
   x.clr_shown();
 
   whiles[((x.addr - 4) << 16) | (uint16)x.value] = insn.ea;
-  x.addr += get_if_while_delta(x.addr);
+  //x.addr += get_if_while_delta(x.addr);
 }
 
 static void op_endwhile(insn_t& insn, op_t& x, std::map<uint64, ea_t>& whiles) {
@@ -288,17 +288,17 @@ static void op_endwhile(insn_t& insn, op_t& x, std::map<uint64, ea_t>& whiles) {
 
   x.value = insn.get_next_word();
   x.addr = whiles[(insn.ea << 16) | (uint16)x.value];
-  x.dtype = dt_code;
-  x.type = o_near;
+  x.dtype = dt_word; // dt_code;
+  x.type = o_imm; // o_near;
 }
 
 static void op_else(insn_t& insn, op_t& x) {
   x.offb = (char)insn.size;
 
-  x.value = insn.get_next_word();
+  x.value = insn.get_next_word(); // id
   x.addr = find_else_end((uint16)x.value, insn.ea + insn.size);
-  x.dtype = dt_code;
-  x.type = o_near;
+  x.dtype = dt_word; // dt_code;
+  x.type = o_imm; // o_near;
 }
 
 static void op_str_ascii(insn_t& insn, op_t& x) {
@@ -982,9 +982,9 @@ int idaapi adcvm_t::ana(insn_t* _insn) {
     return 0;
   }
 
-  if (!is_jump_call_insn(insn.itype) && spec_jump_is_next(insn.ea + insn.size)) {
-    insn.size += 6;
-  }
+  //if (!is_jump_call_insn(insn.itype) && spec_jump_is_next(insn.ea + insn.size)) {
+  //  insn.size += 6;
+  //}
 
   return insn.size;
 }
