@@ -5,7 +5,7 @@ ea_t get_var_addr(uint16 ref) {
   auto index = (ref & 0x3FF) << 1;
 
   switch (type) {
-  case 0x00: return VAR_BASE + VAR_D_BASE + index;
+  case 0x00: return VAR_BASE + VARD_BASE + index;
   default: return VAR_BASE + type * 0x1000 + index;
   }
 }

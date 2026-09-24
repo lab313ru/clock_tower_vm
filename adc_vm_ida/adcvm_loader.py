@@ -1,5 +1,6 @@
 import ida_idp
 import idaapi
+import idc
 
 
 FILE_OFFSET = 0x100
@@ -18,8 +19,8 @@ def accept_file(li, filename):
 def load_file(li, neflags, format):
     idaapi.set_processor_type('adcvm', ida_idp.SETPROC_LOADER)
 
-    idaapi.cvar.inf.af = idaapi.AF_CODE | idaapi.AF_USED | idaapi.AF_UNK | idaapi.AF_PROC | idaapi.AF_ANORET | \
-        idaapi.AF_MEMFUNC | idaapi.AF_TRFUNC | idaapi.AF_FIXUP | idaapi.AF_JFUNC | idaapi.AF_NULLSUB
+    idc.set_inf_attr(idc.INF_AF, idaapi.AF_CODE | idaapi.AF_USED | idaapi.AF_UNK | idaapi.AF_PROC | idaapi.AF_ANORET | \
+        idaapi.AF_MEMFUNC | idaapi.AF_TRFUNC | idaapi.AF_FIXUP | idaapi.AF_JFUNC | idaapi.AF_NULLSUB)
 
     li.seek(FILE_OFFSET)
     data = li.read(li.size() - FILE_OFFSET)

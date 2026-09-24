@@ -23,11 +23,14 @@ struct adcvm_t : public procmod_t {
 };
 
 const ea_t VAR_BASE = 0x01000000;
-const uint16 VAR_C_BASE = 0xC000;
-const uint16 VAR_D_BASE = 0xD000;
-const uint16 VAR_E_BASE = 0xE000;
-const uint16 VAR_F_BASE = 0xF000;
-const uint16 VARS_SIZE = 0x0800;
+const uint16 VARC_BASE = 0xC000;
+const uint16 VARD_BASE = 0xD000;
+const uint16 VARE_BASE = 0xE000;
+const uint16 VARF_BASE = 0xF000;
+const uint16 VARSC_SIZE = 0x0100;
+const uint16 VARSD_SIZE = 0x0400;
+const uint16 VARSE_SIZE = 0x0080;
+const uint16 VARSF_SIZE = 0x0080;
 const ea_t REF_BASE = 0x02000000;
 
 ea_t get_var_addr(uint16 ref);

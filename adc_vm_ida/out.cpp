@@ -137,19 +137,19 @@ void out_adcvm_t::out_setmark(const op_t& x) {
   for (auto i = 0; i < (uint16)x.value; ++i) {
     out_symbol('{');
 
-    out_var_or_val(insn.ea + x.offb + i * 5 * 2 + 0);
+    out_var_or_val(insn.ea + x.offb + 2 + i * 5 * 2 + 0);
     out_symbol(',');
 
-    out_var_or_val(insn.ea + x.offb + i * 5 * 2 + 2);
+    out_var_or_val(insn.ea + x.offb + 2 + i * 5 * 2 + 2);
     out_symbol(',');
 
-    out_var_or_val(insn.ea + x.offb + i * 5 * 2 + 4);
+    out_var_or_val(insn.ea + x.offb + 2 + i * 5 * 2 + 4);
     out_symbol(',');
 
-    out_var_or_val(insn.ea + x.offb + i * 5 * 2 + 6);
+    out_var_or_val(insn.ea + x.offb + 2 + i * 5 * 2 + 6);
     out_symbol(',');
 
-    out_val16(insn.ea + x.offb + i * 5 * 2 + 8);
+    out_val16(insn.ea + x.offb + 2 + i * 5 * 2 + 8);
 
     out_symbol('}');
 
@@ -172,7 +172,7 @@ void out_adcvm_t::out_var_or_val_array(const op_t& x) {
   out_symbol('{');
 
   for (auto i = 0; i < (uint16)x.value; ++i) {
-    out_var_or_val(insn.ea + x.offb + i * 2);
+    out_var_or_val(insn.ea + x.offb + 2 + i * 2);
 
     if (i + 1 < (uint16)x.value) {
       out_symbol(',');
@@ -262,6 +262,11 @@ void out_adcvm_t::out_insn(void) {
     out_char(' ');
     out_line(insn.get_canon_mnem(ph));
     out_symbol('(');
+
+    out_btoa(insn.Op1.value, 16);
+    out_symbol(',');
+    out_char(' ');
+
     out_line("marks");
     out_symbol(')');
     out_symbol(';');
@@ -272,20 +277,30 @@ void out_adcvm_t::out_insn(void) {
 
   if (insn.itype == ADCVM_sclblock) {
     out_line("uint16_t scl1[] = ");
-    out_var_or_val_array(insn.ops[0]);
+    out_var_or_val_array(insn.Op1);
     out_symbol(';');
     out_char(' ');
 
     out_line("uint16_t scl2[] = ");
-    out_var_or_val_array(insn.ops[1]);
+    out_var_or_val_array(insn.Op2);
     out_symbol(';');
     out_char(' ');
 
     out_line(insn.get_canon_mnem(ph));
     out_symbol('(');
+
+    out_val16(insn.ea + insn.Op1.offb);
+    out_symbol(',');
+    out_char(' ');
+
     out_line("scl1");
     out_symbol(',');
     out_char(' ');
+
+    out_val16(insn.ea + insn.Op1.offb + 2 + (uint16_t)insn.Op1.value * 2);
+    out_symbol(',');
+    out_char(' ');
+
     out_line("scl2");
     out_symbol(')');
     out_symbol(';');
@@ -296,7 +311,7 @@ void out_adcvm_t::out_insn(void) {
 
   if (insn.itype == ADCVM_spcfunc) {
     out_line("uint16_t spc[] = ");
-    out_var_or_val_array(insn.ops[1]);
+    out_var_or_val_array(insn.Op2);
     out_symbol(';');
     out_char(' ');
 
@@ -324,7 +339,8 @@ void out_adcvm_t::out_insn(void) {
     insn.itype != ADCVM_add &&
     insn.itype != ADCVM_dec &&
     insn.itype != ADCVM_inc &&
-    insn.itype != ADCVM_call
+    insn.itype != ADCVM_call &&
+    insn.itype != ADCVM_jmp
     ) {
     out_line(insn.get_canon_mnem(ph));
     is_var_chg_or_call = false;
@@ -531,9 +547,26 @@ void out_adcvm_t::out_insn(void) {
     return;
   }
 
-  if (insn.itype == ADCVM_call) {
+  if (insn.itype == ADCVM_call || insn.itype == ADCVM_jmp) {
     out_symbol('(');
     out_symbol(')');
+  }
+
+  if (insn.itype == ADCVM_jmp) {
+    out_symbol(';');
+    out_char(' ');
+    out_line("return");
+    out_symbol(';');
+    out_char(' ');
+
+    out_tagon(COLOR_AUTOCMT);
+    out_line("//");
+    out_char(' ');
+    out_line("jmp");
+    out_tagoff(COLOR_AUTOCMT);
+
+    flush_outbuf();
+    return;
   }
 
   out_symbol(';');

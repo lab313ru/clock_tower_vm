@@ -18,7 +18,7 @@ const instruc_t Instructions[] = {
   { "leq", CF_USE1 | CF_USE2 | CF_USE3 }, // V <= VAR_OR_VAL
   { "cmp_end", CF_USE1 }, // compare block end
   { "allend", CF_STOP }, // terminate
-  { "jmp", CF_USE1 | CF_JUMP | CF_STOP }, // jump
+  { "jmp", CF_USE1 | CF_JUMP /* | CF_STOP */ }, // jump
   { "call", CF_USE1 | CF_JUMP | CF_CALL }, // call
   { "evdef", CF_USE1 | CF_USE2 | CF_USE3 }, // define an event
   { "end", 0 }, // end
@@ -26,8 +26,8 @@ const instruc_t Instructions[] = {
   { "while", CF_USE1 | CF_USE2 }, // while block start
   { "nop", 0 }, // just nop
   { "endif", CF_USE1 }, // if block end
-  { "endwhile", CF_USE1 | CF_JUMP | CF_STOP }, // while block end
-  { "else", CF_USE1 | CF_JUMP | CF_STOP }, // else
+  { "endwhile", CF_USE1 | CF_JUMP /*| CF_STOP*/ }, // while block end
+  { "else", CF_USE1 | CF_JUMP /*| CF_STOP*/ }, // else
   { "msginit", CF_USE1 | CF_USE2 | CF_USE3 | CF_USE4 | CF_USE5 }, // init message
   { "msgattr", CF_USE1 | CF_USE2 | CF_USE3 | CF_USE4 | CF_USE5 | CF_USE6 | CF_USE7 | CF_USE8 }, // message attributes
   { "msgout", CF_USE1 | CF_USE2 | CF_USE3 }, //output message

@@ -111,21 +111,43 @@ static void load_adt(char* ado_name) {
 }
 
 static void create_var_segments() {
-  add_segm(0, VAR_BASE + VAR_C_BASE, VAR_BASE + VAR_C_BASE + VARS_SIZE, "varsc", "DATA");
-  auto* s = getseg(VAR_BASE + VAR_C_BASE);
+  add_segm(0, VAR_BASE + VARC_BASE, VAR_BASE + VARC_BASE + VARSC_SIZE, "varsc", "DATA");
+  auto* s = getseg(VAR_BASE + VARC_BASE);
   s->perm = SEGPERM_READ | SEGPERM_WRITE;
 
-  add_segm(0, VAR_BASE + VAR_D_BASE, VAR_BASE + VAR_D_BASE + VARS_SIZE, "varsd", "DATA");
-  s = getseg(VAR_BASE + VAR_D_BASE);
+  qstring name;
+
+  for (auto i = 0; i < VARSC_SIZE; ++i) {
+    name.sprnt("var_c_%03X", i);
+    set_name(VAR_BASE + VARC_BASE + i * 2, name.c_str());
+  }
+
+  add_segm(0, VAR_BASE + VARD_BASE, VAR_BASE + VARD_BASE + VARSD_SIZE, "varsd", "DATA");
+  s = getseg(VAR_BASE + VARD_BASE);
   s->perm = SEGPERM_READ | SEGPERM_WRITE;
 
-  add_segm(0, VAR_BASE + VAR_E_BASE, VAR_BASE + VAR_E_BASE + VARS_SIZE, "varse", "DATA");
-  s = getseg(VAR_BASE + VAR_E_BASE);
+  for (auto i = 0; i < VARSD_SIZE; ++i) {
+    name.sprnt("var_d_%03X", i);
+    set_name(VAR_BASE + VARD_BASE + i * 2, name.c_str());
+  }
+
+  add_segm(0, VAR_BASE + VARE_BASE, VAR_BASE + VARE_BASE + VARSE_SIZE, "varse", "DATA");
+  s = getseg(VAR_BASE + VARE_BASE);
   s->perm = SEGPERM_READ | SEGPERM_WRITE;
 
-  add_segm(0, VAR_BASE + VAR_F_BASE, VAR_BASE + VAR_F_BASE + VARS_SIZE, "varsf", "DATA");
-  s = getseg(VAR_BASE + VAR_F_BASE);
+  for (auto i = 0; i < VARSE_SIZE; ++i) {
+    name.sprnt("var_e_%03X", i);
+    set_name(VAR_BASE + VARE_BASE + i * 2, name.c_str());
+  }
+
+  add_segm(0, VAR_BASE + VARF_BASE, VAR_BASE + VARF_BASE + VARSF_SIZE, "varsf", "DATA");
+  s = getseg(VAR_BASE + VARF_BASE);
   s->perm = SEGPERM_READ | SEGPERM_WRITE;
+
+  for (auto i = 0; i < VARSF_SIZE; ++i) {
+    name.sprnt("var_f_%03X", i);
+    set_name(VAR_BASE + VARF_BASE + i * 2, name.c_str());
+  }
 }
 
 ssize_t idaapi adcvm_t::on_event(ssize_t msgid, va_list va) {
@@ -134,6 +156,7 @@ ssize_t idaapi adcvm_t::on_event(ssize_t msgid, va_list va) {
   switch (msgid) {
   case processor_t::ev_init: {
     inf_set_be(false);
+    inf_set_app_bitness(32);
     //inf_set_gen_lzero(true);
   } break;
   case processor_t::ev_term: {

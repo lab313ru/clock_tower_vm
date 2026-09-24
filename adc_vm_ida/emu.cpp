@@ -13,17 +13,18 @@ void adcvm_t::handle_operand(const insn_t& insn, const op_t& op, bool isload) co
   case o_near: {
     if (is_jump_call_insn(insn.itype)) {
       switch (insn.itype) {
-      case ADCVM_call: {
+      case ADCVM_call:
+      case ADCVM_jmp: {
         insn.add_cref(op.addr, op.offb, fl_CN);
       } break;
-      case ADCVM_jmp: {
-        insn_t next;
-        if (decode_insn(&next, insn.ea + insn.size)) {
-          if (next.itype == ADCVM_endif || next.itype == ADCVM_else || next.itype == ADCVM_ret) { // to jmp + endif/else
-            auto_make_code(next.ea);
-          }
-        }
-      }
+      //case ADCVM_jmp: {
+      //  insn_t next;
+      //  if (decode_insn(&next, insn.ea + insn.size)) {
+      //    if (next.itype == ADCVM_endif || next.itype == ADCVM_else || next.itype == ADCVM_ret) { // to jmp + endif/else
+      //      auto_make_code(next.ea);
+      //    }
+      //  }
+      //}
       default: {
         insn.add_cref(op.addr, op.offb, fl_JN);
       }
